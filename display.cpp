@@ -21,7 +21,7 @@ byte Display::digit[3];
 
 // Loads 'digit' with up to a 3-digit integer.
 // (Aligned right with no leading zeroes.)
-void Display::Value(int v){
+void Display::value(int v){
     byte d[] {
       //*ABCDEFG
       0b11111110, //0
@@ -47,7 +47,7 @@ void Display::Value(int v){
 
 // Loads digit with up to 3 of these supported characters.
 // (Aligned left. Use leading spaces if needed.)
-void Display::Word(char w[]){
+void Display::word(char w[]){
   for(int i=0; i<3; i++){
     switch(w[i]){          //*ABCDEFG
       case 'a': digit[i] = 0b11110111; break; //A
@@ -68,7 +68,7 @@ void Display::Word(char w[]){
 };
 
 
-void Display::Clear(){
+void Display::clear(){
   digit[0] = 0b10000000;
   digit[1] = 0b10000000;
   digit[2] = 0b10000000;
@@ -79,8 +79,8 @@ void Display::Clear(){
 5 LEDs without exceeding the maximum current draw of the 74HC595 chips.
 This is done by displaying one digit at a time with each chip responsible
 for half the segments of the digit and then displaying the LEDs.*/
-void Display::Info(Button* Bs[], Track* Ts[],
-                   Editor& Edit, Button& FS1, Button& FS2){
+void Display::info(MIDIbutton* Bs[], Track* Ts[],
+                   Editor& Edit, MIDIbutton& FS1, MIDIbutton& FS2){
   int pinState;
   digitalWrite(latch, LOW);
 

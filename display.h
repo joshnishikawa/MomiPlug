@@ -2,7 +2,7 @@
 #define display_h
 
 #include "Arduino.h"
-#include "button.h"
+#include "MIDIbutton.h"
 #include "Editor.h"
 
 /*You will almost certainly not want to bother
@@ -21,7 +21,6 @@
   the code useless anywhere else.
 */
 
-
 class Display{
   public:
     Display();
@@ -31,11 +30,11 @@ class Display{
     int clock;
     int latch;
     byte static digit[3];
-    void Value(int i);
-    void Word(char w[4]);
-    void Clear();
-    void Info(Button* Bs[], Track* Ts[],
-              Editor& Edit, Button& FS1, Button& FS2);
+    void value(int i);
+    void word(char w[4]);
+    void clear();
+    void info(MIDIbutton* Bs[], Track* Ts[],
+              Editor& Edit, MIDIbutton& FS1, MIDIbutton& FS2);
 };
 
 #endif

@@ -1,11 +1,6 @@
-#include <MIDI.h>
-#include <Bounce.h>
-#include <Encoder.h>
-#include "button.h"
-#include "pot.h"
-#include "display.h"
-#include "editor.h"
+#include "MOMIPLUG.h"
 
+const int MIDIchannel = 3;
 #define fstippin 0    //footswitch 1
 #define fsringpin 1   //footswitch 2
 #define sel_a 2       //selectors for analog mux
@@ -34,20 +29,20 @@
 #define muxpin1 A11   //
 
 Editor Edit(editpin, encpinA, encpinB);
-Button *Bs[5];
+MIDIbutton *Bs[5];
 Track *Ts[5];
-Button FS1(fstippin, 25);
-Button FS2(fsringpin, 26);
-Pot EXP(expedpin, 27);
-Pot *Ps[16];
+MIDIbutton FS1(fstippin, 25);
+MIDIbutton FS2(fsringpin, 26);
+MIDIpot EXP(expedpin, 27);
+MIDIpot *Ps[16];
 Display DSP(serialpin, clockpin, latchpin);
 
 void setup(){
-  Bs[0] = new Button(but0pin, 20, 1);
-  Bs[1] = new Button(but1pin, 21, 1);
-  Bs[2] = new Button(but2pin, 22, 1);
-  Bs[3] = new Button(but3pin, 23, 1);
-  Bs[4] = new Button(but4pin, 24, 1);
+  Bs[0] = new MIDIbutton(but0pin, 20, 1);
+  Bs[1] = new MIDIbutton(but1pin, 21, 1);
+  Bs[2] = new MIDIbutton(but2pin, 22, 1);
+  Bs[3] = new MIDIbutton(but3pin, 23, 1);
+  Bs[4] = new MIDIbutton(but4pin, 24, 1);
   
   Ts[0] = new Track(but0pin);
   Ts[1] = new Track(but1pin);
@@ -56,11 +51,11 @@ void setup(){
   Ts[4] = new Track(but4pin);
   
   for(int i=0; i<8; i++){
-    Ps[i] = new Pot(muxpin0,28+i);
+    Ps[i] = new MIDIpot(muxpin0,28+i);
   }
   
   for(int i=8; i<16; i++){
-    Ps[i] = new Pot(muxpin1,36+i);
+    Ps[i] = new MIDIpot(muxpin1,36+i);
   }
 
   pinMode(muxpin0, INPUT);     //analog input from muxes
@@ -79,16 +74,16 @@ void setup(){
 }
 
 void loop(){
-  Edit.Read(Bs, Ps, FS1, FS2);
+  Edit.read(Bs, Ps, FS1, FS2);
 
   if(Edit.state == false){
-    DSP.Value(Edit.Tracks(Ts, FS1));
+    DSP.value(Edit.tracks(Ts, FS1));
   }
   else{
     for(int i=0;i<5;i++){
-      Bs[i]->Read();
+      Bs[i]->read();
     }
-    FS1.Read();
+    FS1.read();
   }
  
 /*  UNCOMMENT WHEN THERE ARE MORE BUTTONS
@@ -97,19 +92,18 @@ void loop(){
   }
 */
 
-  EXP.Read();
-  FS2.Read();
+  EXP.read();
+  FS2.read();
   
 /*  for (int i=0; i<8; i++){
     digitalWrite(sel_a, (i&7)>>2);
     digitalWrite(sel_b, (i&3)>>1);
     digitalWrite(sel_c, (i&1));
-    Pots[i]->Read();
-    Pots[i+8]->Read();
+    Pots[i]->read();
+    Pots[i+8]->read();
   }
 */
 
-  while(usbMIDI.read()){};
-  DSP.Info(Bs, Ts, Edit, FS1, FS2);
+  DSP.info(Bs, Ts, Edit, FS1, FS2);
 }
 

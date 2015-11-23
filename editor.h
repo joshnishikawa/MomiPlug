@@ -4,8 +4,8 @@
 #include "Arduino.h"
 #include "Bounce.h"
 #include "Encoder.h"
-#include "button.h"
-#include "pot.h"
+#include "MIDIbutton.h"
+#include "MIDIpot.h"
 
 /*INCOMPLETE
     This is to be used for an encoder/switch
@@ -19,31 +19,32 @@
     corresponding to armed tracks.
 */
 
+extern const int MIDIchannel;
 
 class Track{
   public:
     Track();
     Track(int p);
     ~Track();
-    Bounce *bTrak;
+    Bounce *myTrack;
     int level;
     bool state;
 };
 
 
 class Editor{
-    Bounce *bButn;
-    Encoder *eKnob;
+    Bounce *myButt;
+    Encoder *myKnob;
   public:
     Editor();
     Editor(int p, int a, int b);
     ~Editor();
 
-    void Read(Button* Bs[], Pot* Ps[], Button& FS1, Button& FS2);
-    int Tracks(Track* Ts[], Button& FS1);
-    bool A();
-    bool B();
-    bool C();
+    void read(MIDIbutton* Bs[], MIDIpot* Ps[], MIDIbutton& FS1, MIDIbutton& FS2);
+    int tracks(Track* Ts[], MIDIbutton& FS1);
+    bool a();
+    bool b();
+    bool c();
     bool state;
     int channel;
     int returnme;

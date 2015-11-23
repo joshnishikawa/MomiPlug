@@ -76,7 +76,7 @@ void setup(){
 void loop(){
   Edit.read(Bs, Ps, FS1, FS2);
 
-  if(Edit.state == false){
+  if(Edit.state == true){
     DSP.value(Edit.tracks(Ts, FS1));
   }
   else{
@@ -85,17 +85,18 @@ void loop(){
     }
     FS1.read();
   }
- 
+  DSP.info(Bs, Ts, Edit, FS1, FS2);
+  EXP.read();
+  FS2.read();
+  
 /*  UNCOMMENT WHEN THERE ARE MORE BUTTONS
     for(int i=5;i<sizeof(Bs)/sizeof(Bs[0]);i++){ 
     Bs[i]->Read();
   }
 */
 
-  EXP.read();
-  FS2.read();
-  
-/*  for (int i=0; i<8; i++){
+/*  UNCOMMENT WHEN THERE ARE MORE POTS
+    for (int i=0; i<8; i++){
     digitalWrite(sel_a, (i&7)>>2);
     digitalWrite(sel_b, (i&3)>>1);
     digitalWrite(sel_c, (i&1));
@@ -104,6 +105,5 @@ void loop(){
   }
 */
 
-  DSP.info(Bs, Ts, Edit, FS1, FS2);
 }
 

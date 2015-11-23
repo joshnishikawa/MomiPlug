@@ -88,9 +88,9 @@ void Display::info(MIDIbutton* Bs[], Track* Ts[],
   digitalWrite(serial, LOW);        //button 1 LED off
   digitalWrite(clock, HIGH);
 
-  for(int i=0;i<3;i++){
+  for(int i=0;i<3;i++){             // Set cathode states
     digitalWrite(clock, LOW);
-    if(i==0){
+    if(i==0){                       // Only write the first digit
       digitalWrite(serial, LOW);
       digitalWrite(clock, HIGH);
     }
@@ -188,7 +188,7 @@ void Display::info(MIDIbutton* Bs[], Track* Ts[],
 
   //DISPLAY BUTTON LEDS
   digitalWrite(latch, LOW);
-  if(Edit.state == false){              //button 1 LED
+  if(Edit.state == true){              //button 1 LED
     digitalWrite(serial, Ts[0]->state);}
   else digitalWrite(serial, Bs[0]->state);
   digitalWrite(clock, HIGH);
@@ -200,7 +200,7 @@ void Display::info(MIDIbutton* Bs[], Track* Ts[],
   }
   for(int i=1;i<5;i++){
     digitalWrite(clock, LOW);
-    if(Edit.state == false){              //other button LEDs
+    if(Edit.state == true){              //other button LEDs
       digitalWrite(serial, Ts[i]->state);}
     else digitalWrite(serial, Bs[i]->state);
       digitalWrite(clock, HIGH);

@@ -73,7 +73,7 @@ int Editor::tracks(Track* Ts[], MIDIbutton& FS1){
       if(Ts[i]->myTrack->fallingEdge()){
         usbMIDI.sendControlChange(i+115,127,channel);
         usbMIDI.sendControlChange(i+115,0,channel);
-        Ts[i]->state = Ts[i]->state == true ? false : true;
+        Ts[i]->state = !Ts[i]->state;
         returnme = Ts[i]->state == true ? Ts[i]->level : 0 ;
       }
       //else if(Ts[i]->myTrack->risingEdge()){for multi-assigning buttons}

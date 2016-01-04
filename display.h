@@ -2,39 +2,24 @@
 #define display_h
 
 #include "Arduino.h"
-#include "MIDIbutton.h"
-#include "Editor.h"
-
-/*You will almost certainly not want to bother
-  with this file or its corresponding CPP.
-  There are many ways to drive a 7-segment
-  display. This my attempt to drive a 3-digit
-  7-segment display and 5 LEDs without
-  exceeding the maximum current draw of 2
-  74HC595 shift registers. This is done by
-  displaying one digit at a time with each
-  chip responsible for half the segments of
-  the digit and then displaying the LEDs.
-  It works but requires the display, LEDs
-  and shift registers to be wired in a very
-  specific way (see README.txt) which makes
-  the code useless anywhere else.
-*/
 
 class Display{
   public:
     Display();
     Display(int serial, int clock, int latch);
     ~Display();
-    int serial;
-    int clock;
-    int latch;
-    byte static digit[3];
+    int timer;
+    int serialPin;
+    int clockPin;
+    int latchPin;
+    word static words[4];
     void value(int i);
-    void word(char w[4]);
+    void verbal(const char v[]);
+    void states(bool a, bool b, bool c, bool d, bool e, bool f, bool g, bool h);
     void clear();
-    void info(MIDIbutton* Bs[], Track* Ts[],
-              Editor& Edit, MIDIbutton& FS1, MIDIbutton& FS2);
+    void print();
 };
 
 #endif
+
+

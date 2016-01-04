@@ -24,7 +24,8 @@ Editor::Editor(int p, int a, int b){
   myButt = new Bounce(p, 10);
   myKnob = new Encoder(a, b);
   state = false;
-  channel = MIDIchannel;
+  channel = MOMIchannel;
+  scene = 102;
   returnme = 0;
 };
 
@@ -35,7 +36,7 @@ Editor::~Editor(){
 };
 
 
-void Editor::read(MIDIbutton* Bs[], MIDIpot* Ps[], MIDIbutton& FS1, MIDIbutton& FS2){
+void Editor::check(MIDIbutton* Bs[], MIDIpot* Ps[], MIDIbutton& FS1, MIDIbutton& FS2){
   if(myButt->update()){
     if (myButt->risingEdge()){
       state = !state;
@@ -44,39 +45,43 @@ void Editor::read(MIDIbutton* Bs[], MIDIpot* Ps[], MIDIbutton& FS1, MIDIbutton& 
   }
 };
 
-int Editor::tracks(Track* Ts[], MIDIbutton& FS1){
-  bool rec = false;
-  if(FS1.myButt->update()){
-    if(FS1.myButt->fallingEdge()){
-      rec = true;
-    }
-  }
-
+int Editor::read(Track* Ts[], MIDIbutton& FS1, MIDIbutton& FS0){
   int incdec = myKnob->read();
-  myKnob->write(0);
+  myKnob->write(0); // We only need to know which direction the knob is going.
 
   for(int i=0; i<5; i++){
-    if(Ts[i]->state == true){
-      if(rec == true){
-        usbMIDI.sendControlChange(i+105,127,channel);
-        usbMIDI.sendControlChange(i+105,0,channel);
-        returnme = i+105;
-      }
-      if((incdec == 1 && Ts[i]->level < 127) ||
-         (incdec == -1 && Ts[i]->level > 0)){
-        Ts[i]->level += incdec;
-        usbMIDI.sendControlChange(i+110,Ts[i]->level,channel);
+    if(Ts[i]->state == true){                   // If a track is armed
+      if((incdec == 1 && Ts[i]->level < 127) || // and isn't already maxed or
+         (incdec == -1 && Ts[i]->level > 0)){   // at 0
+        Ts[i]->level += incdec;                 // update track level.
+        usbMIDI.sendControlChange(i+20,Ts[i]->level,channel); // and send.
         returnme = Ts[i]->level;
       }
     }
     if(Ts[i]->myTrack->update()){
-      if(Ts[i]->myTrack->fallingEdge()){
-        usbMIDI.sendControlChange(i+115,127,channel);
-        usbMIDI.sendControlChange(i+115,0,channel);
+      if(Ts[i]->myTrack->fallingEdge()){        // Arm or disarm tracks.
+        usbMIDI.sendControlChange(i+25,127,channel);
+        usbMIDI.sendControlChange(i+25,0,channel);
         Ts[i]->state = !Ts[i]->state;
-        returnme = Ts[i]->state == true ? Ts[i]->level : 0 ;
+        returnme = Ts[i]->state == true ? Ts[i]->level : 0; // Show level on arm
       }
-      //else if(Ts[i]->myTrack->risingEdge()){for multi-assigning buttons}
+    }
+  }
+
+  if(FS1.myButt->update()){
+    if(FS1.myButt->fallingEdge()){              // For using a single footswitch
+      scene = scene == 119 ? 102 : scene += 1 ; // to trigger a groups scenes in
+      usbMIDI.sendControlChange(scene,127,channel);// in sequence using control
+      usbMIDI.sendControlChange(scene,0,channel);// change numbers 102 ~ 119.
+      returnme = scene;                         // 102 should be assigned to
+    }                                           // the stop button (as is FS0)
+  }                                             // to prevent wraparound
+  if(FS0.myButt->update()){
+    if(FS0.myButt->fallingEdge()){
+      usbMIDI.sendControlChange(102,127,channel);
+      usbMIDI.sendControlChange(102,0,channel);
+      scene = 102;
+      returnme = 15;
     }
   }
   return returnme;

@@ -2,16 +2,16 @@ TEENSY 3.1 PIN ASSIGNMENTS
              ______
         ____|      |____
   GND -|-GND|      | 5V |- VBUS on USB host module
- FS 1 -| 0  |______AGND-|- AGND (sleve and Mux16 GND)
- FS 2 -| 1        _3.3v-|- Voltage
+ MIDI -| 0  |______AGND-|- AGND (sleve and Mux16 GND)
+ FS 1 -| 1        _3.3v-|- Voltage
 SEL_A  |-2   AREF(_) 23 |- 1/4" analog return (ring)
-SEL_B  |-3    A-1(_) 22 |
+SEL_B  |-3    A-1(_) 22-|  SER (display)
 SEL_C  |-4    A-2(_) 21-|  Encoder Pin B
 SEL_D  |-5           20-|  Encoder Pin A
- MIDI  |-6           19-| 'Edit' Button
+ FS 0  |-6           19-| 'Edit' Button
  SRCK -| 7           18 |- Button 0
  RCLK -| 8           17 |- Button 1
-  SER -| 9           16 |- Button 2
+  INT -| 9           16 |- Button 2
    SS  |-10          15 |- Button 3
  MOSI  |-11          14 |- Button 4
  MISO  |-12          13 |- SCK
@@ -96,10 +96,10 @@ ________________________\
       _____________      |
      /_____________\     |     ______________
     //      _2     \\    |    /     2    \   \__
-   // 4_   (_)   _5 \\   |   / 5   o===  4\   \ \___
-  ||  (_)       (_)  ||  |  |  o===     o==|        \
+   // 4_   (_)   _5 \\   |   / 5   0===  4\   \ \___
+  ||  (_)       (_)  ||  |  |  0===     0==|        \
   ||  _           _  ||  |  |              |         |__
-  || (_)         (_) ||  |  | o===       o=|         |_ \
+  || (_)         (_) ||  |  | 0===       0=|         |_ \
   || 1             3 ||  |  | 3          1 |         | \ \
   ||                 ||  |  |              |     ___/   \ \
    \\       _       //   |   \      _     /   /_/       / /

@@ -19,7 +19,7 @@
     corresponding to armed tracks.
 */
 
-extern const int MIDIchannel;
+extern const int MOMIchannel;
 
 class Track{
   public:
@@ -35,13 +35,14 @@ class Track{
 class Editor{
     Bounce *myButt;
     Encoder *myKnob;
+    int scene;
   public:
     Editor();
     Editor(int p, int a, int b);
     ~Editor();
 
-    void read(MIDIbutton* Bs[], MIDIpot* Ps[], MIDIbutton& FS1, MIDIbutton& FS2);
-    int tracks(Track* Ts[], MIDIbutton& FS1);
+    void check(MIDIbutton* Bs[], MIDIpot* Ps[], MIDIbutton& FS1, MIDIbutton& FS0);
+    int read(Track* Ts[], MIDIbutton& FS1, MIDIbutton& FS0);
     bool a();
     bool b();
     bool c();

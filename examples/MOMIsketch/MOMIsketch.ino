@@ -1,48 +1,45 @@
 #include "MOMIPLUG.h"
+//#include <usb_keyboard.h> // if also using for keyboard input
 
-const int MIDIchannel = 3;
-#define fstippin 0    //footswitch 1
-#define fsringpin 1   //footswitch 2
-#define sel_a 2       //selectors for analog mux
-#define sel_b 3       //
-#define sel_c 4       //
-#define sel_d 5       //
-#define midipin 6     //MIDI input from 5-pin DIN
-#define clockpin 7    //clock pin for shift registers
-#define latchpin 8    //latch pin for shift registers
-#define intpin 9      //interrupt pin for USB host
-#define usbsspin 10   //SS pin for USB host
-#define mosipin 11    //MOSI to USB host
-#define misopin 12    //MISO from USB host
-#define usbsckpin 13  //serial clock for USB host
-#define but0pin 14    //onboard buttons
-#define but1pin 15    //
-#define but2pin 16    //
-#define but3pin 17    //
-#define but4pin 18    //
-#define editpin 19    //edit button (push switch on encoder)
-#define encpinA 20    //pin A of encoder
-#define encpinB 21    //pin B of encoder
-#define serialpin 22  //serial output to shift registers 
-#define expedpin A9   //analog input for expression pedal
-#define muxpin0 A10   //analog input from muxes
-#define muxpin1 A11   //
+int MIDIchannel = 3;
+
+const int fstippin = 0;    //footswitch 1
+const int fsringpin = 1;   //footswitch 2
+const int sel_a = 2;       //selectors for analog mux
+const int sel_b = 3;       //
+const int sel_c = 4;       //
+const int sel_d = 5;       //
+const int midipin = 6;     //MIDI input from 5-pin DIN
+const int clockpin = 7;    //clock pin for shift registers
+const int latchpin = 8;    //latch pin for shift registers
+const int but0pin = 14;    //onboard buttons
+const int but1pin = 15;    //
+const int but2pin = 16;    //
+const int but3pin = 17;    //
+const int but4pin = 18;    //
+const int editpin = 19;    //edit button (push switch on encoder)
+const int encpinA = 20;    //pin A of encoder
+const int encpinB = 21;    //pin B of encoder
+const int serialpin = 22;  //serial output to shift registers 
+const int expedpin = A9;   //analog input for expression pedal
+const int muxpin0 = A10;   //analog input from muxes
+const int muxpin1 = A11;   //
 
 Editor Edit(editpin, encpinA, encpinB);
 MIDIbutton *Bs[5];
 Track *Ts[5];
-MIDIbutton FS1(fstippin, 25);
-MIDIbutton FS2(fsringpin, 26);
-MIDIpot EXP(expedpin, 27);
+MIDIbutton FS0(fsringpin, 14, 1);
+MIDIbutton FS1(fstippin, 15, 1);
+MIDIpot EXP(expedpin, 9, 1);
 MIDIpot *Ps[16];
 Display DSP(serialpin, clockpin, latchpin);
 
 void setup(){
-  Bs[0] = new MIDIbutton(but0pin, 20, 1);
-  Bs[1] = new MIDIbutton(but1pin, 21, 1);
-  Bs[2] = new MIDIbutton(but2pin, 22, 1);
-  Bs[3] = new MIDIbutton(but3pin, 23, 1);
-  Bs[4] = new MIDIbutton(but4pin, 24, 1);
+  Bs[0] = new MIDIbutton(but0pin, 85, 1);
+  Bs[1] = new MIDIbutton(but1pin, 86, 1);
+  Bs[2] = new MIDIbutton(but2pin, 87, 1);
+  Bs[3] = new MIDIbutton(but3pin, 89, 1);
+  Bs[4] = new MIDIbutton(but4pin, 90, 1);
   
   Ts[0] = new Track(but0pin);
   Ts[1] = new Track(but1pin);
@@ -51,20 +48,14 @@ void setup(){
   Ts[4] = new Track(but4pin);
   
   for(int i=0; i<8; i++){
-    Ps[i] = new MIDIpot(muxpin0,28+i);
+    Ps[i] = new MIDIpot(muxpin0,16+i); // 16~23 are pots
   }
-  
-  for(int i=8; i<16; i++){
-    Ps[i] = new MIDIpot(muxpin1,36+i);
+  for(int i=0; i<8; i++){
+    Ps[i] = new MIDIpot(muxpin1,24+i); // 24~31 are sliders
   }
 
   pinMode(muxpin0, INPUT);     //analog input from muxes
   pinMode(muxpin1, INPUT);
-//  pinMode(usbsspin, OUTPUT);   //SS pin for USB host module
-//  pinMode(mosipin, OUTPUT);    //MOSI to USB host module
-//  pinMode(misopin, INPUT);     //MISO from USB host module
-//  pinMode(usbsckpin, OUTPUT);  //serial clock for USB host module
-//  pinMode(intpin, INPUT);      //DON'T REALLY KNOW YET
   pinMode(sel_a, OUTPUT);      //analog mux selector 1
   pinMode(sel_b, OUTPUT);      //analog mux selector 2
   pinMode(sel_c, OUTPUT);      //analog mux selector 3
@@ -74,20 +65,22 @@ void setup(){
 }
 
 void loop(){
-  Edit.read(Bs, Ps, FS1, FS2);
+  
+  Edit.check(Bs, Ps, FS1, FS0);
 
   if(Edit.state == true){
-    DSP.value(Edit.tracks(Ts, FS1));
+    DSP.value(Edit.read(Ts, FS1, FS0));
   }
   else{
     for(int i=0;i<5;i++){
       Bs[i]->read();
     }
     FS1.read();
+    FS0.read();
+    EXP.read();
+    DSP.clear();
   }
-  DSP.info(Bs, Ts, Edit, FS1, FS2);
-  EXP.read();
-  FS2.read();
+  DSP.info(Bs, Ts, Edit, FS1, FS0);
   
 /*  UNCOMMENT WHEN THERE ARE MORE BUTTONS
     for(int i=5;i<sizeof(Bs)/sizeof(Bs[0]);i++){ 

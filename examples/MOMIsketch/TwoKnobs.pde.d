@@ -1,9 +1,6 @@
-MOMIsketch.ino.o: \
- C:\Users\Josh\AppData\Local\Temp\build638c7bc3edb0595365f663110ab4f766.tmp\sketch\MOMIsketch.ino.cpp \
- C:\Program\ Files\ (x86)\Arduino\libraries\MOMIPLUG/MOMIPLUG.h \
- C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\libraries\MIDI/MIDI.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MIDIController/MIDIcontroller.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MIDIController/MIDIbutton.h \
+TwoKnobs.pde.o: \
+ C:\Users\Josh\AppData\Local\Temp\build6ab9a961ad9b6e64a9f4c55164232d62.tmp\sketch\TwoKnobs.pde.cpp \
+ C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\libraries\Encoder/Encoder.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\cores\teensy3/Arduino.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\cores\teensy3/WProgram.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\cores\teensy3/avr/pgmspace.h \
@@ -37,15 +34,5 @@ MOMIsketch.ino.o: \
  C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\cores\teensy3/elapsedMillis.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\cores\teensy3/Arduino.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\cores\teensy3/IntervalTimer.h \
- C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\libraries\Bounce/Bounce.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MIDIController/MIDIpot.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MIDIController/MIDIenc.h \
- C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\libraries\Encoder/Encoder.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\libraries\Encoder/utility/direct_pin_read.h \
- C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\libraries\Encoder/utility/interrupt_pins.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MIDIController/MIDInote.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MOMIPLUG/editor.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MIDIController/MIDIbutton.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MIDIController/MIDIpot.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MOMIPLUG/display.h \
- C:\Program\ Files\ (x86)\Arduino\libraries\MOMIPLUG/Editor.h
+ C:\Program\ Files\ (x86)\Arduino\hardware\teensy\avr\libraries\Encoder/utility/interrupt_pins.h

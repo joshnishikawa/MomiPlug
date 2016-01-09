@@ -4,12 +4,12 @@
 Display::Display(){};
 
 Display::Display(int s, int c, int l){
-  serialPin = s;
-  clockPin = c;
-  latchPin = l;
-  pinMode(serialPin, OUTPUT);
-  pinMode(clockPin, OUTPUT);
-  pinMode(latchPin, OUTPUT);
+  serial = s;
+  clock = c;
+  latch = l;
+  pinMode(serial, OUTPUT);
+  pinMode(clock, OUTPUT);
+  pinMode(latch, OUTPUT);
   timer = 0;
 };
 
@@ -17,8 +17,9 @@ Display::Display(int s, int c, int l){
 Display::~Display(){};
 
 
-word Display::words[] = {
-  //BCCCF7777777BBBB
+word Display::words[] = { // Stores the info to be shifted out to display.
+  // B = button LED, C = cathode, D = decimal, A = anode for one of the segments
+  //BCCCDAAAAAAABBBB
   0b0011000000000000, // digit 0 & FS 0
   0b0101000000000000, // digit 1 & FS 1
   0b0110000000000000, // digit 2 & 'Edit button' state
@@ -28,7 +29,7 @@ word Display::words[] = {
 void Display::value(int v){
   byte temp = 0;
   byte d[] {
-    //*ABCDEFG
+    //ABCDEFG
     0b1111110, //0
     0b0110000, //1
     0b1101101, //2
@@ -41,7 +42,6 @@ void Display::value(int v){
     0b1111011, //9
     0b0000000, //' '
   };
-
   
   if (v >= 0){
     clear();
@@ -58,7 +58,7 @@ void Display::value(int v){
 void Display::verbal(const char v[]){
   clear();
   for(int i=0; i<3; i++){
-    switch(v[i]){          //ABCDEFG
+    switch(v[i]){           //ABCDEFG
       case 'a': words[i] += 0b1110111<<4; break; //A
       case 'c': words[i] += 0b1001110<<4; break; //C
       case 'd': words[i] += 0b0111101<<4; break; //d
@@ -77,6 +77,17 @@ void Display::verbal(const char v[]){
   timer = millis();
 };
 
+void Display::states(bool a, bool b, bool c, bool d, bool e, bool f, bool g, bool h){
+  bitWrite(words[0], 11, a);
+  bitWrite(words[1], 11, b);
+  bitWrite(words[2], 11, c);
+  bitWrite(words[3], 15, d);
+  bitWrite(words[3], 3, e);
+  bitWrite(words[3], 2, f);
+  bitWrite(words[3], 1, g);
+  bitWrite(words[3], 0, h);
+};
+
 void Display::clear(){
   for (int i=0; i<3; i++){
     for (int j=4; j<11; j++){
@@ -85,27 +96,15 @@ void Display::clear(){
   }
 };
 
-void Display::states(bool a, bool b, bool c, bool d, bool e, bool f, bool g, bool h){
-//SET BITS   State on  ?      YES = Set bit to 1.      NO = Set bit to 0.
-  words[0] = a == true ?      words[0] | (1 << 11):    words[0] & ~(1 << 11);
-  words[1] = b == true ?      words[1] | (1 << 11):    words[1] & ~(1 << 11);
-  words[2] = c == true ?      words[2] | (1 << 11):    words[2] & ~(1 << 11);
-  words[3] = d == true ?      words[3] | (1 << 15):    words[3] & ~(1 << 15);
-  words[3] = e == true ?      words[3] | (1 << 3):     words[3] & ~(1 << 3);
-  words[3] = f == true ?      words[3] | (1 << 2):     words[3] & ~(1 << 2);
-  words[3] = g == true ?      words[3] | (1 << 1):     words[3] & ~(1 << 1);
-  words[3] = h == true ?      words[3] | 1:            words[3] & ~1;
-};
-
 void Display::print(){
-  static int counter = 0;
-  if(counter == 4){ // Using a counter instead of a for loop allows each digit
-    counter = 0;    // stay lit for an entire loop cycle increasing brightness (I hope).
+  static int counter = 0; // Using a counter instead of a for loop allows
+  if(counter == 4){       // each digit to stay lit for an entire loop cycle 
+  counter = 0;            // which boosts the brightness a bit.
   }
-  digitalWrite(latchPin, LOW);
-  shiftOut(serialPin, clockPin, MSBFIRST, byte(words[counter]>>8));// 8 MSBs of a word
-  shiftOut(serialPin, clockPin, MSBFIRST, byte(words[counter]));   // 8 LSBs of a word
-  digitalWrite(latchPin, HIGH);
+  digitalWrite(latch, LOW);
+  shiftOut(serial, clock, MSBFIRST, words[counter]>>8); // 8 MSBs of a word
+  shiftOut(serial, clock, MSBFIRST, words[counter]);    // 8 LSBs of a word
+  digitalWrite(latch, HIGH);
   counter++;
   if (millis() - timer > 3000){
     clear();

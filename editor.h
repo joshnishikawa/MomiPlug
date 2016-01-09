@@ -6,6 +6,7 @@
 #include "Encoder.h"
 #include "MIDIbutton.h"
 #include "MIDIpot.h"
+#include "MIDIenc.h"
 
 /*INCOMPLETE
     This is to be used for an encoder/switch
@@ -19,7 +20,7 @@
     corresponding to armed tracks.
 */
 
-extern const int MOMIchannel;
+extern int MIDIchannel;
 
 class Track{
   public:
@@ -33,15 +34,14 @@ class Track{
 
 
 class Editor{
-    Bounce *myButt;
-    Encoder *myKnob;
     int scene;
   public:
     Editor();
-    Editor(int p, int a, int b);
+    Editor(int p, MIDIenc& enc);
     ~Editor();
+    Bounce *myButt;
+    Encoder *myKnob;
 
-    void check(MIDIbutton* Bs[], MIDIpot* Ps[], MIDIbutton& FS1, MIDIbutton& FS0);
     int read(Track* Ts[], MIDIbutton& FS1, MIDIbutton& FS0);
     bool a();
     bool b();

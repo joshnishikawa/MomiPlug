@@ -8,10 +8,10 @@ class Display{
     Display();
     Display(int serial, int clock, int latch);
     ~Display();
-    int timer;
-    int serialPin;
-    int clockPin;
-    int latchPin;
+    unsigned long int timer;
+    int serial;
+    int clock;
+    int latch;
     word static words[4];
     void value(int i);
     void verbal(const char v[]);

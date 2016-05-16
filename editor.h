@@ -7,48 +7,37 @@
 #include "MIDIbutton.h"
 #include "MIDIpot.h"
 #include "MIDIenc.h"
+#include "MIDIcapSens.h"
+#include "MIDInote.h"
 
 /*INCOMPLETE
     This is to be used for an encoder/switch
     that will allow different behaviors and 
     values to be set for all inputs via the
-    MIDI controller itself. Currently, it 
-    only sets a mode in which buttons will
-    arm/disarm tracks in Ableton Live, correctly
-    indicate which tracks are are armed/disarmed
-    and allow the encoder to send CC messages 
-    corresponding to armed tracks.
+    MIDI controller itself.
 */
 
-extern int MIDIchannel;
-
-class Track{
-  public:
-    Track();
-    Track(int p);
-    ~Track();
-    Bounce *myTrack;
-    int level;
-    bool state;
-};
-
+extern int* MC;
 
 class Editor{
-    int scene;
   public:
-    Editor();
-    Editor(int p, MIDIenc& enc);
-    ~Editor();
-    Bounce *myButt;
-    Encoder *myKnob;
-
-    int read(Track* Ts[], MIDIbutton& FS1, MIDIbutton& FS0);
-    bool a();
-    bool b();
-    bool c();
-    bool state;
     int channel;
-    int returnme;
+    Editor();
+    Editor(int p, Encoder* enc);
+    ~Editor();
+    Bounce* myButt;
+    Encoder* myKnob;
+
+    int read(MIDIbutton* Bs[], MIDIpot* Ps[], MIDIbutton& FS1, MIDIbutton& FS0);
+    void edit();
+    void* target;
+    int targetSize;
+    void editInput();
+    void editButton(MIDIbutton b);
+    void editPot(MIDIpot p);
+    void editNote(MIDInote n);
+    int editChannel(Encoder& e, int c);
+    bool editing;
 };
 
 #endif

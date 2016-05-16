@@ -9,11 +9,11 @@ SEL_B  |-3    A-1(_) 22-|  SER (display)
 SEL_C  |-4    A-2(_) 21-|  Encoder Pin B
 SEL_D  |-5           20-|  Encoder Pin A
  FS 0  |-6           19-| 'Edit' Button
- SRCK -| 7           18 |- Button 0
- RCLK -| 8           17 |- Button 1
+ SRCK -| 7           18 |- Button 4
+ RCLK -| 8           17 |- Button 3
   INT -| 9           16 |- Button 2
-   SS  |-10          15 |- Button 3
- MOSI  |-11          14 |- Button 4
+   SS  |-10          15 |- Button 1
+ MOSI  |-11          14 |- Button 0
  MISO  |-12          13 |- SCK
        |________________|
 

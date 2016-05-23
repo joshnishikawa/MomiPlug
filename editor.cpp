@@ -5,7 +5,7 @@ Editor::Editor(){};
 
 Editor::Editor(int p, Encoder* enc){
   pinMode(p, INPUT_PULLUP);
-  myButt = new Bounce(p, 10);
+  myButt = new Bounce(p, 50);
   myKnob = enc;
   target = 0;
   targetSize = 0;
@@ -33,52 +33,49 @@ void Editor::edit(){
       pTarget = (MIDIpot*)target;
       editPot(*pTarget);
       break;
-    case sizeof(MIDInote):
-      MIDInote* nTarget;
-      nTarget = (MIDInote*)target;
-      editNote(*nTarget);
-      break;
     default:
+      target = 0;
+      targetSize = 0;
       break;
   }
 };
 
-int Editor::editChannel(Encoder& e, int c){
-  if (e.read() == 4 && c < 15){
+int Editor::editChannel(Encoder& e){
+  if (e.read() == 4 && *MC < 15){
     editing = true;
     e.write(0);
-    return c + 1;
+    return *MC + 1;
   }
-  else if (e.read() == -4 && c > 1){
+  else if (e.read() == -4 && *MC > 1){
     editing = true;
     e.write(0);
-    return c - 1;
+    return *MC - 1;
   }
   else if (e.read() > 4 || e.read() < -4){
     e.write(0);
-    return c;
+    return *MC;
   }
-  else {return c;}
+  else {return *MC;}
 };
 
 void Editor::editInput(){
   editing = false;
 };
 
-void Editor::editButton(MIDIbutton b){
+void Editor::editButton(MIDIbutton& b){
   Serial.print("BUTTON ");
+  Serial.print(b.number);
+  Serial.print(" ");
+  b.number = 37;
+  Serial.print(b.number);
+  target = 0;
   targetSize = 0;
   editing = false;
 };
 
-void Editor::editPot(MIDIpot p){
+void Editor::editPot(MIDIpot& p){
   Serial.print("POT ");
-  targetSize = 0;
-  editing = false;
-};
-
-void Editor::editNote(MIDInote n){
-  Serial.print("NOTE ");
+  target = 0;
   targetSize = 0;
   editing = false;
 };

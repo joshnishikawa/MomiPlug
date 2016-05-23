@@ -3,7 +3,7 @@
 // constructors
 Display::Display(){};
 
-Display::Display(int s, int c, int l){
+Display::Display(const int s, const int c, const int l){
   serial = s;
   clock = c;
   latch = l;
@@ -99,7 +99,7 @@ void Display::clear(){
 void Display::print(){
   static int counter = 0; // Using a counter instead of a for loop allows
   if(counter == 4){       // each digit to stay lit for an entire loop cycle 
-  counter = 0;            // which boosts the brightness a bit.
+    counter = 0;          // which boosts the brightness a bit.
   }
   digitalWrite(latch, LOW);
   shiftOut(serial, clock, MSBFIRST, words[counter]>>8); // 8 MSBs of a word

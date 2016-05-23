@@ -7,19 +7,20 @@
 #include "MIDIbutton.h"
 #include "MIDIenc.h"
 
-extern int* MC;
+extern byte MIDIchannel;
 
 class Track{
+    byte* MC = &MIDIchannel;
   public:
     Track();
-    Track(int p, int n);
+    Track(int p, byte n);
     ~Track();
     Bounce *myTrack;
-    int read();
-    int vol(int incdec, int i);
+    int send();
+    int vol(int incdec);
 //    int scene;
-    int number;
-    int level;
+    byte number;
+    byte level;
     bool state;
 };
 

@@ -17,26 +17,25 @@
     MIDI controller itself.
 */
 
-extern int* MC;
+extern byte MIDIchannel;
 
 class Editor{
+    byte* MC = &MIDIchannel;
   public:
-    int channel;
     Editor();
     Editor(int p, Encoder* enc);
     ~Editor();
     Bounce* myButt;
     Encoder* myKnob;
 
-    int read(MIDIbutton* Bs[], MIDIpot* Ps[], MIDIbutton& FS1, MIDIbutton& FS0);
-    void edit();
     void* target;
     int targetSize;
+    void edit();
+    int editChannel(Encoder& e);
     void editInput();
-    void editButton(MIDIbutton b);
-    void editPot(MIDIpot p);
-    void editNote(MIDInote n);
-    int editChannel(Encoder& e, int c);
+    void editButton(MIDIbutton& b);
+    void editPot(MIDIpot& p);
+    // TODO: add functions for editing MIDIenc, MIDInote and MIDIcapSens
     bool editing;
 };
 

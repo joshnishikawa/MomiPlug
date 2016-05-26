@@ -5,6 +5,7 @@
 
 class Display{
     unsigned long int timer;
+    unsigned long int blinkTimer;
     int serial;
     int clock;
     int latch;
@@ -16,6 +17,7 @@ class Display{
     void value(int i);
     void verbal(const char v[]);
     void states(bool a, bool b, bool c, bool d, bool e, bool f, bool g, bool h);
+    void blink(int i);
     void clear();
     void print();
 };

@@ -2,7 +2,18 @@ Display	KEYWORD1
 Editor	KEYWORD1
 Track	KEYWORD1
 
-Tracks	KEYWORD2
-Value	KEYWORD2
-Word	KEYWORD2
-Clear	KEYWORD2
+states	KEYWORD2
+value	KEYWORD2
+verbal	KEYWORD2
+clear	KEYWORD2
+blink	KEYWORD2
+print	KEYWORD2
+read	KEYWORD2
+send	KEYWORD2
+editChannel	KEYWORD2
+editButton	KEYWORD2
+editPot	KEYWORD2
+editEnc	KEYWORD2
+editNote	KEYWORD2
+editCapSens	KEYWORD2
+vol	KEYWORD2

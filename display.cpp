@@ -11,6 +11,7 @@ Display::Display(const int s, const int c, const int l){
   pinMode(clock, OUTPUT);
   pinMode(latch, OUTPUT);
   timer = 0;
+  blinkTimer = 0;
 };
 
 // destructor
@@ -59,18 +60,54 @@ void Display::verbal(const char v[]){
   clear();
   for(int i=0; i<3; i++){
     switch(v[i]){           //ABCDEFG
+      case 'A': words[i] += 0b1110111<<4; break; //A
       case 'a': words[i] += 0b1110111<<4; break; //A
-      case 'c': words[i] += 0b1001110<<4; break; //C
+      case 'b': words[i] += 0b0011111<<4; break; //b
+      case 'C': words[i] += 0b1001110<<4; break; //C
+      case 'c': words[i] += 0b0001101<<4; break; //c
       case 'd': words[i] += 0b0111101<<4; break; //d
+      case 'E': words[i] += 0b1001111<<4; break; //E
       case 'e': words[i] += 0b1001111<<4; break; //E
+      case 'F': words[i] += 0b1000111<<4; break; //E
+      case 'f': words[i] += 0b1000111<<4; break; //E
+      case 'H': words[i] += 0b0110111<<4; break; //H
       case 'h': words[i] += 0b0010111<<4; break; //h
-      case 'i': words[i] += 0b0110000<<4; break; //I
-      case 'l': words[i] += 0b0001110<<4; break; //L
-      case 'n': words[i] += 0b1110110<<4; break; //N
-      case 'r': words[i] += 0b1100110<<4; break; //r
+      case 'I': words[i] += 0b0110000<<4; break; //I
+      case 'i': words[i] += 0b0010000<<4; break; //i
+      case 'J': words[i] += 0b0111100<<4; break; //J
+      case 'j': words[i] += 0b0111100<<4; break; //J
+      case 'L': words[i] += 0b0001110<<4; break; //L
+      case 'l': words[i] += 0b0110000<<4; break; //l
+      case 'N': words[i] += 0b1110110<<4; break; //N
+      case 'n': words[i] += 0b0010101<<4; break; //n
+      case 'O': words[i] += 0b1111110<<4; break; //O
+      case 'o': words[i] += 0b0011101<<4; break; //o
+      case 'P': words[i] += 0b1100111<<4; break; //P
+      case 'p': words[i] += 0b1100111<<4; break; //P
+      case 'q': words[i] += 0b1110011<<4; break; //q
+      case 'r': words[i] += 0b0000101<<4; break; //r
+      case 'S': words[i] += 0b1011011<<4; break; //S
       case 's': words[i] += 0b1011011<<4; break; //S
       case 't': words[i] += 0b0001111<<4; break; //t
+      case 'U': words[i] += 0b0111110<<4; break; //U
+      case 'u': words[i] += 0b0011100<<4; break; //u
+      case 'Y': words[i] += 0b0111011<<4; break; //Y
+      case 'y': words[i] += 0b0111011<<4; break; //y
+      case '-': words[i] += 0b0000001<<4; break; //-
+      case '_': words[i] += 0b0001000<<4; break; //_
+      case '[': words[i] += 0b1000010<<4; break; //[
+      case ']': words[i] += 0b0011000<<4; break; //]
       case ' ': words[i] += 0b0000000<<4; break; //' '
+      case '0': words[i] += 0b1111110<<4; break; //0
+      case '1': words[i] += 0b0110000<<4; break; //1
+      case '2': words[i] += 0b1101101<<4; break; //2
+      case '3': words[i] += 0b1111001<<4; break; //3
+      case '4': words[i] += 0b0110011<<4; break; //4
+      case '5': words[i] += 0b1011011<<4; break; //5
+      case '6': words[i] += 0b1011111<<4; break; //6
+      case '7': words[i] += 0b1110000<<4; break; //7
+      case '8': words[i] += 0b1111111<<4; break; //8
+      case '9': words[i] += 0b1111011<<4; break; //9
       default : words[i] += 0b0000000<<4; break; 
     }
   }
@@ -86,6 +123,15 @@ void Display::states(bool a, bool b, bool c, bool d, bool e, bool f, bool g, boo
   bitWrite(words[3], 2, f);
   bitWrite(words[3], 1, g);
   bitWrite(words[3], 0, h);
+};
+
+void Display::blink(int i){
+  static bool toggle = false;
+  if (millis() - blinkTimer > 200){
+    toggle = !toggle;
+    bitWrite(words[i], 11, toggle);
+    blinkTimer = millis();
+  }
 };
 
 void Display::clear(){

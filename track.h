@@ -10,7 +10,6 @@
 extern byte MIDIchannel;
 
 class Track{
-    byte* MC = &MIDIchannel;
   public:
     Track();
     Track(int p, byte n);

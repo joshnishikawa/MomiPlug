@@ -1,5 +1,4 @@
 #include "MOMIPLUG.h"
-#include <EEPROM.h>
 //#include <usb_keyboard.h> // if also using for keyboard input
 
 //DECLARATIONS #######################################################
@@ -33,32 +32,37 @@ bool readMIDI;    //
 bool readUSB;     //
 bool trackMode;   //
 
+Editor editor = Editor(encPinA, encPinB, editPin);
+Display DSP(serPin, clockPin, latchPin);
 Track* Ts[5];
-MIDIenc* Es[1];
 MIDIbutton* Bs[7];
 MIDIpot* Ps[17];
+MIDIenc* Es[0];
 MIDInote* Ns[0];
 MIDIcapSens* Cs[0];
-Display DSP(serPin, clockPin, latchPin);
 
 //INITIALIZATION #####################################################
-uint8_t preset8bit[]{
-  7, 1, 1, 0, 1, 1, 0,          //channel & interface bools
-  0, 0, 0, 0, 0,                //Track levels
-  0, 0, 0, 0, 0,                //Track states
-  14, 15, 0, 0, 127, 127, 1, 1, //Footswitch numbers, mins, maxs, modes
-  0, 0, 0, 0, 0, 0, 0,          //Button/FS states
-  9, 0, 127, 1,                 //EXP number, min out, max out, kill
-  0                             //Onboard Encoder level
+uint8_t states[25]{
+  7,                  //default MIDIchannel 
+  1, 1, 0, 1, 1, 0,   //interface booleans
+  0,                  //Onboard Encoder level
+  0, 0, 0, 0, 0,      //Track levels
+  0, 0, 0, 0, 0,      //Track states
+  0, 0, 0, 0, 0, 0, 0 //Button/FS states
 };
-uint16_t preset16bit[]{
-  0, 1023                       //EXP pedal analog input min and max
+uint8_t buttonSettings[8]{
+    14, 0, 127, 1,    //FS0 number, min, max, mode
+    15, 0, 127, 1     //FS1 number, min, max, mode
+};
+uint8_t potSettings8bit[4]{
+    9, 0, 127, 1      //EXP number, min out, max out, kill
 };
 
 void setup(){
 //UNCOMMENT ONLY TO RESTORE ALL DEFAULT SETTINGS
-//  for(uint8_t i=0; i<(sizeof(preset8bit)/sizeof(preset8bit[0]));i++){EEPROM.put(i, preset8bit[i]);}
-//  for(uint16_t i=40;i<(sizeof(preset16bit)/sizeof(preset16bit[0])); i+=2){EEPROM.put(i, preset16bit[i/2-20]);}
+  for(uint8_t i=0; i<25;i++){EEPROM.put(i, states[i]);}
+  for(uint8_t i=0;i<sizeof(buttonSettings); i++){EEPROM.put(i+25, buttonSettings[i]);}
+  for(uint8_t i=0;i<sizeof(potSettings8bit); i++){EEPROM.put(i+161, potSettings8bit[i]);}
 
   EEPROM.get(0, MIDIchannel);
   EEPROM.get(1, readFS);
@@ -67,14 +71,16 @@ void setup(){
   EEPROM.get(4, readMIDI);
   EEPROM.get(5, readUSB);
   EEPROM.get(6, trackMode);
+  EEPROM.get(7, editor.level);
+
   Ts[0] = new Track(but0pin, 80); // read number, level and state from EEPROM
   Ts[1] = new Track(but1pin, 81);
   Ts[2] = new Track(but2pin, 82);
   Ts[3] = new Track(but3pin, 83);
   Ts[4] = new Track(but4pin, 84);
   for (int i=0; i<5; i++){
-    Ts[i]->level = EEPROM.read(i+7);
-    Ts[i]->state = EEPROM.read(i+12);
+    Ts[i]->level = EEPROM.read(i+8);
+    Ts[i]->state = EEPROM.read(i+13);
   }
 
   Bs[0] = new MIDIbutton(but0pin, 85, 1);
@@ -82,22 +88,17 @@ void setup(){
   Bs[2] = new MIDIbutton(but2pin, 87, 1);
   Bs[3] = new MIDIbutton(but3pin, 89, 1);
   Bs[4] = new MIDIbutton(but4pin, 90, 1);
-  Bs[5] = new MIDIbutton(ringPin, EEPROM.read(17), EEPROM.read(19), EEPROM.read(21), EEPROM.read(23));
-  Bs[6] = new MIDIbutton(tipPin,  EEPROM.read(18), EEPROM.read(20), EEPROM.read(22), EEPROM.read(24));
+  Bs[5] = new MIDIbutton(ringPin, EEPROM.read(25), EEPROM.read(26), EEPROM.read(27), EEPROM.read(28));
+  Bs[6] = new MIDIbutton(tipPin,  EEPROM.read(29), EEPROM.read(30), EEPROM.read(31), EEPROM.read(32));
+  for (int i=0; i<7; i++){Bs[i]->state = EEPROM.read(i+18);}
   Bs[5]->myButt->update(); // Will crash if not updated immediately after wake.
   Bs[6]->myButt->update(); // Will crash if not updated immediately after wake.
-  for (int i=0; i<7; i++){Bs[i]->state = EEPROM.read(i+25);}
+  
+  Ps[0] = new MIDIpot(expPin, EEPROM.read(161), EEPROM.read(162), EEPROM.read(163), EEPROM.read(164));
 
-  
-  Ps[0] = new MIDIpot(expPin, EEPROM.read(32), EEPROM.read(33), EEPROM.read(34), EEPROM.read(35));
-//  Ps[0]->inputRange(EEPROM.read(40), EEPROM.read(42));
-  
-  Es[0] = new MIDIenc(encPinA, encPinB, 12);
-  EEPROM.get(36, Es[0]->value);
-  
   for(int i=1; i<9; i++){
-    Ps[i] = new MIDIpot(muxPin0,16+i);  // 17~24 are pots
-    Ps[i+8] = new MIDIpot(muxPin1,24+i);// 25~32 are sliders
+    Ps[i] = new MIDIpot(muxPin0,16+i);  // 17~24 are sliders
+    Ps[i+8] = new MIDIpot(muxPin1,24+i);// 25~32 are pots
   }
 
   pinMode(muxPin0, INPUT);            //analog input from muxes
@@ -117,7 +118,6 @@ void setup(){
   MIDI.setHandlePitchBend(onPitchBend);
 }
 
-Editor editor(editPin, Es[0]->myKnob); // Here because Es[0] must be constructed first
 
 //PROGRAM ############################################################
 void loop(){
@@ -125,13 +125,37 @@ void loop(){
   //On Button Release ################################################
   if (editor.myButt->risingEdge()){
     DSP.clear();
-    Es[0]->myKnob->write(0);
+    editor.myKnob->write(0);
     if (editor.editing == true){
-      editor.edit();
+      if (editor.storageIndex == 0){
+        editor.editing = false;
+      }
+      else if(editor.storageIndex >= 165){
+        editor.editPot(*editor.pTarget);
+        editor.editing = false;
+        readMUX = true; // true again now that we're finished editing
+      }
+      else if(editor.storageIndex >= 161){
+        editor.editPot(*editor.pTarget);
+        editor.editing = false;
+      }
+      else if(editor.storageIndex >= 25){
+        editor.editButton(*editor.bTarget);
+        editor.editing = false;
+      }
+      else{
+        editor.editing = false;
+      }
     }
-    else {
+    else{
       trackMode = !trackMode;
       EEPROM.put(6, trackMode);
+      if(trackMode){
+        DSP.verbal("tr ");
+      }
+      else{
+        DSP.verbal("CC ");
+      }
     }
   }
   //On Button Press ##################################################
@@ -140,9 +164,11 @@ void loop(){
   }
   //On Hold ##########################################################
   else if (editor.myButt->read() == LOW){
-    int newChannel = editor.editChannel(*Es[0]->myKnob);
-    if (MIDIchannel != newChannel){
+    int newChannel = editor.editChannel();
+    if (newChannel != MIDIchannel){
+      editor.editing = true;
       MIDIchannel = newChannel;
+      editor.storageIndex = 0;
       EEPROM.put(0, MIDIchannel);
     }
     Bs[0]->myButt->update();
@@ -176,25 +202,40 @@ void loop(){
       EEPROM.put(5, readUSB);
     }
     if (readFS){
-      for (uint8_t i=5;i<7;i++){
-        if (Bs[i]->read() >= 0){
+      for (uint8_t i=0;i<2;i++){
+        if (Bs[i+5]->read() >= 0){ //values can't be stored for the first 5 (on board) buttons
           editor.editing = true;
-          editor.target = &Bs[i];
-          editor.targetSize = sizeof(*Bs[i]);
+          editor.storageIndex = i*4+25;
+          //Button's index * number of bytes stored for each button + adress where button storage begins
+          editor.bTarget = Bs[i+5];
         }
       }
     }
     if (readEXP && Ps[0]->read() >= 0){
       editor.editing = true;
-      editor.target = &Ps[0];
-      editor.targetSize = sizeof(*Ps[0]);
+      editor.storageIndex = 161; //Pot storage begins at EEPROM address 161
+      editor.pTarget = Ps[0];
     }
     if (readMUX){// Read analog mux
-      for (uint8_t i=1;i<(sizeof(Ps)/sizeof(Ps[i]));i++){ // the -1 is because the exp pedal is read separately
-        if (Ps[i]->read() >= 0){
+      for(int i=0; i<8; i++){
+        digitalWrite(sel_a, (i&7)>>2);
+        digitalWrite(sel_b, (i&3)>>1);
+        digitalWrite(sel_c, (i&1));
+        if (Ps[i+1]->read() >= 0){
           editor.editing = true;
-          editor.target = &Ps[i];
-          editor.targetSize = sizeof(*Ps[i]);
+          editor.storageIndex = (i+1)*4+161;
+          //Pot's index * number of bytes stored for each pot + adress where pot storage begins
+          editor.pTarget = Ps[i+1];
+          readMUX = false; //until finished editing
+          break;
+        }
+        if (Ps[i+9]->read() >= 0){
+          editor.editing = true;
+          editor.storageIndex = (i+9)*4+161;
+          //Pot's index * number of bytes stored for each pot + adress where pot storage begins
+          editor.pTarget = Ps[i+9];
+          readMUX = false; //until finished editing
+          break;
         }
       }
     }
@@ -203,39 +244,39 @@ void loop(){
   }
   //In Track Mode ####################################################
   else if (trackMode == true){
-    int incdec = Es[0]->myKnob->read();
+    int incdec = editor.myKnob->read();
     for(int i=0; i<5; i++){
       int newState = Ts[i]->send();
       if(newState >= 0){
-        EEPROM.put(i+12, Ts[i]->state);
+        EEPROM.put(i+13, Ts[i]->state);
         DSP.value(newState);
       }
       if (incdec){
         int newLevel = Ts[i]->vol(incdec);
         if(newLevel >= 0){
-          EEPROM.put(i+7, newLevel);
+          EEPROM.put(i+8, newLevel);
           DSP.value(newLevel);
         }
       }
     }
     if (incdec){
-      Es[0]->myKnob->write(0);
+      editor.myKnob->write(0);
     }
 //    record(Bs[5]->myButt, Bs[6]->myButt, *Ts[]);
     DSP.states(trackMode, Bs[5]->state, Bs[6]->state, Ts[0]->state, Ts[1]->state, Ts[2]->state, Ts[3]->state, Ts[4]->state);
   }
   //In Control Mode ##################################################
   else{
-    int newEncVal = Es[0]->send();
+    int newEncVal = editor.send();
       if(newEncVal >= 0 ){
-        EEPROM.put(36, newEncVal);
+        EEPROM.put(7, newEncVal);
         DSP.value(newEncVal);
-        Es[0]->myKnob->write(0);
+        editor.myKnob->write(0);
       }
     for(int i=0; i<5; i++){   // Send MIDI for on-board buttons
       int newState = Bs[i]->send();
       if (newState >= 0){
-        EEPROM.put(i+25, Bs[i]->state);
+        EEPROM.put(i+18, Bs[i]->state);
         DSP.value(newState);
       }
     }
@@ -243,7 +284,7 @@ void loop(){
       for(int i=5; i<7; i++){
         int newState = Bs[i]->send();
         if (newState >= 0){
-          EEPROM.put(i+25, Bs[i]->state);
+          EEPROM.put(i+18, Bs[i]->state);
           DSP.value(newState);
         }
       }
@@ -256,8 +297,8 @@ void loop(){
         digitalWrite(sel_a, (i&7)>>2);
         digitalWrite(sel_b, (i&3)>>1);
         digitalWrite(sel_c, (i&1));
-        DSP.value(Ps[i]->send());
-        DSP.value(Ps[i+8]->send());
+        DSP.value(Ps[i+1]->send());
+        DSP.value(Ps[i+9]->send());
       }
     }
     if (readMIDI){            // MIDI to usbMIDI

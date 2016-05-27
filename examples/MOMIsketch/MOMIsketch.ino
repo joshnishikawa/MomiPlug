@@ -1,7 +1,7 @@
 #include "MOMIPLUG.h"
 //#include <usb_keyboard.h> // if also using for keyboard input
 
-//DECLARATIONS #######################################################
+// PIN ASSIGNMENTS ##################################################
                          //MIDI input is read from pin 0 by default
 const int ringPin = 1;   //footswitch 1
 const int sel_a = 2;     //selectors for analog mux
@@ -24,14 +24,17 @@ const int serPin = 22;   //serial output to shift registers
 const int expPin = A9;   //analog input for expression pedal
 const int muxPin0 = A10; //analog input from muxes
 const int muxPin1 = A11; //
-byte MIDIchannel; // read from EEPROM
-bool readFS;      //
-bool readEXP;     //
-bool readMUX;     //
-bool readMIDI;    //
-bool readUSB;     //
-bool trackMode;   //
+byte MIDIchannel;
+bool readFS;
+bool readEXP;
+bool readMUX;
+bool readMIDI;
+bool readUSB;
+bool trackMode;
+bool pauseMUXread;// keeps MUX selectors stable until the selected
+                  // pot is edited or non-MUXed input is triggered       
 
+// DECLARATOINS ##################################################
 Editor editor = Editor(encPinA, encPinB, editPin);
 Display DSP(serPin, clockPin, latchPin);
 Track* Ts[5];
@@ -41,7 +44,6 @@ MIDIenc* Es[0];
 MIDInote* Ns[0];
 MIDIcapSens* Cs[0];
 
-//INITIALIZATION #####################################################
 uint8_t states[25]{
   7,                  //default MIDIchannel 
   1, 1, 0, 1, 1, 0,   //interface booleans
@@ -58,12 +60,14 @@ uint8_t potSettings8bit[4]{
     9, 0, 127, 1      //EXP number, min out, max out, kill
 };
 
+// INITIALIZATION ##################################################
 void setup(){
-//UNCOMMENT ONLY TO RESTORE ALL DEFAULT SETTINGS
-  for(uint8_t i=0; i<25;i++){EEPROM.put(i, states[i]);}
-  for(uint8_t i=0;i<sizeof(buttonSettings); i++){EEPROM.put(i+25, buttonSettings[i]);}
-  for(uint8_t i=0;i<sizeof(potSettings8bit); i++){EEPROM.put(i+161, potSettings8bit[i]);}
+//  Uncomment only to restore all default settings.
+//  for(uint8_t i=0; i<25;i++){EEPROM.put(i, states[i]);}
+//  for(uint8_t i=0;i<sizeof(buttonSettings); i++){EEPROM.put(i+25, buttonSettings[i]);}
+//  for(uint8_t i=0;i<sizeof(potSettings8bit); i++){EEPROM.put(i+161, potSettings8bit[i]);}
 
+  pauseMUXread = false;
   EEPROM.get(0, MIDIchannel);
   EEPROM.get(1, readFS);
   EEPROM.get(2, readEXP);
@@ -118,33 +122,36 @@ void setup(){
   MIDI.setHandlePitchBend(onPitchBend);
 }
 
-
-//PROGRAM ############################################################
+// PROGRAM ##################################################
 void loop(){
   editor.myButt->update();
-  //On Button Release ################################################
+  // On Button Release ##################################################
   if (editor.myButt->risingEdge()){
     DSP.clear();
     editor.myKnob->write(0);
     if (editor.editing == true){
       if (editor.storageIndex == 0){
         editor.editing = false;
+        pauseMUXread = false; // true again now that we're finished editing
       }
       else if(editor.storageIndex >= 165){
         editor.editPot(*editor.pTarget);
         editor.editing = false;
-        readMUX = true; // true again now that we're finished editing
+        pauseMUXread = false; // true again now that we're finished editing
       }
       else if(editor.storageIndex >= 161){
         editor.editPot(*editor.pTarget);
         editor.editing = false;
+        pauseMUXread = false; // true again now that we're finished editing
       }
       else if(editor.storageIndex >= 25){
         editor.editButton(*editor.bTarget);
         editor.editing = false;
+        pauseMUXread = false; // true again now that we're finished editing
       }
       else{
         editor.editing = false;
+        pauseMUXread = false;
       }
     }
     else{
@@ -158,14 +165,15 @@ void loop(){
       }
     }
   }
-  //On Button Press ##################################################
+  // On Button Press ##################################################
   else if (editor.myButt->fallingEdge()){
     DSP.clear();
   }
-  //On Hold ##########################################################
+  // On Hold ##################################################
   else if (editor.myButt->read() == LOW){
     int newChannel = editor.editChannel();
     if (newChannel != MIDIchannel){
+      pauseMUXread = false; // now that we're editing something else
       editor.editing = true;
       MIDIchannel = newChannel;
       editor.storageIndex = 0;
@@ -173,30 +181,35 @@ void loop(){
     }
     Bs[0]->myButt->update();
     if (Bs[0]->myButt->fallingEdge()){
+      pauseMUXread = false; // now that we're editing something else
       editor.editing = true;
       readFS = !readFS;
       EEPROM.put(1, readFS);
     }
     Bs[1]->myButt->update();
     if (Bs[1]->myButt->fallingEdge()){
+      pauseMUXread = false; // now that we're editing something else
       editor.editing = true;
       readEXP = !readEXP;
       EEPROM.put(2, readEXP);
     }
     Bs[2]->myButt->update();
     if (Bs[2]->myButt->fallingEdge()){
+      pauseMUXread = false; // now that we're editing something else
       editor.editing = true;
       readMUX = !readMUX;
       EEPROM.put(3, readMUX);
     }
     Bs[3]->myButt->update();
     if (Bs[3]->myButt->fallingEdge()){
+      pauseMUXread = false; // now that we're editing something else
       editor.editing = true;
       readMIDI = !readMIDI;
       EEPROM.put(4, readMIDI);
     }
     Bs[4]->myButt->update();
     if (Bs[4]->myButt->fallingEdge()){
+      pauseMUXread = false; // now that we're editing something else
       editor.editing = true;
       readUSB = !readUSB;
       EEPROM.put(5, readUSB);
@@ -204,6 +217,7 @@ void loop(){
     if (readFS){
       for (uint8_t i=0;i<2;i++){
         if (Bs[i+5]->read() >= 0){ //values can't be stored for the first 5 (on board) buttons
+          pauseMUXread = false; // now that we're editing something else
           editor.editing = true;
           editor.storageIndex = i*4+25;
           //Button's index * number of bytes stored for each button + adress where button storage begins
@@ -212,11 +226,12 @@ void loop(){
       }
     }
     if (readEXP && Ps[0]->read() >= 0){
+      pauseMUXread = false; // now that we're editing something else
       editor.editing = true;
       editor.storageIndex = 161; //Pot storage begins at EEPROM address 161
       editor.pTarget = Ps[0];
     }
-    if (readMUX){// Read analog mux
+    if (readMUX && !pauseMUXread){// Read analog mux
       for(int i=0; i<8; i++){
         digitalWrite(sel_a, (i&7)>>2);
         digitalWrite(sel_b, (i&3)>>1);
@@ -226,7 +241,7 @@ void loop(){
           editor.storageIndex = (i+1)*4+161;
           //Pot's index * number of bytes stored for each pot + adress where pot storage begins
           editor.pTarget = Ps[i+1];
-          readMUX = false; //until finished editing
+          pauseMUXread = true; //until finished editing
           break;
         }
         if (Ps[i+9]->read() >= 0){
@@ -234,15 +249,15 @@ void loop(){
           editor.storageIndex = (i+9)*4+161;
           //Pot's index * number of bytes stored for each pot + adress where pot storage begins
           editor.pTarget = Ps[i+9];
-          readMUX = false; //until finished editing
+          pauseMUXread = true; //until finished editing
           break;
         }
       }
     }
-    DSP.value(MIDIchannel);
+    DSP.value(MIDIchannel); // Display channel and inputs being read when held
     DSP.states(false, false, false, readFS, readEXP, readMUX, readMIDI, readUSB);
   }
-  //In Track Mode ####################################################
+  // In Track Mode ##################################################
   else if (trackMode == true){
     int incdec = editor.myKnob->read();
     for(int i=0; i<5; i++){
@@ -265,7 +280,7 @@ void loop(){
 //    record(Bs[5]->myButt, Bs[6]->myButt, *Ts[]);
     DSP.states(trackMode, Bs[5]->state, Bs[6]->state, Ts[0]->state, Ts[1]->state, Ts[2]->state, Ts[3]->state, Ts[4]->state);
   }
-  //In Control Mode ##################################################
+  // In Control Mode ##################################################
   else{
     int newEncVal = editor.send();
       if(newEncVal >= 0 ){

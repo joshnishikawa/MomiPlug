@@ -1,6 +1,7 @@
 Display	KEYWORD1
 Editor	KEYWORD1
 Track	KEYWORD1
+MIDIinput	KEYWORD1
 
 states	KEYWORD2
 value	KEYWORD2
@@ -10,6 +11,7 @@ blink	KEYWORD2
 print	KEYWORD2
 read	KEYWORD2
 send	KEYWORD2
+chaos	KEYWORD2
 editChannel	KEYWORD2
 editButton	KEYWORD2
 editPot	KEYWORD2

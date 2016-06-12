@@ -1,27 +1,37 @@
-void onNoteOff(byte channel, byte note, byte velocity){
-  usbMIDI.sendNoteOff(note, 0, channel);
-}
-void onNoteOn(byte channel, byte note, byte velocity){
-  usbMIDI.sendNoteOn(note, velocity, channel);
-}
+#ifndef MIDIinput_h
+#define MIDIinput_h
 
-void onPolyPressure(byte channel, byte note, byte pressure){
-	usbMIDI.sendPolyPressure(note, pressure, channel);
-}
+#include "Arduino.h"
 
-void onControl(byte channel, byte control, byte value){
-	usbMIDI.sendControlChange(control, value, channel);
-}
+extern byte MIDIchannel;
 
-void onProgram(byte channel, byte program){
-	usbMIDI.sendProgramChange(program, channel);
-}
+class MIDIinput{
+    bool waiting;
+    unsigned int waitTime;
+    unsigned long int timer;
+    bool touched;
+    
+  public:
+    MIDIinput();
+   	~MIDIinput();
 
-void onAfterTouch(byte channel, byte pressure){
-	usbMIDI.sendAfterTouch(pressure, channel);
-}
+    int chaos();
+    int value;
+    int hiThreshold, loThreshold;
+    void setThresholds(int loT, int hiT);
+    byte outLo, outHi;
+    void outputRange(byte min, byte max);
+};
 
-void onPitchBend(byte channel, int bend){
-	usbMIDI.sendPitchBend(bend, channel);
-}
+    void outputRange(byte min, byte max);
+    void onNoteOff(byte channel, byte note, byte velocity);
+    void onNoteOn(byte channel, byte note, byte velocity);
+    void onPolyPressure(byte channel, byte note, byte pressure);
+    void onControl(byte channel, byte control, byte value);
+    void onProgram(byte channel, byte program);
+    void onAfterTouch(byte channel, byte pressure);
+    void onPitchBend(byte channel, int bend);
+
+
+#endif
 

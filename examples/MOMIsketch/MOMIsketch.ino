@@ -37,6 +37,7 @@ bool pauseMUXread;// keeps MUX selectors stable until the selected
 // DECLARATOINS ##################################################
 Editor editor = Editor(encPinA, encPinB, editPin);
 Display DSP(serPin, clockPin, latchPin);
+MIDIinput Ms = MIDIinput();
 Track* Ts[5];
 MIDIbutton* Bs[7];
 MIDIpot* Ps[17];
@@ -66,6 +67,7 @@ void setup(){
 //  for(uint8_t i=0; i<25;i++){EEPROM.put(i, states[i]);}
 //  for(uint8_t i=0;i<sizeof(buttonSettings); i++){EEPROM.put(i+25, buttonSettings[i]);}
 //  for(uint8_t i=0;i<sizeof(potSettings8bit); i++){EEPROM.put(i+161, potSettings8bit[i]);}
+  Ms.setThresholds(1650, 5000);
 
   pauseMUXread = false;
   EEPROM.get(0, MIDIchannel);
@@ -99,7 +101,8 @@ void setup(){
   Bs[6]->myButt->update(); // Will crash if not updated immediately after wake.
   
   Ps[0] = new MIDIpot(expPin, EEPROM.read(161), EEPROM.read(162), EEPROM.read(163), EEPROM.read(164));
-
+  Ps[0]->inputRange(0, 950); // a hack to make my other little toy work as an EXP pedal
+  
   for(int i=1; i<9; i++){
     Ps[i] = new MIDIpot(muxPin0,16+i);  // 17~24 are sliders
     Ps[i+8] = new MIDIpot(muxPin1,24+i);// 25~32 are pots
@@ -255,7 +258,8 @@ void loop(){
       }
     }
     DSP.value(MIDIchannel); // Display channel and inputs being read when held
-    DSP.states(false, false, false, readFS, readEXP, readMUX, readMIDI, readUSB);
+    DSP.states(readFS, readEXP, readMUX, readMIDI, readUSB);
+    if (editor.editing == true){DSP.blink(0);}
   }
   // In Track Mode ##################################################
   else if (trackMode == true){
@@ -322,6 +326,7 @@ void loop(){
     if (readUSB){             // read USB input
       // TODO: set this up
     }
+    Ms.chaos(); // effective only if readMIDI == true
     DSP.states(trackMode, Bs[5]->state, Bs[6]->state, Bs[0]->state, Bs[1]->state, Bs[2]->state, Bs[3]->state, Bs[4]->state);
   }
   DSP.print(); // Display most recently stored information

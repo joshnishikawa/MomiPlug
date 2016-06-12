@@ -28,7 +28,7 @@ SEL_D  |-5           20-|  Encoder Pin A
  Butn2 LED -|     |- SER from Teensy
  G Segment -|     |-
  F Segment -|  #1 |- RCLK
- E Segment -|     |- SRCLK
+ E Segment -|     |- SRCK
  D Segment -|     |- 5V
        GND -|_____|- SER to #2
              __ __
@@ -37,7 +37,7 @@ SEL_D  |-5           20-|  Encoder Pin A
 DP Segment -|     |- SER from #1
  Cathode 1 -|     |-
  Cathode 2 -|  #2 |- RCLK
- Cathode 3 -|     |- SRCLK
+ Cathode 3 -|     |- SRCK
  Butn1 LED -|     |- 5V
        GND -|_____|-
 

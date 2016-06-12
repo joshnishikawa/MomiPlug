@@ -16,6 +16,7 @@ class Display{
     ~Display();
     void value(int i);
     void verbal(const char v[]);
+    void states(bool d, bool e, bool f, bool g, bool h);
     void states(bool a, bool b, bool c, bool d, bool e, bool f, bool g, bool h);
     void blink(int i);
     void clear();

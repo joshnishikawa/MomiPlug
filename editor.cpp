@@ -102,7 +102,7 @@ void Editor::editButton(MIDIbutton& bt){////////////////////////////////////////
       }
       DSP.value(newOutHi);
     }
-    DSP.blink(0);
+    DSP.blink(1);
     DSP.print();
   }
   DSP.states(0,0,0,0,0,0,0,0);
@@ -141,7 +141,7 @@ void Editor::editButton(MIDIbutton& bt){////////////////////////////////////////
       }
       DSP.value(newOutLo);
     }
-    DSP.blink(1);
+    DSP.blink(2);
     DSP.print();
   }
   if (newNumber != bt.number){
@@ -185,6 +185,7 @@ void Editor::editPot(MIDIpot& pt){//////////////////////////////////////////////
       newNumber = tempQuad;
       DSP.value(newNumber);
     }
+
     int newValue = analogRead(pt.pin);
     if (newValue >= pt.inHi){
       newValue = 127;
@@ -206,7 +207,7 @@ void Editor::editPot(MIDIpot& pt){//////////////////////////////////////////////
       newOutHi = newValue;
       DSP.value(newOutHi);
     }
-    DSP.blink(0);
+    DSP.blink(1);
     DSP.print();
   }
   value = -1;
@@ -248,7 +249,7 @@ void Editor::editPot(MIDIpot& pt){//////////////////////////////////////////////
       newOutLo = newValue;
       DSP.value(newOutLo);
     }
-    DSP.blink(1);
+    DSP.blink(2);
     DSP.print();
   }
   

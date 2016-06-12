@@ -125,6 +125,14 @@ void Display::states(bool a, bool b, bool c, bool d, bool e, bool f, bool g, boo
   bitWrite(words[3], 0, h);
 };
 
+void Display::states(bool d, bool e, bool f, bool g, bool h){
+  bitWrite(words[3], 15, d);
+  bitWrite(words[3], 3, e);
+  bitWrite(words[3], 2, f);
+  bitWrite(words[3], 1, g);
+  bitWrite(words[3], 0, h);
+};
+
 void Display::blink(int i){
   static bool toggle = false;
   if (millis() - blinkTimer > 200){

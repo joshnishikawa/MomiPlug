@@ -67,7 +67,8 @@ void setup(){
 //  for(uint8_t i=0; i<25;i++){EEPROM.put(i, states[i]);}
 //  for(uint8_t i=0;i<sizeof(buttonSettings); i++){EEPROM.put(i+25, buttonSettings[i]);}
 //  for(uint8_t i=0;i<sizeof(potSettings8bit); i++){EEPROM.put(i+161, potSettings8bit[i]);}
-  Ms.setThresholds(1650, 5000);
+  Ms.setThresholds(1500, 11000);
+  Ms.outputRange(36, 107);
 
   pauseMUXread = false;
   EEPROM.get(0, MIDIchannel);
@@ -101,7 +102,7 @@ void setup(){
   Bs[6]->myButt->update(); // Will crash if not updated immediately after wake.
   
   Ps[0] = new MIDIpot(expPin, EEPROM.read(161), EEPROM.read(162), EEPROM.read(163), EEPROM.read(164));
-  Ps[0]->inputRange(0, 950); // a hack to make my other little toy work as an EXP pedal
+//  Ps[0]->inputRange(0, 950); // a hack to make my other little toy work as an EXP pedal
   
   for(int i=1; i<9; i++){
     Ps[i] = new MIDIpot(muxPin0,16+i);  // 17~24 are sliders

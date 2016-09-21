@@ -1,52 +1,39 @@
 #include "MIDIinput.h"
-
-// constructors
-MIDIinput::MIDIinput(){
-  value = 0;
-  loThreshold = 1500;
-  hiThreshold = 5000;
-  outLo = 0;
-  outHi = 127;
-  waiting = false;
-  waitTime = 10; // millis
-  timer = 0;
-  touched = false;
-};
-
-
-// destructor
-MIDIinput::~MIDIinput(){
-};
-
+byte MIDIchannel = 1;
+int value = 0;
+unsigned long int timer = 0;
+bool waiting = false;
+unsigned int waitTime = 0;
+bool touched = false;
 
 bool chord[12] = {
   false,false,false,false,false,false,false,false,false,false,false,false
 };
 
-int MIDIinput::chaos(){
-  int newValue = touchRead(18);
+int chaos(byte p, int inLo, int threshold, int inHi, byte outLo, byte outHi){
+  int newValue = touchRead(p);
   if (waiting){ // Wait briefly to make notes audible.
     if (millis() - timer > waitTime){
       waiting = false;
     }
   }
   else {
-    if (newValue > hiThreshold && touched == false){        // rising edge
+    if (newValue >= threshold && touched == false){ // rising edge
       touched = true;
       newValue = -1;
     }
-    else if (newValue <= loThreshold && touched == true){  // falling edge
+    else if (newValue <= inLo && touched == true){ // falling edge
       touched = false;
       usbMIDI.sendNoteOn(value, 0, MIDIchannel);
       timer = millis();
       waiting = true;
       newValue = 0;
     }
-    else if (newValue > loThreshold && touched == true){   // send MIDI
-      newValue = map(newValue, loThreshold, hiThreshold, outLo, outHi);
+    else if (newValue > inLo && touched == true){   // send MIDI
+      newValue = map(newValue, inLo, inHi, outLo, outHi);
       newValue = constrain(newValue, outLo, outHi);
       if (chord[newValue % 12] == true && newValue != value){
-        usbMIDI.sendNoteOn(value, 0, MIDIchannel); // cuz we don't want TOTAL chaos
+        usbMIDI.sendNoteOn(value, 0, MIDIchannel); // we don't want TOTAL chaos
         usbMIDI.sendNoteOn(newValue, outHi, MIDIchannel);
         waitTime = 127 - newValue; // not necessary. just adds flavor.
         value = newValue;
@@ -59,16 +46,6 @@ int MIDIinput::chaos(){
   return newValue;
 };
 
-void MIDIinput::outputRange(byte min, byte max){
-  outLo = min;
-  outHi = max;
-};
-
-void MIDIinput::setThresholds(int loT, int hiT){
-  loThreshold = loT;
-  hiThreshold = hiT;
-}
-
 //EVENT HANDLERS////////////////////////////////////////////////////////////////
 void onNoteOff(byte channel, byte note, byte velocity){
   usbMIDI.sendNoteOff(note, 0, channel);
@@ -76,6 +53,7 @@ void onNoteOff(byte channel, byte note, byte velocity){
 }
   
 void onNoteOn(byte channel, byte note, byte velocity){
+  MIDIchannel = channel;
   usbMIDI.sendNoteOn(note, velocity, channel);
   if (velocity == 0){
     chord[note % 12] = false;    

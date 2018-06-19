@@ -1,0 +1,17 @@
+Editor	KEYWORD1
+Track	KEYWORD1
+MIDIinput	KEYWORD1
+eeprom_read_word	KEYWORD1
+eeprom_get_word	KEYWORD1
+eeprom_put_word	KEYWORD1
+
+read	KEYWORD2
+send	KEYWORD2
+chaos	KEYWORD2
+editChannel	KEYWORD2
+editButton	KEYWORD2
+editPot	KEYWORD2
+editEnc	KEYWORD2
+editNote	KEYWORD2
+editCapSens	KEYWORD2
+vol	KEYWORD2

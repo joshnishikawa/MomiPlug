@@ -48,17 +48,13 @@ int chaos(byte p, int inLo, int threshold, int inHi, byte outLo, byte outHi){
 //MIDI EVENT HANDLERS///////////////////////////////////////////////////////////
 void onNoteOff(byte channel, byte note, byte velocity){
   usbMIDI.sendNoteOff(note, 0, channel);
-  usbMIDI.sendNoteOff(note, 0, channel, 1); // send to separate ports
   usbMIDI.sendNoteOff(note, 0, channel, 2); // send to separate ports
-  usbMIDI.sendNoteOff(note, 0, channel, 3); // send to separate ports
   chord[note % 12] = false;
 }
   
 void onNoteOn(byte channel, byte note, byte velocity){
   usbMIDI.sendNoteOn(note, velocity, channel);
-  usbMIDI.sendNoteOn(note, velocity, channel, 1); // send to separate ports
   usbMIDI.sendNoteOn(note, velocity, channel, 2); // send to separate ports
-  usbMIDI.sendNoteOn(note, velocity, channel, 3); // send to separate ports
   if (velocity == 0){
     chord[note % 12] = false;    
   }
@@ -67,85 +63,63 @@ void onNoteOn(byte channel, byte note, byte velocity){
 
 void onPolyPressure(byte channel, byte note, byte pressure){
 	usbMIDI.sendPolyPressure(note, pressure, channel);
-  usbMIDI.sendPolyPressure(note, pressure, channel, 1);
   usbMIDI.sendPolyPressure(note, pressure, channel, 2);
-  usbMIDI.sendPolyPressure(note, pressure, channel, 3);
 }
 
 void onControl(byte channel, byte control, byte value){
 	usbMIDI.sendControlChange(control, value, channel);
-  usbMIDI.sendControlChange(control, value, channel, 1);
   usbMIDI.sendControlChange(control, value, channel, 2);
-  usbMIDI.sendControlChange(control, value, channel, 3);
 }
 
 void onProgram(byte channel, byte program){
 	usbMIDI.sendProgramChange(program, channel);
-  usbMIDI.sendProgramChange(program, channel, 1);
   usbMIDI.sendProgramChange(program, channel, 2);
-  usbMIDI.sendProgramChange(program, channel, 3);
 }
 
 void onAfterTouch(byte channel, byte pressure){
 	usbMIDI.sendAfterTouch(pressure, channel);
-  usbMIDI.sendAfterTouch(pressure, channel, 1);
   usbMIDI.sendAfterTouch(pressure, channel, 2);
-  usbMIDI.sendAfterTouch(pressure, channel, 3);
 }
 
 void onPitchBend(byte channel, int bend){
 	usbMIDI.sendPitchBend(bend, channel);
-  usbMIDI.sendPitchBend(bend, channel, 1);
   usbMIDI.sendPitchBend(bend, channel, 2);
-  usbMIDI.sendPitchBend(bend, channel, 3);
 }
 
 //USB MIDI EVENT HANDLERS///////////////////////////////////////////////////////
-void onUSBNoteOff(byte channel, byte note, byte velocity){
-  usbMIDI.sendNoteOff(note, 0, channel);
+/*void onUSBNoteOff(byte channel, byte note, byte velocity){
   usbMIDI.sendNoteOff(note, 0, channel, 1); // send to separate ports
-  usbMIDI.sendNoteOff(note, 0, channel, 2); // send to separate ports
   usbMIDI.sendNoteOff(note, 0, channel, 3); // send to separate ports
 }
   
 void onUSBNoteOn(byte channel, byte note, byte velocity){
-  usbMIDI.sendNoteOn(note, velocity, channel);
   usbMIDI.sendNoteOn(note, velocity, channel, 1); // send to separate ports
-  usbMIDI.sendNoteOn(note, velocity, channel, 2); // send to separate ports
   usbMIDI.sendNoteOn(note, velocity, channel, 3); // send to separate ports
 }
 
+
 void onUSBPolyPressure(byte channel, byte note, byte pressure){
-	usbMIDI.sendPolyPressure(note, pressure, channel);
   usbMIDI.sendPolyPressure(note, pressure, channel, 1);
-  usbMIDI.sendPolyPressure(note, pressure, channel, 2);
   usbMIDI.sendPolyPressure(note, pressure, channel, 3);
 }
 
 void onUSBControl(byte channel, byte control, byte value){
-	usbMIDI.sendControlChange(control, value, channel);
   usbMIDI.sendControlChange(control, value, channel, 1);
-  usbMIDI.sendControlChange(control, value, channel, 2);
   usbMIDI.sendControlChange(control, value, channel, 3);
 }
 
 void onUSBProgram(byte channel, byte program){
-	usbMIDI.sendProgramChange(program, channel);
   usbMIDI.sendProgramChange(program, channel, 1);
-  usbMIDI.sendProgramChange(program, channel, 2);
   usbMIDI.sendProgramChange(program, channel, 3);
 }
 
 void onUSBAfterTouch(byte channel, byte pressure){
-	usbMIDI.sendAfterTouch(pressure, channel);
   usbMIDI.sendAfterTouch(pressure, channel, 1);
-  usbMIDI.sendAfterTouch(pressure, channel, 2);
   usbMIDI.sendAfterTouch(pressure, channel, 3);
 }
 
 void onUSBPitchBend(byte channel, int bend){
-	usbMIDI.sendPitchBend(bend, channel);
   usbMIDI.sendPitchBend(bend, channel, 1);
-  usbMIDI.sendPitchBend(bend, channel, 2);
   usbMIDI.sendPitchBend(bend, channel, 3);
 }
+*/

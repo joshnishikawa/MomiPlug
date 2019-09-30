@@ -21,9 +21,10 @@ class Editor{
     int level;
     bool editing;
     int target;
-    int newInLo, newInHi;
+    int newInLo, newInHi, touchLo, touchHi;
     byte editChannel();
     bool setAnalog(int p);
+    bool setTouch(int p);
     int send(); //cuz interrupts won't let two objects use the same encoder pins
 };
 #endif

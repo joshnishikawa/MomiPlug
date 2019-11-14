@@ -1,46 +1,34 @@
 #include "MIDIinput.h"
 int value = 0;
-unsigned long int timer = 0;
-bool waiting = false;
+elapsedMillis timer = 0;
+uint8_t waiting = false;
 unsigned int waitTime = 0;
-bool touched = false;
+uint8_t touched = false;
 
-bool chord[12] = {
+uint8_t chord[12] = {
   false,false,false,false,false,false,false,false,false,false,false,false
 };
 
-int chaos(byte p, int inLo, int threshold, int inHi, byte outLo, byte outHi){
-  int newValue = touchRead(p);
+int chaos(int newValue){
   if (waiting){ // Wait briefly to make notes audible.
-    if (millis() - timer > waitTime){
+    if (timer > waitTime){
       waiting = false;
     }
   }
-  else {
-    if (newValue >= threshold && touched == false){ // rising edge
-      touched = true;
-      newValue = -1;
-    }
-    else if (newValue <= inLo && touched == true){ // falling edge
-      touched = false;
-      usbMIDI.sendNoteOn(value, 0, MIDIchannel);
-      timer = millis();
+  else if (newValue > 0){ // send MIDI
+    if (chord[newValue % 12] == true && newValue != value){
+      usbMIDI.sendNoteOn(value, 0, MIDIchannel); // we don't want TOTAL chaos
+      usbMIDI.sendNoteOn(newValue, 96, MIDIchannel);
+      waitTime = 127 - newValue; // not necessary. just adds flavor.
+      value = newValue;
+      timer = 0;
       waiting = true;
-      newValue = 0;
     }
-    else if (newValue > inLo && touched == true){ // send MIDI
-      newValue = map(newValue, inLo, inHi, outLo, outHi);
-      newValue = constrain(newValue, outLo, outHi);
-      if (chord[newValue % 12] == true && newValue != value){
-        usbMIDI.sendNoteOn(value, 0, MIDIchannel); // we don't want TOTAL chaos
-        usbMIDI.sendNoteOn(newValue, outHi, MIDIchannel);
-        waitTime = 127 - newValue; // not necessary. just adds flavor.
-        value = newValue;
-        timer = millis();
-        waiting = true;
+    else if (newValue == 0){
+      for(int i=0; i<12; i++){
+        usbMIDI.sendNoteOn(chord[i], 0, MIDIchannel);
       }
     }
-    else {newValue = -1;}
   }
   return newValue;
 };

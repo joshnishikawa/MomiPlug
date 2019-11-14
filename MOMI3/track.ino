@@ -37,7 +37,7 @@ int Track::vol(int incdec){
   return returnme;
 };
 
-bool record(bool rec, bool stp){
+uint8_t record(uint8_t rec, uint8_t stp){
   static int scene = 111;
   if(rec){ // uses CC# 111~119 to trigger scenes
     scene = scene == 119 ? 111 : scene + 1;
@@ -51,5 +51,3 @@ bool record(bool rec, bool stp){
   }
   if(scene > 111){return true;}else{return false;}
 };
-
-

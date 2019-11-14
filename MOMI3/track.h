@@ -16,10 +16,9 @@ class Track: public Flicker{
     int vol(int incdec);
     byte number;
     byte level;
-    bool state;
+    uint8_t state;
 };
 
-bool record(bool, bool);
+uint8_t record(uint8_t, uint8_t);
 
 #endif
-

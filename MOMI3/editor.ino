@@ -76,19 +76,10 @@ byte Editor::editChannel(){
   else{return MIDIchannel;}
 };
 
-bool Editor::setAnalog(int p){
+uint8_t Editor::setAnalog(int p){
   int newValue = analogRead(p);
   if (newValue > newInHi){newInHi = newValue;}
   else if (newValue < newInLo){newInLo = newValue;}
   if (newInHi - newInLo > 127){return true;}
   else{return false;}
 };
-
-bool Editor::setTouch(int p){
-  int newValue = touchRead(p);
-  if (newValue > touchHi){touchHi = newValue;}
-  else if (newValue < touchLo){touchLo = newValue;}
-  if (touchHi - touchLo > 127){return true;}
-  else{return false;}
-}
-

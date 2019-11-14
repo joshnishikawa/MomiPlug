@@ -19,13 +19,11 @@ class Editor{
     Encoder* encoder;
     int number;
     int level;
-    bool editing;
+    uint8_t editing;
     int target;
-    int newInLo, newInHi, touchLo, touchHi;
+    int newInLo, newInHi;
     byte editChannel();
-    bool setAnalog(int p);
-    bool setTouch(int p);
+    uint8_t setAnalog(int p);
     int send(); //cuz interrupts won't let two objects use the same encoder pins
 };
 #endif
-

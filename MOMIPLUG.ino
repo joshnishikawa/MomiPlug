@@ -68,13 +68,14 @@ Editor editor = Editor(encPinA, encPinB, editPin);
 Track* Ts[3];
 MIDIbutton* Bs[23];
 MIDIpot* Ps[19];
-TouchVariable paperClip(cap0pin, 1, 127);
+MIDItouch blackSpongeTouch(23, 9, TOUCH); // TESTING: DELETE ME
 
-// INITIALIZATION #######################################################
-void setup(){
-  Serial.begin(115200); //is this really necessary?
-  delay(1500);
-  MIDIchannel = EEPROM.read(0);
+Bounce FSenable(enableFS, 500);
+Bounce EXPenable(enableEXP, 500);
+TouchVariable paperClip(cap0pin, 0, 127);
+
+void setup(){ // INITIALIZATION #########################################
+  MIDIchannel = EEPROM.read(255);
   readMIDIthru = EEPROM.read(1);
   readAnalogMUX = EEPROM.read(2);
   readDigitalMUX = EEPROM.read(3);
@@ -82,35 +83,45 @@ void setup(){
                                segA, segB, segC, segD, segE, segF, segG, segDP);
   DSP.SetBrightness(100); //Set the display to 100% brightness level
   
-  Ts[0] = new Track(but1pin, 105, 2100);
-  Ts[1] = new Track(but2pin, 106, 2100);
-  Ts[2] = new Track(but3pin, 107, 2100);
+  Ts[0] = new Track(but1pin, 105);
+  Ts[1] = new Track(but2pin, 106);
+  Ts[2] = new Track(but3pin, 107);
 
-  Bs[0] = new MIDIbutton(but1pin, 102, 1, 2100);
-  Bs[1] = new MIDIbutton(but2pin, 103, 1, 2100);
-  Bs[2] = new MIDIbutton(but3pin, 104, 1, 2100);
-  Bs[3] = new MIDIbutton(ringPin, 80, EEPROM.read(4));
-  Bs[4] = new MIDIbutton(tipPin, 81, EEPROM.read(8));
+  Bs[0] = new MIDIbutton(but1pin, 102, 1, TOUCH);
+  Bs[1] = new MIDIbutton(but2pin, 103, 1, TOUCH);
+  Bs[2] = new MIDIbutton(but3pin, 104, 1, TOUCH);
+  Bs[3] = new MIDIbutton(ringPin, 80, 0);
+  EEPROM.get(4, Bs[3]->mode);
+  Bs[4] = new MIDIbutton(tipPin, 81, 0);
+  EEPROM.get(8, Bs[4]->mode);
   Bs[5] = new MIDIbutton(ringPin, 107, 0);
   Bs[6] = new MIDIbutton(tipPin, 107, 0); //DELETE ME MAYBE???
   for(int i=7; i<23; i++){Bs[i] = new MIDIbutton(muxPin0,9+i, 1);} // CC 16~31
 
-  Ps[0] = new MIDIpot(expPin, 85, EEPROM.read(12));
+  Ps[0] = new MIDIpot(expPin, 85);
+  EEPROM.get(12, Ps[0]->mode);
   Ps[0]->inputRange(8, 1015); // just cuz my expression pedal ain't great 
   Ps[1] = new MIDIpot(analog, 14);
   EEPROM.get(16, Ps[1]->inLo);
   EEPROM.get(20, Ps[1]->inHi);
   for(int i=2; i<18; i++){Ps[i] = new MIDIpot(muxPin1,14+i);} // CC 16~31
-  Ps[19] = new MIDIpot(audioVol, 9); // Until I have something better for this pin
+
+  Ps[18] = new MIDIpot(audioVol, 90, 15, 85); // Until I have something better for this pin
+  Ps[18]->inputRange(300, 700); // TESTING: DELETE ME
+  Ps[18]->outputRange(70, 18); // TESTING: DELETE ME
+  Ps[18]->setControlNumber(9); // TESTING: DELETE ME
+  blackSpongeTouch.setControlNumber(90); // TESTING: DELETE ME
+  blackSpongeTouch.setOutputRange(22, 70); // TESTING: DELETE ME
+  blackSpongeTouch.inputRange(); // TESTING: DELETE ME
 
   paperClip.setInputRange();
 
-  pinMode(sel_a, OUTPUT);             //analog and digital mux selector 1
-  pinMode(sel_b, OUTPUT);             //analog and digital mux selector 2
-  pinMode(sel_c, OUTPUT);             //analog and digital mux selector 3
-  pinMode(sel_d, OUTPUT);             //analog and digital mux selector 4
-  pinMode(enableFS, INPUT_PULLUP);
-  pinMode(enableEXP, INPUT_PULLUP);
+  pinMode(sel_a, OUTPUT); //analog and digital mux selector 1
+  pinMode(sel_b, OUTPUT); //analog and digital mux selector 2
+  pinMode(sel_c, OUTPUT); //analog and digital mux selector 3
+  pinMode(sel_d, OUTPUT); //analog and digital mux selector 4
+  pinMode(enableFS, INPUT);
+  pinMode(enableEXP, INPUT);
   pinMode(fs0led, OUTPUT);
   pinMode(fs1led, OUTPUT);
   pinMode(led0, OUTPUT);
@@ -141,40 +152,57 @@ void setup(){
   USBMIDI.setHandlePitchChange(onUSBPitchBend);
 
   // UNCOMMENT THESE TO RESTORE DEFAULTS
-/*  EEPROM.put(0, 3); EEPROM.put(1, true);
-  EEPROM.put(2, false); EEPROM.put(3, false);
-  EEPROM.put(4, 0); EEPROM.put(8, 1);
-  EEPROM.put(12, 0); EEPROM.put(16, 0); EEPROM.put(20, 1023);*/
+/*  EEPROM.put(255, 3); EEPROM.put(1, true);  // MIDIchannel, readMIDIthru
+  EEPROM.put(2, false); EEPROM.put(3, false); // readAnalogMUX, readDigitalMux
+  EEPROM.put(4, 0); EEPROM.put(8, 1);         // FS0 mode, FS1 mode
+  EEPROM.put(12, 0);                          // EXP killSwitch #
+  EEPROM.put(16, 0); EEPROM.put(20, 1023);    // Header min, max 
+  */
 }
 
-// PROGRAM ##############################################################
-void loop(){
+void loop(){ // PROGRAM #################################################
   editor.bounce->update();
+  FSenable.update();
+  EXPenable.update();
 
   // On Button Release ##################################################
   if (editor.bounce->risingEdge()){
     strcpy(DSPstring, "    ");
     editor.encoder->write(0);
-    if (editor.editing == true){
-      if(editor.target == 0){EEPROM.put(0, MIDIchannel);}
-      else if(editor.target == 1){EEPROM.put(1, readMIDIthru);}
-      else if(editor.target == 2){EEPROM.put(2, readAnalogMUX);}
-      else if(editor.target == 3){EEPROM.put(3, readDigitalMUX);}
-      else if(editor.target == 4){EEPROM.put(4, Bs[3]->mode);}
-      else if(editor.target == 8){EEPROM.put(8, Bs[4]->mode);}
-      else if(editor.target == 12){EEPROM.put(12, Ps[0]->mode);}
-      else if(editor.target == 16){
+    paperClip.setInputRange();
+
+    switch (editor.editing){
+      case 255: EEPROM.put(255, MIDIchannel); break;
+      case 1: EEPROM.put(1, readMIDIthru); break;
+      case 2: EEPROM.put(2, readAnalogMUX); break;
+      case 3: EEPROM.put(3, readDigitalMUX); break;
+      case 4: EEPROM.put(4, Bs[3]->mode); break;
+      case 8: EEPROM.put(8, Bs[4]->mode); break;
+      case 12:EEPROM.put(12, Ps[0]->killSwitch); break;
+      case 16: 
         Ps[1]->inLo = editor.newInLo;
         Ps[1]->inHi = editor.newInHi;
         EEPROM.put(16, Ps[1]->inLo);
         EEPROM.put(20, Ps[1]->inHi);
+        break;
+      default:
+        trackMode = !trackMode;
+    }
+    editor.editing = 0;
+
+    if(trackMode){
+      for(int i=0; i<3; i++){
+        usbMIDI.sendControlChange(Ts[i]->number, Ts[i]->level, MIDIchannel);
       }
-      editor.editing = false;
+      strcpy(DSPstring, "trac");
     }
     else{
-      trackMode = !trackMode;
-      if(trackMode){strcpy(DSPstring, "trac");}
-      else{strcpy(DSPstring, "ctrl");}
+      if(readAnalogMUX){
+        for(int i=2; i<18; i++){
+          usbMIDI.sendControlChange(Ps[i]->number, Ps[i]->value, MIDIchannel);          
+        }
+      }
+      strcpy(DSPstring, "ctrl");
     }
   }
 
@@ -186,57 +214,48 @@ void loop(){
   }
 
   // On Hold ############################################################
-  // TODO: 'editing' and 'target' could be reduced to 1 variable inside the sketch
   else if (editor.bounce->read() == LOW){
     int newChannel = editor.editChannel();
     if (newChannel != MIDIchannel){
-      editor.editing = true;
-      editor.target = 0;
+      editor.editing = 255;
       MIDIchannel = newChannel;
       sprintf(DSPstring, "%4d", MIDIchannel);
     }
     if (Bs[0]->read() == 127){
-      editor.editing = true;
-      editor.target = 1;
+      editor.editing = 1;
       readMIDIthru = !readMIDIthru;
     }
     if (Bs[1]->read() == 127){
-      editor.editing = true;
-      editor.target = 2;
+      editor.editing = 2;
       readAnalogMUX = !readAnalogMUX;
     }
     if (Bs[2]->read() == 127){
-      editor.editing = true;
-      editor.target = 3;
+      editor.editing = 3;
       readDigitalMUX = !readDigitalMUX;
     }
-    if (digitalRead(enableFS)){ // TODO: use delay to prevent MIDI when hot-plugging
+    if (FSenable.read()){
       if (Bs[3]->read() == 127){
-        editor.editing = true;
-        editor.target = 4;
+        editor.editing = 4;
         Bs[3]->mode = Bs[3]->mode == 1 ? 0 : 1;
         if(Bs[3]->mode == 1){strcpy(DSPstring, "lach");}
-        else{strcpy(DSPstring, "hold");}
+        else {strcpy(DSPstring, "hold");}
       }
       if (Bs[4]->read() == 127){
-        editor.editing = true;
-        editor.target = 8;
+        editor.editing = 8;
         Bs[4]->mode = Bs[4]->mode == 1 ? 0 : 1;
         if(Bs[4]->mode == 1){strcpy(DSPstring, "lach");}
-        else{strcpy(DSPstring, "hold");}
+        else {strcpy(DSPstring, "hold");}
       }
     }
-    if (digitalRead(enableEXP) && Ps[0]->read() == 127){ // TODO: use delay to prevent MIDI when hot-plugging
-      editor.editing = true;
-      editor.target = 12;
-      Ps[0]->mode = !Ps[0]->mode;
-      if(Ps[0]->mode){strcpy(DSPstring, " cut");}
+    if (EXPenable.read() && Ps[0]->read() == 127){
+      editor.editing = 12;
+      Ps[0]->killSwitch = !Ps[0]->killSwitch;
+      if(Ps[0]->killSwitch){strcpy(DSPstring, " cut");}
       else{strcpy(DSPstring, "-cut");}
     }
     
     if (editor.setAnalog(analog)){
-      editor.editing = true;
-      editor.target = 16;
+      editor.editing = 16;
       strcpy(DSPstring, "setH");
     }
 
@@ -248,7 +267,7 @@ void loop(){
   else{
   // In Track Mode Or Control Mode ######################################
     int newVal = 0;
-    if (digitalRead(3) == HIGH){
+    if (EXPenable.read()){
       newVal = Ps[0]->send();              // Send MIDI for EXP Pedal
       if (newVal >= 0){
         sprintf(DSPstring, "%4d", newVal);      
@@ -260,14 +279,23 @@ void loop(){
       sprintf(DSPstring, "%4d", newVal);      
       DSPstring[0] = 'h';
     }
-
+    Ps[18]->send(); // TESTING: DELETE ME
+    
     if (readMIDIthru){
       teensyUSBHost.Task();
       USBMIDI.read();
       MIDI.read();
-      digitalWrite(led0, chaos(paperClip.read())-1); // TODO: Other cool MIDI functions
+      int newValue = paperClip.read();
+      chaos(newValue); // TODO: Other cool MIDI functions
+      digitalWrite(led0, newValue);
+    }
+    else{ // Ignore (don't buffer) incoming MIDI.
+      while(MIDI1.read()){}
+      // I wish there were a way to ignore USB host MIDI.
     }
 
+    //blackSpongeTouch.send(); // TESTING: DELETE ME
+    
     if (readAnalogMUX || readDigitalMUX){
     for(int i=0; i<8; i++){               // USE i<8 FOR MUX8, i<16 FOR MUX16
 //        digitalWrite(sel_d, (i&15)>>3); // COMMENT FOR MUX8, UN- FOR MUX16
@@ -323,15 +351,15 @@ void loop(){
         sprintf(DSPstring, "%4d", editor.level);
         DSPstring[0] = 'r';
       }
-      for(int i=0;i<3;i++){                // Send MIDI for Onboard Buttons
+      for(int i=0;i<3;i++){ // Send MIDI for Onboard Buttons
         newVal = Bs[i]->send();
         if (newVal >= 0){
           sprintf(DSPstring, "%4d", newVal);
           DSPstring[0] = 'b';
         }
       }
-      if (digitalRead(enableFS) == HIGH){
-        for(int i=3;i<5;i++){                // Send MIDI for Foot Switches
+      if (FSenable.read()){
+        for(int i=3;i<5;i++){ // Send MIDI for Foot Switches
           newVal = Bs[i]->send();
           if (newVal >= 0){
             sprintf(DSPstring, "%4d", newVal);

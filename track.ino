@@ -1,9 +1,9 @@
 #include "track.h"
 
 // Track constructors
-Track::Track() : Flicker(0, 0){};
+Track::Track() : TouchSwitch(0, 0){};
 
-Track::Track(int p, byte n, int thresh) : Flicker(p, thresh){
+Track::Track(int p, byte n) : TouchSwitch(p){
   number = n;
   level = 0;
   state = false;
@@ -14,8 +14,8 @@ Track::~Track(){};
 
 int Track::send(){
   int returnme = -1;
-	Flicker::update();
-  if(Flicker::risingEdge()){ // Arm or disarm tracks.
+	TouchSwitch::update();
+  if(TouchSwitch::risingEdge()){ // Arm or disarm tracks.
     usbMIDI.sendControlChange(number,127,MIDIchannel);
     usbMIDI.sendControlChange(number,0,MIDIchannel);
     state = !state;
@@ -37,7 +37,7 @@ int Track::vol(int incdec){
   return returnme;
 };
 
-uint8_t record(uint8_t rec, uint8_t stp){
+byte record(byte rec, byte stp){
   static int scene = 111;
   if(rec){ // uses CC# 111~119 to trigger scenes
     scene = scene == 119 ? 111 : scene + 1;

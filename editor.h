@@ -20,7 +20,6 @@ class Editor{
     int number;
     int level;
     uint8_t editing;
-    int target;
     int newInLo, newInHi;
     byte editChannel();
     uint8_t setAnalog(int p);

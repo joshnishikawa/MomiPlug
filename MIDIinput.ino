@@ -9,7 +9,7 @@ uint8_t chord[12] = {
   false,false,false,false,false,false,false,false,false,false,false,false
 };
 
-int chaos(int newValue){
+byte chaos(byte newValue){
   if (waiting){ // Wait briefly to make notes audible.
     if (timer > waitTime){
       waiting = false;
@@ -19,7 +19,7 @@ int chaos(int newValue){
     if (chord[newValue % 12] == true && newValue != value){
       usbMIDI.sendNoteOn(value, 0, MIDIchannel); // we don't want TOTAL chaos
       usbMIDI.sendNoteOn(newValue, 96, MIDIchannel);
-      waitTime = 127 - newValue; // not necessary. just adds flavor.
+      waitTime = 127 - newValue; // Hold note longer for lower notes; shorter for higher.
       value = newValue;
       timer = 0;
       waiting = true;

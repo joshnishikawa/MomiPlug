@@ -6,19 +6,19 @@
 
 extern byte MIDIchannel;
 
-class Track: public Flicker{
+class Track: public TouchSwitch{
   byte pin;
   public:
     Track();
-    Track(int p, byte n, int thresh);
+    Track(int p, byte n);
     ~Track();
     int send();
     int vol(int incdec);
     byte number;
     byte level;
-    uint8_t state;
+    byte state;
 };
 
-uint8_t record(uint8_t, uint8_t);
+byte record(byte, byte);
 
 #endif

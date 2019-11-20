@@ -101,7 +101,5 @@ USB HOST PORT PIN ASSIGNMENTS
  |____________|
 
 
-///////////////////////// TODO: ///////////////////////////////////
 TODO: Find a way to choose whether muxed input should be buttons, pots or drums.
-TODO: Bulk send for MUX and track volumes when track mode is enabled.
 */

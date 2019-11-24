@@ -76,7 +76,7 @@ byte Editor::editChannel(){
   else{return MIDIchannel;}
 };
 
-uint8_t Editor::setAnalog(int p){
+byte Editor::setAnalog(int p){
   int newValue = analogRead(p);
   if (newValue > newInHi){newInHi = newValue;}
   else if (newValue < newInLo){newInLo = newValue;}

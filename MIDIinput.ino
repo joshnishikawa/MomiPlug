@@ -1,34 +1,44 @@
 #include "MIDIinput.h"
 int value = 0;
 elapsedMillis timer = 0;
-uint8_t waiting = false;
-unsigned int waitTime = 0;
-uint8_t touched = false;
+byte waiting = false;
+unsigned int waitTime;
+byte touched = false;
 
-uint8_t chord[12] = {
+byte MIDIchord[12] = {
+  false,false,false,false,false,false,false,false,false,false,false,false
+};
+byte USBchord[12] = {
   false,false,false,false,false,false,false,false,false,false,false,false
 };
 
-byte chaos(byte newValue){
+byte chaos(byte pin, uint16_t newValue, uint16_t inLo, uint16_t inHi){
+  newValue = map(newValue, inLo, inHi, 0, 127);
+  newValue = constrain(newValue, 0, 127);
+
   if (waiting){ // Wait briefly to make notes audible.
     if (timer > waitTime){
       waiting = false;
     }
   }
   else if (newValue > 0){ // send MIDI
-    if (chord[newValue % 12] == true && newValue != value){
+    if ( (MIDIchord[newValue % 12] == true || USBchord[newValue % 12] == true) && newValue != value ){
       usbMIDI.sendNoteOn(value, 0, MIDIchannel); // we don't want TOTAL chaos
       usbMIDI.sendNoteOn(newValue, 96, MIDIchannel);
-      waitTime = 127 - newValue; // Hold note longer for lower notes; shorter for higher.
+      waitTime = 150 - newValue; // Hold note longer for lower notes; shorter for higher.
       value = newValue;
       timer = 0;
       waiting = true;
+      digitalWrite(pin, HIGH);
     }
     else if (newValue == 0){
       for(int i=0; i<12; i++){
-        usbMIDI.sendNoteOn(chord[i], 0, MIDIchannel);
+        usbMIDI.sendNoteOn(MIDIchord[i], 0, MIDIchannel);
+        usbMIDI.sendNoteOn(USBchord[i], 0, MIDIchannel);
       }
+      digitalWrite(pin, LOW);
     }
+    else{digitalWrite(pin, LOW);}
   }
   return newValue;
 };
@@ -37,16 +47,16 @@ byte chaos(byte newValue){
 void onNoteOff(byte channel, byte note, byte velocity){
   usbMIDI.sendNoteOff(note, 0, channel);
   usbMIDI.sendNoteOff(note, 0, channel, 2); // send to separate ports
-  chord[note % 12] = false;
+  MIDIchord[note % 12] = false;
 }
   
 void onNoteOn(byte channel, byte note, byte velocity){
   usbMIDI.sendNoteOn(note, velocity, channel);
   usbMIDI.sendNoteOn(note, velocity, channel, 2); // send to separate ports
   if (velocity == 0){
-    chord[note % 12] = false;    
+    MIDIchord[note % 12] = false;    
   }
-  else {chord[note % 12] = true;}
+  else {MIDIchord[note % 12] = true;}
 }
 
 void onPolyPressure(byte channel, byte note, byte pressure){
@@ -79,12 +89,17 @@ void onUSBNoteOff(byte channel, byte note, byte velocity){
   usbMIDI.sendNoteOff(note, 0, channel, 1); // send to separate ports
   usbMIDI.sendNoteOff(note, 0, channel, 3); // send to separate ports
   MIDI.sendNoteOff(note, 0, channel);
+  USBchord[note % 12] = false;
 }
   
 void onUSBNoteOn(byte channel, byte note, byte velocity){
   usbMIDI.sendNoteOn(note, velocity, channel, 1); // send to separate ports
   usbMIDI.sendNoteOn(note, velocity, channel, 3); // send to separate ports
   MIDI.sendNoteOn(note, velocity, channel);
+  if (velocity == 0){
+    USBchord[note % 12] = false;    
+  }
+  else {USBchord[note % 12] = true;}
 }
 
 void onUSBPolyPressure(byte channel, byte note, byte pressure){

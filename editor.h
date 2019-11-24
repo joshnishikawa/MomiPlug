@@ -19,10 +19,11 @@ class Editor{
     Encoder* encoder;
     int number;
     int level;
-    uint8_t editing;
+    byte editing;
+    byte editAnalogInputRange;
     int newInLo, newInHi;
     byte editChannel();
-    uint8_t setAnalog(int p);
+    byte setAnalog(int p);
     int send(); //cuz interrupts won't let two objects use the same encoder pins
 };
 #endif

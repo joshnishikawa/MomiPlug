@@ -20,9 +20,9 @@ Enable FS  |-2 (_)    (_)23 |- Digital MUX return
 Enable EXP |-3 (_)    (_)22 |- Touch 0
  Select A  |-4 (_)    (_)21 |- Audio Volume
  Select B  |-5 (_)       20 |- Analog MUX return
- Select C  |-6           19 |- Touch 3
- Select D  |-7           18 |- Touch 2
-    LED 3 -| 8           17 |- Touch 1
+ Select C  |-6           19 |- Touch Button 2
+ Select D  |-7           18 |- Touch Button 1
+    LED 3 -| 8           17 |- Touch Button 0
   LED FS1 -| 9           16 |- FS 0 (tip)
     LED 2 -| 10          15 |- FS 1 (ring)
   LED FS0 -| 11          14 |- EXP return (ring)

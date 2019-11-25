@@ -52,8 +52,8 @@ const int segDP= 37;    //Pin 5
 const int digit4 = 38;  //Pin 6
 
 const int analog = 39;  //2-pin female header for variable resistors
-const int audioR = A21; //right headphone
-const int audioL = A22; //left headphone
+// const int audioR = A21; //right headphone (not in use yet)
+// const int audioL = A22; //left headphone (not in use yet)
 
 // DECLARATOINS #########################################################
 byte MIDIchannel = 3;
@@ -74,7 +74,7 @@ int DP = 0;
 Editor editor = Editor(encPinA, encPinB, editPin);
 Track* Ts[3];
 MIDIbutton* Bs[23];
-MIDIpot* Ps[19];
+MIDIpot* Ps[18];
 
 uint16_t inLo; // for the paperclip FX
 uint16_t inHi; // for the paperclip FX
@@ -109,7 +109,7 @@ void setup(){ // INITIALIZATION #########################################
   Ps[1] = new MIDIpot(analog, 14);
   EEPROM.get(16, Ps[1]->inLo);
   EEPROM.get(20, Ps[1]->inHi);
-  for(int i=2; i<18; i++){Ps[i] = new MIDIpot(muxPin1,14+i);} // CC 16~31
+  for(int i=2; i<18; i++){Ps[i] = new MIDIpot(muxPin1,46+i);} // CC 48~63
 
   inLo = touchRead(22) * 1.02;
   inHi = inLo * 2;
@@ -177,13 +177,13 @@ void loop(){ // PROGRAM #################################################
     FSenabled = false;
   }
 
+/* // THIS SECTION OF CODE BREAKS BUTTON 1. WHY??? 
   EXPenable.update();
   if (EXPenable.risingEdge()){
     waitToEnable = 0;
   }
   else if (EXPenable.fallingEdge()){
     // Not much you can do here. Just try not to hot-unplug the EXP.
-    EXPenabled = false;
   }
   else if (!EXPenabled && EXPenable.read() && waitToEnable >= 2000){
     EXPenabled = true;
@@ -191,7 +191,8 @@ void loop(){ // PROGRAM #################################################
   else if (!EXPenable.read()){
     EXPenabled = false;
   }
-
+  else{}
+*/
   // On Button Release ##################################################
   if (editor.bounce->risingEdge()){
     strcpy(DSPstring, "    ");

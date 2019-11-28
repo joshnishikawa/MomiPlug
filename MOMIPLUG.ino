@@ -64,7 +64,7 @@ byte trackMode = false;
 
 byte FSenabled = false;
 byte EXPenabled = false;
-elapsedMillis waitToEnable;
+elapsedMillis waitToEnable = 0;
 Bounce FSenable(FSenablePin, 50);
 Bounce EXPenable(EXPenablePin, 50);
 
@@ -76,8 +76,8 @@ Track* Ts[3];
 MIDIbutton* Bs[23];
 MIDIpot* Ps[18];
 
-uint16_t inLo; // for the paperclip FX
-uint16_t inHi; // for the paperclip FX
+uint16_t inLo = 0;    // for the paperclip FX
+uint16_t inHi = 1023; // for the paperclip FX
 
 void setup(){ // INITIALIZATION #########################################
   EEPROM.get(255, MIDIchannel);
@@ -105,7 +105,7 @@ void setup(){ // INITIALIZATION #########################################
 
   Ps[0] = new MIDIpot(expPin, 85);
   EEPROM.get(12, Ps[0]->mode);
-  Ps[0]->inputRange(8, 1015); // just cuz my expression pedal ain't great 
+  Ps[0]->inputRange(16, 1015); // just cuz my expression pedal ain't great 
   Ps[1] = new MIDIpot(analog, 14);
   EEPROM.get(16, Ps[1]->inLo);
   EEPROM.get(20, Ps[1]->inHi);
@@ -170,29 +170,22 @@ void loop(){ // PROGRAM #################################################
     Bs[4]->send(); // should send noteOff messages
     FSenabled = false;
   }
-  else if (!FSenabled && FSenable.read() && waitToEnable >= 2000){
+  else if (FSenable.read() && waitToEnable >= 2000 && !FSenabled){
     FSenabled = true;
   }
-  else if (!FSenable.read()){
-    FSenabled = false;
-  }
 
-/* // THIS SECTION OF CODE BREAKS BUTTON 1. WHY??? 
   EXPenable.update();
   if (EXPenable.risingEdge()){
     waitToEnable = 0;
   }
   else if (EXPenable.fallingEdge()){
     // Not much you can do here. Just try not to hot-unplug the EXP.
-  }
-  else if (!EXPenabled && EXPenable.read() && waitToEnable >= 2000){
-    EXPenabled = true;
-  }
-  else if (!EXPenable.read()){
     EXPenabled = false;
   }
-  else{}
-*/
+  else if (EXPenable.read() && waitToEnable >= 2000 && !EXPenabled){
+    EXPenabled = true;
+  }
+
   // On Button Release ##################################################
   if (editor.bounce->risingEdge()){
     strcpy(DSPstring, "    ");
@@ -255,14 +248,13 @@ void loop(){ // PROGRAM #################################################
     }
     if (Bs[1]->read() == 127){
       readAnalogMUX = !readAnalogMUX;
-      Serial.println(readAnalogMUX);
       editor.editing = true;
     }
     if (Bs[2]->read() == 127){
       readDigitalMUX = !readDigitalMUX;
       editor.editing = true;
     }
-    if (FSenable.read()){
+    if (FSenabled){
       if (Bs[3]->read() > 0){
         Bs[3]->mode = Bs[3]->mode == 1 ? 0 : 1;
         editor.editing = true;
@@ -276,7 +268,7 @@ void loop(){ // PROGRAM #################################################
         else {strcpy(DSPstring, "hold");}
       }
     }
-    if (EXPenable.read() && Ps[0]->read() == Ps[0]->outHi){
+    if (EXPenabled && Ps[0]->read() == Ps[0]->outHi){
       Ps[0]->killSwitch = !Ps[0]->killSwitch;
       editor.editing = true;
       if(Ps[0]->killSwitch){strcpy(DSPstring, " cut");}

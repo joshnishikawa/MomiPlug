@@ -1,0 +1,57 @@
+MIDIbutton
+  construct(pin, number, mode)
+  construct(pin, number, mode, type)
+  setThreshold()
+  read()
+  send()
+  setControlNumber()
+  setMode()
+  outputRange()
+MIDIdrum
+  construct(pin, number)
+  construct(pin, number, type)
+  read()
+  send()
+  send(velocity)
+  setNoteNumber(number)
+  outputRange()
+  setThreshold()
+  setThreshold(thresold)
+MIDIenc (can't be tested on MOMI)
+  construct(a, b, number)
+  construct(a, b, number, min, max)
+  read()
+  send()
+  setControlNumber(number)
+  outputRange()
+MIDIpot
+  construct(pin, number)
+  construct(pin, number, mode)
+  construct(pin, number, min, max)
+  construct(pin, number, mode, min, max)
+  read()
+  send()
+  setControlNumber(number)
+  inputRange(min, max)
+  outputRange(min, max)
+  smooth(value, threshold)
+MIDItouch
+  construct(pin, number)
+  construct(pin, number, mode)
+  construct(pin, number, min, max)
+  construct(pin, number, mode, min, max)
+  read()
+  send()
+  setControlNumber(number)
+  inputRange()
+  inputRange(min, max)
+  outputRange(min, max)
+EEPROM
+  MIDIchannel
+  MIDIthru
+  readAnalogMUX
+  FS0 mode
+  FS1 mode
+  EXP mode
+  header inLo
+  header inHi

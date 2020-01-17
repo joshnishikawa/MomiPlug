@@ -1,0 +1,1146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:\Users\Josh\OneDrive\Code\KiCAD\MOMI\MOMI.sch</source>
+    <date>1/16/2020 3:35:44 PM</date>
+    <tool>Eeschema (5.1.5)-3</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>MOMI.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="J4">
+      <value>MIDI out</value>
+      <footprint>Connect:SDS-50J</footprint>
+      <datasheet>http://www.mouser.com/ds/2/18/40_c091_abd_e-75918.pdf</datasheet>
+      <libsource lib="MOMI-rescue" part="DIN-5_180degree-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E04D69D</tstamp>
+    </comp>
+    <comp ref="D4">
+      <value>LED</value>
+      <footprint>LED_THT_3D:LED_D3.0mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="LED-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E04FCFA</tstamp>
+    </comp>
+    <comp ref="D5">
+      <value>LED</value>
+      <footprint>LED_THT_3D:LED_D3.0mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="LED-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E050829</tstamp>
+    </comp>
+    <comp ref="D6">
+      <value>LED</value>
+      <footprint>LED_THT_3D:LED_D3.0mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="LED-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E051026</tstamp>
+    </comp>
+    <comp ref="D3">
+      <value>LED</value>
+      <footprint>LED_THT_3D:LED_D3.0mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="LED-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E0518C7</tstamp>
+    </comp>
+    <comp ref="D2">
+      <value>LED</value>
+      <footprint>LED_THT_3D:LED_D3.0mm</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="LED-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E0520C3</tstamp>
+    </comp>
+    <comp ref="J6">
+      <value>USB_A</value>
+      <footprint>USB_3D:USB_A_Stewart_SS-52100-001_Horizontal</footprint>
+      <datasheet> ~</datasheet>
+      <libsource lib="MOMI-rescue" part="USB_A-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E057252</tstamp>
+    </comp>
+    <comp ref="J5">
+      <value>JST 1mm (I2C)</value>
+      <footprint>Conn_JST_3D:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="Conn_01x04_Male-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05F0B0</tstamp>
+    </comp>
+    <comp ref="J3">
+      <value>Conn_02x04_Male</value>
+      <footprint>P_2.54_3D:PinHeader_2x04_P2.54mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="Conn_01x08_Male-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05FEBB</tstamp>
+    </comp>
+    <comp ref="J1">
+      <value>Conn_02x04_Male</value>
+      <footprint>P_2.54_3D:PinHeader_2x04_P2.54mm_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="Conn_01x08_Male-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E061537</tstamp>
+    </comp>
+    <comp ref="R5">
+      <value>330</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05AC77</tstamp>
+    </comp>
+    <comp ref="R4">
+      <value>220</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05B491</tstamp>
+    </comp>
+    <comp ref="R3">
+      <value>220</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05B87D</tstamp>
+    </comp>
+    <comp ref="R11">
+      <value>330</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05DBD1</tstamp>
+    </comp>
+    <comp ref="R10">
+      <value>330</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05DBD7</tstamp>
+    </comp>
+    <comp ref="R9">
+      <value>330</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05DBDD</tstamp>
+    </comp>
+    <comp ref="R8">
+      <value>330</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05DBE3</tstamp>
+    </comp>
+    <comp ref="J2">
+      <value>MIDI in</value>
+      <footprint>Connect:SDS-50J</footprint>
+      <datasheet>http://www.mouser.com/ds/2/18/40_c091_abd_e-75918.pdf</datasheet>
+      <libsource lib="MOMI-rescue" part="DIN-5_180degree-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E04C6C3</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>270</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05C020</tstamp>
+    </comp>
+    <comp ref="U1">
+      <value>6N137</value>
+      <footprint>Housings_DIP:DIP-8_W7.62mm_Socket</footprint>
+      <datasheet>https://media.digikey.com/pdf/Data%20Sheets/Lite-On%20PDFs/6N137%20Series.pdf</datasheet>
+      <fields>
+        <field name="Category">Isolators</field>
+        <field name="DK_Datasheet_Link">https://media.digikey.com/pdf/Data%20Sheets/Lite-On%20PDFs/6N137%20Series.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/lite-on-inc/6N137/160-1791-ND/1969175</field>
+        <field name="Description">OPTOISO 5KV 1CH OPEN COLL 8DIP</field>
+        <field name="Digi-Key_PN">160-1791-ND</field>
+        <field name="Family">Optoisolators - Logic Output</field>
+        <field name="MPN">6N137</field>
+        <field name="Manufacturer">Lite-On Inc.</field>
+        <field name="Status">Active</field>
+      </fields>
+      <libsource lib="MOMI-rescue" part="6N137-dk_Optoisolators-Logic-Output" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E061B4C</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>D</value>
+      <footprint>D_SMD_3D:D_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="D-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05FA02</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>220</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E05C6A3</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>10uF</value>
+      <footprint>C_SMD_3D:C_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="CP1-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1743DC</tstamp>
+    </comp>
+    <comp ref="R15">
+      <value>47k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1743D6</tstamp>
+    </comp>
+    <comp ref="J9">
+      <value>Expression Pedal</value>
+      <footprint>digikey-footprints:Headphone_Jack_6.35mm_RA49B14B</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="AudioJack3_SwitchTR-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1743CD</tstamp>
+    </comp>
+    <comp ref="R20">
+      <value>47k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E18257F</tstamp>
+    </comp>
+    <comp ref="C4">
+      <value>10uF</value>
+      <footprint>C_SMD_3D:C_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="CP1-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E182585</tstamp>
+    </comp>
+    <comp ref="J11">
+      <value>AudioJack4</value>
+      <footprint>Conn_Aud_3D:Jack_3.5mm_PJ320D_Horizontal</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="AudioJack4-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E054C8A</tstamp>
+    </comp>
+    <comp ref="R19">
+      <value>47k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E12951F</tstamp>
+    </comp>
+    <comp ref="R17">
+      <value>10k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E12B745</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>10uF</value>
+      <footprint>C_SMD_3D:C_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="CP1-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E12E8EA</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>10uF</value>
+      <footprint>C_SMD_3D:C_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="CP1-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E12DA20</tstamp>
+    </comp>
+    <comp ref="R16">
+      <value>2.2k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E12A3B4</tstamp>
+    </comp>
+    <comp ref="R7">
+      <value>4.7k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1335BB</tstamp>
+    </comp>
+    <comp ref="R6">
+      <value>4.7k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E135FE7</tstamp>
+    </comp>
+    <comp ref="J7">
+      <value>Conn_01x18_Female</value>
+      <footprint>S_2.54_3D:PinSocket_1x18_P2.54mm_Vertical</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="Conn_01x18_Female-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E135F27</tstamp>
+    </comp>
+    <comp ref="J8">
+      <value>Conn_01x18_Female</value>
+      <footprint>S_2.54_3D:PinSocket_1x18_P2.54mm_Vertical</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="Conn_01x18_Female-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1371F3</tstamp>
+    </comp>
+    <comp ref="J13">
+      <value>Dual Footswitch</value>
+      <footprint>digikey-footprints:Headphone_Jack_6.35mm_RA49B14B</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="AudioJack3_SwitchTR-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E182576</tstamp>
+    </comp>
+    <comp ref="R12">
+      <value>10k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E180558</tstamp>
+    </comp>
+    <comp ref="R13">
+      <value>10k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E185B61</tstamp>
+    </comp>
+    <comp ref="R14">
+      <value>10k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E196295</tstamp>
+    </comp>
+    <comp ref="R18">
+      <value>47k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1285A6</tstamp>
+    </comp>
+    <comp ref="SW1">
+      <value>Encoder_Switch</value>
+      <footprint>digikey-footprints:Rotary_Encoder_Switched_PEC11R</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="Rotary_Encoder_Switch-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E04E759</tstamp>
+    </comp>
+    <comp ref="J10">
+      <value>Conn_01x05_Male</value>
+      <footprint>P_2.54_3D:PinHeader_1x05_P2.54mm_Vertical</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="Conn_01x05_Male-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1A1C29</tstamp>
+    </comp>
+    <comp ref="J12">
+      <value>Conn_01x04_Female</value>
+      <footprint>S_2.54_3D:PinSocket_1x04_P2.54mm_Vertical</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="Conn_01x04_Female-Connector" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1F8CB5</tstamp>
+    </comp>
+    <comp ref="R23">
+      <value>100k</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1C3ECF</tstamp>
+    </comp>
+    <comp ref="C6">
+      <value>1uF</value>
+      <footprint>C_SMD_3D:C_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="CP1-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1CAE1E</tstamp>
+    </comp>
+    <comp ref="C5">
+      <value>1uF</value>
+      <footprint>C_SMD_3D:C_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="CP1-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1CD1D7</tstamp>
+    </comp>
+    <comp ref="D8">
+      <value>LED</value>
+      <footprint>LED_SMD_3D:LED_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="LED-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1D5CF1</tstamp>
+    </comp>
+    <comp ref="R22">
+      <value>330</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1D5CF7</tstamp>
+    </comp>
+    <comp ref="SW2">
+      <value>SW_SPDT</value>
+      <footprint>Sw_THT_3D:SW_CuK_OS102011MA1QN1_SPDT_Angled</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Switch" part="SW_SPDT" description="Switch, single pole double throw"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E26CD62</tstamp>
+    </comp>
+    <comp ref="R21">
+      <value>330</value>
+      <footprint>R_SMD_3D:R_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="R-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1D5CFD</tstamp>
+    </comp>
+    <comp ref="D7">
+      <value>LED</value>
+      <footprint>LED_SMD_3D:LED_0805_2012Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="MOMI-rescue" part="LED-Device" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1D5CEB</tstamp>
+    </comp>
+    <comp ref="U2">
+      <value>MAX1555EZK_T</value>
+      <footprint>digikey-footprints:SOT-753</footprint>
+      <datasheet>https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf</datasheet>
+      <fields>
+        <field name="Category">Integrated Circuits (ICs)</field>
+        <field name="DK_Datasheet_Link">https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/maxim-integrated/MAX1555EZK-T/MAX1555EZK-TCT-ND/2699449</field>
+        <field name="Description">IC BATT CHRGR LI+ 1CELL SOT23-5</field>
+        <field name="Digi-Key_PN">MAX1555EZK+TCT-ND</field>
+        <field name="Family">PMIC - Battery Chargers</field>
+        <field name="MPN">MAX1555EZK+T</field>
+        <field name="Manufacturer">Maxim Integrated</field>
+        <field name="Status">Active</field>
+      </fields>
+      <libsource lib="dk_PMIC-Battery-Chargers" part="MAX1555EZK_T" description="IC BATT CHRGR LI+ 1CELL SOT23-5"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E1DF4C7</tstamp>
+    </comp>
+    <comp ref="BT1">
+      <value>Battery_Cell</value>
+      <footprint>Conn_JST_3D:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="Battery_Cell" description="Single-cell battery"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E356351</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Device" part="Battery_Cell">
+      <description>Single-cell battery</description>
+      <docs>~</docs>
+      <fields>
+        <field name="Reference">BT</field>
+        <field name="Value">Battery_Cell</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="6N137-dk_Optoisolators-Logic-Output">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">6N137-dk_Optoisolators-Logic-Output</field>
+        <field name="Footprint">digikey-footprints:DIP-8_W7.62mm</field>
+        <field name="Datasheet">https://media.digikey.com/pdf/Data%20Sheets/Lite-On%20PDFs/6N137%20Series.pdf</field>
+        <field name="Digi-Key_PN">160-1791-ND</field>
+        <field name="MPN">6N137</field>
+        <field name="Category">Isolators</field>
+        <field name="Family">Optoisolators - Logic Output</field>
+        <field name="DK_Datasheet_Link">https://media.digikey.com/pdf/Data%20Sheets/Lite-On%20PDFs/6N137%20Series.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/lite-on-inc/6N137/160-1791-ND/1969175</field>
+        <field name="Description">OPTOISO 5KV 1CH OPEN COLL 8DIP</field>
+        <field name="Manufacturer">Lite-On Inc.</field>
+        <field name="Status">Active</field>
+      </fields>
+      <pins>
+        <pin num="1" name="NC" type="NotConnected"/>
+        <pin num="2" name="A" type="passive"/>
+        <pin num="3" name="K" type="passive"/>
+        <pin num="4" name="NC" type="NotConnected"/>
+        <pin num="5" name="GND" type="power_in"/>
+        <pin num="6" name="VO" type="output"/>
+        <pin num="7" name="VE" type="input"/>
+        <pin num="8" name="VCC" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="AudioJack3_SwitchTR-Connector">
+      <footprints>
+        <fp>Jack*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">AudioJack3_SwitchTR-Connector</field>
+      </fields>
+      <pins>
+        <pin num="R" name="~" type="passive"/>
+        <pin num="RN" name="~" type="passive"/>
+        <pin num="S" name="~" type="passive"/>
+        <pin num="T" name="~" type="passive"/>
+        <pin num="TN" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="AudioJack4-Connector">
+      <footprints>
+        <fp>Jack*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">AudioJack4-Connector</field>
+      </fields>
+      <pins>
+        <pin num="R1" name="~" type="passive"/>
+        <pin num="R2" name="~" type="passive"/>
+        <pin num="S" name="~" type="passive"/>
+        <pin num="T" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="CP1-Device">
+      <footprints>
+        <fp>CP_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CP1-Device</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="Conn_01x04_Female-Connector">
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x04_Female-Connector</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="Conn_01x04_Male-Connector">
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x04_Male-Connector</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="Conn_01x05_Male-Connector">
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x05_Male-Connector</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="Conn_01x08_Male-Connector">
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x08_Male-Connector</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+        <pin num="7" name="Pin_7" type="passive"/>
+        <pin num="8" name="Pin_8" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="Conn_01x18_Female-Connector">
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x18_Female-Connector</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+        <pin num="7" name="Pin_7" type="passive"/>
+        <pin num="8" name="Pin_8" type="passive"/>
+        <pin num="9" name="Pin_9" type="passive"/>
+        <pin num="10" name="Pin_10" type="passive"/>
+        <pin num="11" name="Pin_11" type="passive"/>
+        <pin num="12" name="Pin_12" type="passive"/>
+        <pin num="13" name="Pin_13" type="passive"/>
+        <pin num="14" name="Pin_14" type="passive"/>
+        <pin num="15" name="Pin_15" type="passive"/>
+        <pin num="16" name="Pin_16" type="passive"/>
+        <pin num="17" name="Pin_17" type="passive"/>
+        <pin num="18" name="Pin_18" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="D-Device">
+      <footprints>
+        <fp>TO-???*</fp>
+        <fp>*_Diode_*</fp>
+        <fp>*SingleDiode*</fp>
+        <fp>D_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">D-Device</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="DIN-5_180degree-Connector">
+      <footprints>
+        <fp>DIN*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">DIN-5_180degree-Connector</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+        <pin num="3" name="~" type="passive"/>
+        <pin num="4" name="~" type="passive"/>
+        <pin num="5" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="LED-Device">
+      <footprints>
+        <fp>LED*</fp>
+        <fp>LED_SMD:*</fp>
+        <fp>LED_THT:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">LED-Device</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="R-Device">
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R-Device</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="Rotary_Encoder_Switch-Device">
+      <footprints>
+        <fp>RotaryEncoder*Switch*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">SW</field>
+        <field name="Value">Rotary_Encoder_Switch-Device</field>
+      </fields>
+      <pins>
+        <pin num="A" name="A" type="passive"/>
+        <pin num="B" name="B" type="passive"/>
+        <pin num="C" name="C" type="passive"/>
+        <pin num="S1" name="S1" type="passive"/>
+        <pin num="S2" name="S2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MOMI-rescue" part="USB_A-Connector">
+      <footprints>
+        <fp>USB*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">USB_A-Connector</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VBUS" type="power_in"/>
+        <pin num="2" name="D-" type="passive"/>
+        <pin num="3" name="D+" type="passive"/>
+        <pin num="4" name="GND" type="power_in"/>
+        <pin num="5" name="Shield" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Switch" part="SW_SPDT">
+      <description>Switch, single pole double throw</description>
+      <docs>~</docs>
+      <fields>
+        <field name="Reference">SW</field>
+        <field name="Value">SW_SPDT</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="passive"/>
+        <pin num="2" name="B" type="passive"/>
+        <pin num="3" name="C" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="dk_PMIC-Battery-Chargers" part="MAX1555EZK_T">
+      <description>IC BATT CHRGR LI+ 1CELL SOT23-5</description>
+      <docs>https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MAX1555EZK_T</field>
+        <field name="Footprint">digikey-footprints:SOT-753</field>
+        <field name="Datasheet">https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf</field>
+        <field name="Digi-Key_PN">MAX1555EZK+TCT-ND</field>
+        <field name="MPN">MAX1555EZK+T</field>
+        <field name="Category">Integrated Circuits (ICs)</field>
+        <field name="Family">PMIC - Battery Chargers</field>
+        <field name="DK_Datasheet_Link">https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/maxim-integrated/MAX1555EZK-T/MAX1555EZK-TCT-ND/2699449</field>
+        <field name="Description">IC BATT CHRGR LI+ 1CELL SOT23-5</field>
+        <field name="Manufacturer">Maxim Integrated</field>
+        <field name="Status">Active</field>
+      </fields>
+      <pins>
+        <pin num="1" name="USB" type="power_in"/>
+        <pin num="2" name="GND" type="power_in"/>
+        <pin num="3" name="~POK(CHG)" type="output"/>
+        <pin num="4" name="DC" type="power_in"/>
+        <pin num="5" name="BAT" type="power_out"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Device">
+      <uri>C:\Program Files\KiCad\share\kicad\library/Device.lib</uri>
+    </library>
+    <library logical="MOMI-rescue">
+      <uri>C:\Users\Josh\OneDrive\Code\KiCAD\MOMI/MOMI-rescue.lib</uri>
+    </library>
+    <library logical="Switch">
+      <uri>C:\Program Files\KiCad\share\kicad\library/Switch.lib</uri>
+    </library>
+    <library logical="dk_PMIC-Battery-Chargers">
+      <uri>C:/Program Files/KiCad/digikey-kicad-library/digikey-symbols/dk_PMIC-Battery-Chargers.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(J13-PadTN)">
+      <node ref="J13" pin="TN"/>
+    </net>
+    <net code="2" name="Net-(J13-PadRN)">
+      <node ref="J13" pin="RN"/>
+    </net>
+    <net code="3" name="Net-(J8-Pad5)">
+      <node ref="J8" pin="5"/>
+    </net>
+    <net code="4" name="Net-(C4-Pad1)">
+      <node ref="C4" pin="1"/>
+      <node ref="R20" pin="1"/>
+      <node ref="J8" pin="7"/>
+    </net>
+    <net code="5" name="GND">
+      <node ref="J5" pin="1"/>
+      <node ref="D2" pin="1"/>
+      <node ref="D4" pin="1"/>
+      <node ref="U1" pin="5"/>
+      <node ref="J6" pin="5"/>
+      <node ref="J7" pin="1"/>
+      <node ref="J12" pin="1"/>
+      <node ref="J3" pin="3"/>
+      <node ref="D3" pin="1"/>
+      <node ref="D6" pin="1"/>
+      <node ref="D5" pin="1"/>
+      <node ref="J4" pin="2"/>
+      <node ref="J1" pin="3"/>
+      <node ref="BT1" pin="2"/>
+      <node ref="U2" pin="2"/>
+      <node ref="SW2" pin="3"/>
+      <node ref="D7" pin="1"/>
+      <node ref="C5" pin="2"/>
+      <node ref="C6" pin="2"/>
+      <node ref="SW1" pin="S2"/>
+      <node ref="J13" pin="S"/>
+      <node ref="C4" pin="2"/>
+      <node ref="J8" pin="4"/>
+    </net>
+    <net code="6" name="Net-(J11-PadT)">
+      <node ref="J11" pin="T"/>
+      <node ref="J8" pin="2"/>
+    </net>
+    <net code="7" name="Net-(R14-Pad1)">
+      <node ref="R14" pin="1"/>
+      <node ref="SW1" pin="S1"/>
+    </net>
+    <net code="8" name="Net-(R12-Pad2)">
+      <node ref="R12" pin="2"/>
+      <node ref="SW1" pin="B"/>
+    </net>
+    <net code="9" name="Net-(J7-Pad17)">
+      <node ref="R13" pin="1"/>
+      <node ref="J7" pin="17"/>
+    </net>
+    <net code="10" name="SIG1&amp;CSO">
+      <node ref="J3" pin="7"/>
+      <node ref="J8" pin="13"/>
+    </net>
+    <net code="11" name="Net-(C3-Pad1)">
+      <node ref="J11" pin="S"/>
+      <node ref="R18" pin="2"/>
+      <node ref="C3" pin="1"/>
+    </net>
+    <net code="12" name="Net-(R13-Pad2)">
+      <node ref="R13" pin="2"/>
+      <node ref="SW1" pin="A"/>
+    </net>
+    <net code="13" name="SCL">
+      <node ref="R7" pin="2"/>
+      <node ref="J7" pin="5"/>
+      <node ref="J5" pin="4"/>
+      <node ref="J12" pin="3"/>
+    </net>
+    <net code="14" name="SDA">
+      <node ref="J7" pin="6"/>
+      <node ref="R6" pin="1"/>
+      <node ref="J5" pin="3"/>
+      <node ref="J12" pin="4"/>
+    </net>
+    <net code="15" name="Net-(J11-PadR1)">
+      <node ref="J11" pin="R1"/>
+      <node ref="J8" pin="3"/>
+    </net>
+    <net code="16" name="Net-(J2-Pad2)">
+      <node ref="J2" pin="2"/>
+    </net>
+    <net code="17" name="Net-(J2-Pad1)">
+      <node ref="J2" pin="1"/>
+    </net>
+    <net code="18" name="Net-(J2-Pad3)">
+      <node ref="J2" pin="3"/>
+    </net>
+    <net code="19" name="Net-(J4-Pad1)">
+      <node ref="J4" pin="1"/>
+    </net>
+    <net code="20" name="Net-(J4-Pad3)">
+      <node ref="J4" pin="3"/>
+    </net>
+    <net code="21" name="SIG0&amp;CSO">
+      <node ref="J8" pin="12"/>
+      <node ref="J1" pin="7"/>
+    </net>
+    <net code="22" name="Net-(J7-Pad4)">
+      <node ref="R14" pin="2"/>
+      <node ref="J7" pin="4"/>
+    </net>
+    <net code="23" name="Net-(J7-Pad16)">
+      <node ref="R12" pin="1"/>
+      <node ref="J7" pin="16"/>
+    </net>
+    <net code="24" name="Net-(D7-Pad2)">
+      <node ref="R21" pin="1"/>
+      <node ref="D7" pin="2"/>
+    </net>
+    <net code="25" name="VUSB">
+      <node ref="C6" pin="1"/>
+      <node ref="U2" pin="1"/>
+    </net>
+    <net code="26" name="Net-(J8-Pad18)">
+      <node ref="SW2" pin="2"/>
+      <node ref="R21" pin="2"/>
+      <node ref="J8" pin="18"/>
+    </net>
+    <net code="27" name="Net-(U2-Pad4)">
+      <node ref="U2" pin="4"/>
+    </net>
+    <net code="28" name="Net-(BT1-Pad1)">
+      <node ref="C5" pin="1"/>
+      <node ref="R23" pin="2"/>
+      <node ref="D8" pin="1"/>
+      <node ref="U2" pin="3"/>
+      <node ref="BT1" pin="1"/>
+      <node ref="SW2" pin="1"/>
+    </net>
+    <net code="29" name="Net-(J13-PadT)">
+      <node ref="J13" pin="T"/>
+      <node ref="J7" pin="18"/>
+    </net>
+    <net code="30" name="Net-(J10-Pad5)">
+      <node ref="J10" pin="5"/>
+      <node ref="J8" pin="15"/>
+    </net>
+    <net code="31" name="Net-(J10-Pad4)">
+      <node ref="J8" pin="14"/>
+      <node ref="J10" pin="4"/>
+    </net>
+    <net code="32" name="Net-(J10-Pad3)">
+      <node ref="J10" pin="3"/>
+      <node ref="J8" pin="11"/>
+    </net>
+    <net code="33" name="Net-(J10-Pad2)">
+      <node ref="J10" pin="2"/>
+      <node ref="J8" pin="10"/>
+    </net>
+    <net code="34" name="Net-(J10-Pad1)">
+      <node ref="J8" pin="9"/>
+      <node ref="J10" pin="1"/>
+    </net>
+    <net code="35" name="Net-(C1-Pad1)">
+      <node ref="J8" pin="1"/>
+      <node ref="R15" pin="1"/>
+      <node ref="C1" pin="1"/>
+    </net>
+    <net code="36" name="Net-(R22-Pad2)">
+      <node ref="R23" pin="1"/>
+      <node ref="U2" pin="5"/>
+      <node ref="R22" pin="2"/>
+    </net>
+    <net code="37" name="Net-(D8-Pad2)">
+      <node ref="R22" pin="1"/>
+      <node ref="D8" pin="2"/>
+    </net>
+    <net code="38" name="Net-(J7-Pad2)">
+      <node ref="R1" pin="1"/>
+      <node ref="U1" pin="6"/>
+      <node ref="J7" pin="2"/>
+    </net>
+    <net code="39" name="Net-(U1-Pad7)">
+      <node ref="U1" pin="7"/>
+    </net>
+    <net code="40" name="Net-(J2-Pad4)">
+      <node ref="R2" pin="1"/>
+      <node ref="J2" pin="4"/>
+    </net>
+    <net code="41" name="Net-(U1-Pad1)">
+      <node ref="U1" pin="1"/>
+    </net>
+    <net code="42" name="Net-(D1-Pad1)">
+      <node ref="D1" pin="1"/>
+      <node ref="U1" pin="2"/>
+      <node ref="R2" pin="2"/>
+    </net>
+    <net code="43" name="Net-(D1-Pad2)">
+      <node ref="J2" pin="5"/>
+      <node ref="U1" pin="3"/>
+      <node ref="D1" pin="2"/>
+    </net>
+    <net code="44" name="Net-(J7-Pad8)">
+      <node ref="R8" pin="2"/>
+      <node ref="J7" pin="8"/>
+    </net>
+    <net code="45" name="Net-(D3-Pad2)">
+      <node ref="D3" pin="2"/>
+      <node ref="R8" pin="1"/>
+    </net>
+    <net code="46" name="Net-(J4-Pad4)">
+      <node ref="R3" pin="2"/>
+      <node ref="J4" pin="4"/>
+    </net>
+    <net code="47" name="Net-(J7-Pad3)">
+      <node ref="J7" pin="3"/>
+      <node ref="R4" pin="1"/>
+    </net>
+    <net code="48" name="Net-(J4-Pad5)">
+      <node ref="R4" pin="2"/>
+      <node ref="J4" pin="5"/>
+    </net>
+    <net code="49" name="Net-(J7-Pad9)">
+      <node ref="R9" pin="2"/>
+      <node ref="J7" pin="9"/>
+    </net>
+    <net code="50" name="Net-(U1-Pad4)">
+      <node ref="U1" pin="4"/>
+    </net>
+    <net code="51" name="3.3V">
+      <node ref="J3" pin="1"/>
+      <node ref="J1" pin="1"/>
+      <node ref="SW1" pin="C"/>
+      <node ref="J1" pin="5"/>
+      <node ref="J3" pin="5"/>
+      <node ref="J9" pin="T"/>
+      <node ref="R6" pin="2"/>
+      <node ref="R17" pin="1"/>
+      <node ref="R7" pin="1"/>
+      <node ref="U1" pin="8"/>
+      <node ref="J8" pin="16"/>
+      <node ref="J7" pin="15"/>
+      <node ref="J5" pin="2"/>
+      <node ref="R1" pin="2"/>
+      <node ref="J12" pin="2"/>
+      <node ref="R3" pin="1"/>
+    </net>
+    <net code="52" name="Net-(J6-Pad4)">
+      <node ref="J6" pin="4"/>
+    </net>
+    <net code="53" name="Net-(J6-Pad3)">
+      <node ref="J6" pin="3"/>
+    </net>
+    <net code="54" name="Net-(J6-Pad2)">
+      <node ref="J6" pin="2"/>
+    </net>
+    <net code="55" name="Net-(J6-Pad1)">
+      <node ref="J6" pin="1"/>
+    </net>
+    <net code="56" name="Net-(D2-Pad2)">
+      <node ref="R5" pin="1"/>
+      <node ref="D2" pin="2"/>
+    </net>
+    <net code="57" name="Net-(D6-Pad2)">
+      <node ref="D6" pin="2"/>
+      <node ref="R11" pin="1"/>
+    </net>
+    <net code="58" name="Net-(D5-Pad2)">
+      <node ref="D5" pin="2"/>
+      <node ref="R10" pin="1"/>
+    </net>
+    <net code="59" name="Net-(D4-Pad2)">
+      <node ref="D4" pin="2"/>
+      <node ref="R9" pin="1"/>
+    </net>
+    <net code="60" name="Net-(J7-Pad10)">
+      <node ref="J7" pin="10"/>
+      <node ref="R10" pin="2"/>
+    </net>
+    <net code="61" name="Net-(J7-Pad11)">
+      <node ref="J7" pin="11"/>
+      <node ref="R11" pin="2"/>
+    </net>
+    <net code="62" name="Net-(J7-Pad7)">
+      <node ref="J7" pin="7"/>
+      <node ref="R5" pin="2"/>
+    </net>
+    <net code="63" name="SEL2&amp;MISO0">
+      <node ref="J7" pin="14"/>
+      <node ref="J1" pin="6"/>
+      <node ref="J3" pin="6"/>
+    </net>
+    <net code="64" name="SEL1&amp;MOSI0">
+      <node ref="J7" pin="13"/>
+      <node ref="J1" pin="4"/>
+      <node ref="J3" pin="4"/>
+    </net>
+    <net code="65" name="SEL0">
+      <node ref="J7" pin="12"/>
+      <node ref="J3" pin="2"/>
+      <node ref="J1" pin="2"/>
+    </net>
+    <net code="66" name="SEL3&amp;SCK0">
+      <node ref="J8" pin="6"/>
+      <node ref="J3" pin="8"/>
+      <node ref="J1" pin="8"/>
+    </net>
+    <net code="67" name="Net-(C2-Pad1)">
+      <node ref="C2" pin="1"/>
+      <node ref="R16" pin="2"/>
+      <node ref="R18" pin="1"/>
+      <node ref="R17" pin="2"/>
+    </net>
+    <net code="68" name="Net-(C3-Pad2)">
+      <node ref="R19" pin="2"/>
+      <node ref="J8" pin="8"/>
+      <node ref="C3" pin="2"/>
+    </net>
+    <net code="69" name="Net-(J9-PadTN)">
+      <node ref="J9" pin="TN"/>
+    </net>
+    <net code="70" name="Net-(J9-PadR)">
+      <node ref="J9" pin="R"/>
+      <node ref="R15" pin="2"/>
+    </net>
+    <net code="71" name="AGND">
+      <node ref="R19" pin="1"/>
+      <node ref="C2" pin="2"/>
+      <node ref="C1" pin="2"/>
+      <node ref="J11" pin="R2"/>
+      <node ref="R16" pin="1"/>
+      <node ref="J8" pin="17"/>
+      <node ref="J9" pin="S"/>
+      <node ref="J9" pin="RN"/>
+    </net>
+    <net code="72" name="Net-(J13-PadR)">
+      <node ref="J13" pin="R"/>
+      <node ref="R20" pin="2"/>
+    </net>
+  </nets>
+</export>

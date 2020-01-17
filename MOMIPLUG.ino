@@ -25,8 +25,8 @@ const int fs0led = 11;  //LED for FS0
 const int editPin = 12; //edit button (push switch on encoder)
 const int led0 = 13;    //the onboard (orange) LED
 const int expPin = 14;  //analog input for expression pedal
-const int ringPin = 15; //footswitch 1
-const int tipPin = 16;  //footswitch 0
+const int ringPin = 15; //footswitch 0
+const int tipPin = 16;  //footswitch 1
 const int but1pin = 17; //onboard buttons
 const int but2pin = 18; //
 const int but3pin = 19; //
@@ -76,8 +76,8 @@ Track* Ts[3];
 MIDIbutton* Bs[23];
 MIDIpot* Ps[18];
 
-uint16_t inLo = 0;    // for the paperclip FX
-uint16_t inHi = 1023; // for the paperclip FX
+uint16_t inLo = 0; // for the paperclip FX
+uint16_t inHi = 0; // for the paperclip FX
 
 void setup(){ // INITIALIZATION #########################################
   EEPROM.get(255, MIDIchannel);
@@ -93,8 +93,12 @@ void setup(){ // INITIALIZATION #########################################
   Ts[2] = new Track(but3pin, 107);
 
   Bs[0] = new MIDIbutton(but1pin, 102, LATCH, TOUCH);
+  Bs[0]->setThreshold();
   Bs[1] = new MIDIbutton(but2pin, 103, LATCH, TOUCH);
+  Bs[1]->setThreshold();
   Bs[2] = new MIDIbutton(but3pin, 104, LATCH, TOUCH);
+  Bs[2]->setThreshold();
+
   Bs[3] = new MIDIbutton(ringPin, 80, 0);
   EEPROM.get(4, Bs[3]->mode);
   Bs[4] = new MIDIbutton(tipPin, 81, 0);
@@ -150,12 +154,12 @@ void setup(){ // INITIALIZATION #########################################
   USBMIDI.setHandlePitchChange(onUSBPitchBend);
 
   // UNCOMMENT THESE TO RESTORE DEFAULTS
-/*  EEPROM.put(255, 3); EEPROM.put(1, true);  // MIDIchannel, readMIDIthru
+  EEPROM.put(255, 3); EEPROM.put(1, true);  // MIDIchannel, readMIDIthru
   EEPROM.put(2, false); EEPROM.put(3, false); // readAnalogMUX, readDigitalMux
   EEPROM.put(4, 0); EEPROM.put(8, 1);         // FS0 mode, FS1 mode
   EEPROM.put(12, 0);                          // EXP killSwitch #
   EEPROM.put(16, 0); EEPROM.put(20, 1023);    // Header min, max 
-  */
+
 }
 
 void loop(){ // PROGRAM #################################################
@@ -212,13 +216,13 @@ void loop(){ // PROGRAM #################################################
     }
     
     if(trackMode){
-      for(int i=0; i<3; i++){
+      for(int i=0; i<3; i++){ // bulk send track volumes
         usbMIDI.sendControlChange(Ts[i]->number, Ts[i]->level, MIDIchannel);
       }
       strcpy(DSPstring, "trac");
     }
     else{
-      if(readAnalogMUX){
+      if(readAnalogMUX){ // bulk send analog values
         for(int i=2; i<10; i++){ // Use i<10 for MUX8, i<18 for MUX16
           usbMIDI.sendControlChange(Ps[i]->number, Ps[i]->value, MIDIchannel);          
         }

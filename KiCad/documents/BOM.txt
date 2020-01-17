@@ -1,0 +1,3 @@
+3DX_CUI_DEVICES_Supplier: CUI Devices
+3DX_CUI_DEVICES_Description: 5 Pin, Right-Angle Receptacle, 180°
+3DX_CUI_DEVICES_Model Number: SDS-50J

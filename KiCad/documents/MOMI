@@ -1,0 +1,65 @@
+Source,C:\Users\Josh\OneDrive\Code\KiCAD\MOMI\MOMI.sch
+Kicad Rev,Eeschema (5.1.5)-3
+Generated Date,1/16/2020 3:35:44 PM
+
+Title,Not Set
+Company,Not Set
+Revision,Not Set
+Date Issue,Not Set
+
+Reference,Value,Category,DK_Datasheet_Link,DK_Detail_Page,Description,Digi-Key_PN,Family,MPN,Manufacturer,Status,Library,Library Ref
+J4,MIDI out,MOMI-rescue,DIN-5_180degree-Connector
+D4,LED,MOMI-rescue,LED-Device
+D5,LED,MOMI-rescue,LED-Device
+D6,LED,MOMI-rescue,LED-Device
+D3,LED,MOMI-rescue,LED-Device
+D2,LED,MOMI-rescue,LED-Device
+J6,USB_A,MOMI-rescue,USB_A-Connector
+J5,JST 1mm (I2C),MOMI-rescue,Conn_01x04_Male-Connector
+J3,Conn_02x04_Male,MOMI-rescue,Conn_01x08_Male-Connector
+J1,Conn_02x04_Male,MOMI-rescue,Conn_01x08_Male-Connector
+R5,330,MOMI-rescue,R-Device
+R4,220,MOMI-rescue,R-Device
+R3,220,MOMI-rescue,R-Device
+R11,330,MOMI-rescue,R-Device
+R10,330,MOMI-rescue,R-Device
+R9,330,MOMI-rescue,R-Device
+R8,330,MOMI-rescue,R-Device
+J2,MIDI in,MOMI-rescue,DIN-5_180degree-Connector
+R1,270,MOMI-rescue,R-Device
+U1,6N137,Isolators,https://media.digikey.com/pdf/Data%20Sheets/Lite-On%20PDFs/6N137%20Series.pdf,/product-detail/en/lite-on-inc/6N137/160-1791-ND/1969175,OPTOISO 5KV 1CH OPEN COLL 8DIP,160-1791-ND,Optoisolators - Logic Output,6N137,Lite-On Inc.,Active,MOMI-rescue,6N137-dk_Optoisolators-Logic-Output
+D1,D,MOMI-rescue,D-Device
+R2,220,MOMI-rescue,R-Device
+C1,10uF,MOMI-rescue,CP1-Device
+R15,47k,MOMI-rescue,R-Device
+J9,Expression Pedal,MOMI-rescue,AudioJack3_SwitchTR-Connector
+R20,47k,MOMI-rescue,R-Device
+C4,10uF,MOMI-rescue,CP1-Device
+J11,AudioJack4,MOMI-rescue,AudioJack4-Connector
+R19,47k,MOMI-rescue,R-Device
+R17,10k,MOMI-rescue,R-Device
+C3,10uF,MOMI-rescue,CP1-Device
+C2,10uF,MOMI-rescue,CP1-Device
+R16,2.2k,MOMI-rescue,R-Device
+R7,4.7k,MOMI-rescue,R-Device
+R6,4.7k,MOMI-rescue,R-Device
+J7,Conn_01x18_Female,MOMI-rescue,Conn_01x18_Female-Connector
+J8,Conn_01x18_Female,MOMI-rescue,Conn_01x18_Female-Connector
+J13,Dual Footswitch,MOMI-rescue,AudioJack3_SwitchTR-Connector
+R12,10k,MOMI-rescue,R-Device
+R13,10k,MOMI-rescue,R-Device
+R14,10k,MOMI-rescue,R-Device
+R18,47k,MOMI-rescue,R-Device
+SW1,Encoder_Switch,MOMI-rescue,Rotary_Encoder_Switch-Device
+J10,Conn_01x05_Male,MOMI-rescue,Conn_01x05_Male-Connector
+J12,Conn_01x04_Female,MOMI-rescue,Conn_01x04_Female-Connector
+R23,100k,MOMI-rescue,R-Device
+C6,1uF,MOMI-rescue,CP1-Device
+C5,1uF,MOMI-rescue,CP1-Device
+D8,LED,MOMI-rescue,LED-Device
+R22,330,MOMI-rescue,R-Device
+SW2,SW_SPDT,Switch,SW_SPDT
+R21,330,MOMI-rescue,R-Device
+D7,LED,MOMI-rescue,LED-Device
+U2,MAX1555EZK_T,Integrated Circuits (ICs),https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf,/product-detail/en/maxim-integrated/MAX1555EZK-T/MAX1555EZK-TCT-ND/2699449,IC BATT CHRGR LI+ 1CELL SOT23-5,MAX1555EZK+TCT-ND,PMIC - Battery Chargers,MAX1555EZK+T,Maxim Integrated,Active,dk_PMIC-Battery-Chargers,MAX1555EZK_T
+BT1,Battery_Cell,Device,Battery_Cell

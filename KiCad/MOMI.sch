@@ -1,0 +1,1030 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L MOMI-rescue:DIN-5_180degree-Connector J4
+U 1 1 5E04D69D
+P 2300 4450
+F 0 "J4" H 2300 4175 50  0000 C CNN
+F 1 "MIDI out" H 2300 4084 50  0000 C CNN
+F 2 "Connect:SDS-50J" H 2300 4450 50  0001 C CNN
+F 3 "http://www.mouser.com/ds/2/18/40_c091_abd_e-75918.pdf" H 2300 4450 50  0001 C CNN
+	1    2300 4450
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:LED-Device D4
+U 1 1 5E04FCFA
+P 4200 3950
+F 0 "D4" H 4193 4166 50  0000 C CNN
+F 1 "LED" H 4193 4075 50  0000 C CNN
+F 2 "LED_THT_3D:LED_D3.0mm" H 4200 3950 50  0001 C CNN
+F 3 "~" H 4200 3950 50  0001 C CNN
+	1    4200 3950
+	0    -1   -1   0   
+$EndComp
+$Comp
+L MOMI-rescue:LED-Device D5
+U 1 1 5E050829
+P 4650 4050
+F 0 "D5" H 4643 4266 50  0000 C CNN
+F 1 "LED" H 4643 4175 50  0000 C CNN
+F 2 "LED_THT_3D:LED_D3.0mm" H 4650 4050 50  0001 C CNN
+F 3 "~" H 4650 4050 50  0001 C CNN
+	1    4650 4050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L MOMI-rescue:LED-Device D6
+U 1 1 5E051026
+P 5100 4150
+F 0 "D6" H 5093 4366 50  0000 C CNN
+F 1 "LED" H 5093 4275 50  0000 C CNN
+F 2 "LED_THT_3D:LED_D3.0mm" H 5100 4150 50  0001 C CNN
+F 3 "~" H 5100 4150 50  0001 C CNN
+	1    5100 4150
+	0    -1   -1   0   
+$EndComp
+$Comp
+L MOMI-rescue:LED-Device D3
+U 1 1 5E0518C7
+P 3750 3850
+F 0 "D3" H 3743 4066 50  0000 C CNN
+F 1 "LED" H 3743 3975 50  0000 C CNN
+F 2 "LED_THT_3D:LED_D3.0mm" H 3750 3850 50  0001 C CNN
+F 3 "~" H 3750 3850 50  0001 C CNN
+	1    3750 3850
+	0    -1   -1   0   
+$EndComp
+$Comp
+L MOMI-rescue:LED-Device D2
+U 1 1 5E0520C3
+P 3300 3750
+F 0 "D2" H 3293 3966 50  0000 C CNN
+F 1 "LED" H 3293 3875 50  0000 C CNN
+F 2 "LED_THT_3D:LED_D3.0mm" H 3300 3750 50  0001 C CNN
+F 3 "~" H 3300 3750 50  0001 C CNN
+	1    3300 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L MOMI-rescue:USB_A-Connector J6
+U 1 1 5E057252
+P 4550 5150
+F 0 "J6" H 4607 5617 50  0000 C CNN
+F 1 "USB_A" H 4607 5526 50  0000 C CNN
+F 2 "USB_3D:USB_A_Stewart_SS-52100-001_Horizontal" H 4700 5100 50  0001 C CNN
+F 3 " ~" H 4700 5100 50  0001 C CNN
+	1    4550 5150
+	-1   0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:Conn_01x04_Male-Connector J5
+U 1 1 5E05F0B0
+P 3300 5350
+F 0 "J5" H 3408 5631 50  0000 C CNN
+F 1 "JST 1mm (I2C)" H 3408 5540 50  0000 C CNN
+F 2 "Conn_JST_3D:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal" H 3300 5350 50  0001 C CNN
+F 3 "~" H 3300 5350 50  0001 C CNN
+	1    3300 5350
+	1    0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:Conn_01x08_Male-Connector J3
+U 1 1 5E05FEBB
+P 2050 5500
+F 0 "J3" H 2158 5981 50  0000 C CNN
+F 1 "Conn_02x04_Male" H 2158 5890 50  0000 C CNN
+F 2 "P_2.54_3D:PinHeader_2x04_P2.54mm_Horizontal" H 2050 5500 50  0001 C CNN
+F 3 "~" H 2050 5500 50  0001 C CNN
+	1    2050 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:Conn_01x08_Male-Connector J1
+U 1 1 5E061537
+P 1150 5500
+F 0 "J1" H 1258 5981 50  0000 C CNN
+F 1 "Conn_02x04_Male" H 1258 5890 50  0000 C CNN
+F 2 "P_2.54_3D:PinHeader_2x04_P2.54mm_Horizontal" H 1150 5500 50  0001 C CNN
+F 3 "~" H 1150 5500 50  0001 C CNN
+	1    1150 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R5
+U 1 1 5E05AC77
+P 3300 3450
+F 0 "R5" H 3370 3496 50  0000 L CNN
+F 1 "330" H 3370 3405 50  0000 L CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 3230 3450 50  0001 C CNN
+F 3 "~" H 3300 3450 50  0001 C CNN
+	1    3300 3450
+	-1   0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R4
+U 1 1 5E05B491
+P 2600 4150
+F 0 "R4" H 2670 4196 50  0000 L CNN
+F 1 "220" H 2670 4105 50  0000 L CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 2530 4150 50  0001 C CNN
+F 3 "~" H 2600 4150 50  0001 C CNN
+	1    2600 4150
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R3
+U 1 1 5E05B87D
+P 2000 4150
+F 0 "R3" H 2070 4196 50  0000 L CNN
+F 1 "220" H 2070 4105 50  0000 L CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 1930 4150 50  0001 C CNN
+F 3 "~" H 2000 4150 50  0001 C CNN
+	1    2000 4150
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R11
+U 1 1 5E05DBD1
+P 5100 3850
+F 0 "R11" H 5170 3896 50  0000 L CNN
+F 1 "330" H 5170 3805 50  0000 L CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 5030 3850 50  0001 C CNN
+F 3 "~" H 5100 3850 50  0001 C CNN
+	1    5100 3850
+	-1   0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R10
+U 1 1 5E05DBD7
+P 4650 3750
+F 0 "R10" H 4720 3796 50  0000 L CNN
+F 1 "330" H 4720 3705 50  0000 L CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 4580 3750 50  0001 C CNN
+F 3 "~" H 4650 3750 50  0001 C CNN
+	1    4650 3750
+	-1   0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R9
+U 1 1 5E05DBDD
+P 4200 3650
+F 0 "R9" H 4270 3696 50  0000 L CNN
+F 1 "330" H 4270 3605 50  0000 L CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 4130 3650 50  0001 C CNN
+F 3 "~" H 4200 3650 50  0001 C CNN
+	1    4200 3650
+	-1   0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R8
+U 1 1 5E05DBE3
+P 3750 3550
+F 0 "R8" H 3820 3596 50  0000 L CNN
+F 1 "330" H 3820 3505 50  0000 L CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 3680 3550 50  0001 C CNN
+F 3 "~" H 3750 3550 50  0001 C CNN
+	1    3750 3550
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	1850 4000 1850 4350
+Connection ~ 1850 4000
+Wire Wire Line
+	1850 4000 1700 4000
+Wire Wire Line
+	1850 3700 1850 4000
+Wire Wire Line
+	1650 3700 1850 3700
+Wire Wire Line
+	1250 4300 1250 4350
+Connection ~ 1250 4000
+Wire Wire Line
+	1250 4000 1400 4000
+Wire Wire Line
+	1250 3700 1250 4000
+Wire Wire Line
+	1450 3700 1250 3700
+$Comp
+L MOMI-rescue:DIN-5_180degree-Connector J2
+U 1 1 5E04C6C3
+P 1550 4450
+F 0 "J2" H 1550 4175 50  0000 C CNN
+F 1 "MIDI in" H 1550 4084 50  0000 C CNN
+F 2 "Connect:SDS-50J" H 1550 4450 50  0001 C CNN
+F 3 "http://www.mouser.com/ds/2/18/40_c091_abd_e-75918.pdf" H 1550 4450 50  0001 C CNN
+	1    1550 4450
+	1    0    0    -1  
+$EndComp
+NoConn ~ 1450 2900
+Wire Wire Line
+	1550 2800 1550 2900
+Wire Wire Line
+	1250 2800 1550 2800
+Wire Wire Line
+	1250 2900 1250 2800
+Wire Wire Line
+	1250 3200 1250 3300
+$Comp
+L MOMI-rescue:R-Device R1
+U 1 1 5E05C020
+P 1250 3050
+F 0 "R1" H 1181 3096 50  0000 R CNN
+F 1 "270" H 1181 3005 50  0000 R CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 1180 3050 50  0001 C CNN
+F 3 "~" H 1250 3050 50  0001 C CNN
+	1    1250 3050
+	1    0    0    -1  
+$EndComp
+Text GLabel 1200 3300 0    50   Input ~ 0
+3.3V
+$Comp
+L MOMI-rescue:6N137-dk_Optoisolators-Logic-Output U1
+U 1 1 5E061B4C
+P 1550 3300
+F 0 "U1" V 1850 3100 60  0000 R CNN
+F 1 "6N137" V 1750 3100 60  0000 R CNN
+F 2 "Housings_DIP:DIP-8_W7.62mm_Socket" H 1750 3500 60  0001 L CNN
+F 3 "https://media.digikey.com/pdf/Data%20Sheets/Lite-On%20PDFs/6N137%20Series.pdf" H 1750 3600 60  0001 L CNN
+F 4 "160-1791-ND" H 1750 3700 60  0001 L CNN "Digi-Key_PN"
+F 5 "6N137" H 1750 3800 60  0001 L CNN "MPN"
+F 6 "Isolators" H 1750 3900 60  0001 L CNN "Category"
+F 7 "Optoisolators - Logic Output" H 1750 4000 60  0001 L CNN "Family"
+F 8 "https://media.digikey.com/pdf/Data%20Sheets/Lite-On%20PDFs/6N137%20Series.pdf" H 1750 4100 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/lite-on-inc/6N137/160-1791-ND/1969175" H 1750 4200 60  0001 L CNN "DK_Detail_Page"
+F 10 "OPTOISO 5KV 1CH OPEN COLL 8DIP" H 1750 4300 60  0001 L CNN "Description"
+F 11 "Lite-On Inc." H 1750 4400 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 1750 4500 60  0001 L CNN "Status"
+	1    1550 3300
+	0    -1   -1   0   
+$EndComp
+$Comp
+L MOMI-rescue:D-Device D1
+U 1 1 5E05FA02
+P 1550 4000
+F 0 "D1" H 1550 4216 50  0000 C CNN
+F 1 "D" H 1550 4125 50  0000 C CNN
+F 2 "D_SMD_3D:D_0805_2012Metric" H 1550 4000 50  0001 C CNN
+F 3 "~" H 1550 4000 50  0001 C CNN
+	1    1550 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R2
+U 1 1 5E05C6A3
+P 1250 4150
+F 0 "R2" H 1450 4100 50  0000 R CNN
+F 1 "220" H 1450 4200 50  0000 R CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 1180 4150 50  0001 C CNN
+F 3 "~" H 1250 4150 50  0001 C CNN
+	1    1250 4150
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2000 4300 2000 4350
+Wire Wire Line
+	2600 4300 2600 4350
+Text GLabel 2000 4000 1    50   Input ~ 0
+3.3V
+Wire Wire Line
+	2600 4000 2600 2900
+Text GLabel 6700 2900 2    50   Input ~ 0
+3.3V
+Text GLabel 5800 2700 0    50   Input ~ 0
+GND
+Text GLabel 3750 5350 2    50   Input ~ 0
+3.3V
+Text GLabel 3750 5450 2    50   Input ~ 0
+GND
+Text GLabel 2250 5900 2    50   Input ~ 0
+SEL3&SCK0
+Text GLabel 1350 5500 2    50   Input ~ 0
+SEL1&MOSI0
+Text GLabel 1350 5300 2    50   Input ~ 0
+SEL0
+Text GLabel 1350 5400 2    50   Input ~ 0
+GND
+Text GLabel 2250 5600 2    50   Input ~ 0
+3.3V
+Text GLabel 1350 5700 2    50   Input ~ 0
+SEL2&MISO0
+Text GLabel 2250 5400 2    50   Input ~ 0
+GND
+Text GLabel 1350 5600 2    50   Input ~ 0
+3.3V
+Text GLabel 1350 5800 2    50   Input ~ 0
+SIG0&CSO
+Text GLabel 2250 5800 2    50   Input ~ 0
+SIG1&CSO
+Text GLabel 1350 5900 2    50   Input ~ 0
+SEL3&SCK0
+Text GLabel 2250 5500 2    50   Input ~ 0
+SEL1&MOSI0
+Text GLabel 2250 5700 2    50   Input ~ 0
+SEL2&MISO0
+Text GLabel 2250 5300 2    50   Input ~ 0
+SEL0
+Text GLabel 6700 3200 2    50   Input ~ 0
+SIG1&CSO
+Text GLabel 6700 3300 2    50   Input ~ 0
+SIG0&CSO
+Text GLabel 6700 3900 2    50   Input ~ 0
+SEL3&SCK0
+Wire Wire Line
+	6700 5150 6800 5150
+Wire Wire Line
+	7300 5150 7100 5150
+$Comp
+L MOMI-rescue:CP1-Device C1
+U 1 1 5E1743DC
+P 6700 5300
+F 0 "C1" H 6815 5346 50  0000 L CNN
+F 1 "10uF" H 6815 5255 50  0000 L CNN
+F 2 "C_SMD_3D:C_0805_2012Metric" H 6700 5300 50  0001 C CNN
+F 3 "~" H 6700 5300 50  0001 C CNN
+	1    6700 5300
+	-1   0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R15
+U 1 1 5E1743D6
+P 6950 5150
+F 0 "R15" V 7157 5150 50  0000 C CNN
+F 1 "47k" V 7066 5150 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 6880 5150 50  0001 C CNN
+F 3 "~" H 6950 5150 50  0001 C CNN
+	1    6950 5150
+	0    -1   -1   0   
+$EndComp
+NoConn ~ 7300 5450
+Text GLabel 7300 5350 0    50   Input ~ 0
+3.3V
+$Comp
+L MOMI-rescue:AudioJack3_SwitchTR-Connector J9
+U 1 1 5E1743CD
+P 7500 5150
+F 0 "J9" H 7500 4700 50  0000 C CNN
+F 1 "Expression Pedal" H 7450 4600 50  0000 C CNN
+F 2 "digikey-footprints:Headphone_Jack_6.35mm_RA49B14B" H 7500 5150 50  0001 C CNN
+F 3 "~" H 7500 5150 50  0001 C CNN
+	1    7500 5150
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	9800 3800 9900 3800
+Wire Wire Line
+	10400 3800 10200 3800
+$Comp
+L MOMI-rescue:R-Device R20
+U 1 1 5E18257F
+P 10050 3800
+F 0 "R20" V 10257 3800 50  0000 C CNN
+F 1 "47k" V 10166 3800 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 9980 3800 50  0001 C CNN
+F 3 "~" H 10050 3800 50  0001 C CNN
+	1    10050 3800
+	0    -1   1    0   
+$EndComp
+Text GLabel 10400 3700 0    50   Input ~ 0
+GND
+NoConn ~ 10400 4100
+Wire Wire Line
+	10400 4000 10300 4000
+$Comp
+L MOMI-rescue:CP1-Device C4
+U 1 1 5E182585
+P 9800 3650
+F 0 "C4" H 9915 3696 50  0000 L CNN
+F 1 "10uF" H 9915 3605 50  0000 L CNN
+F 2 "C_SMD_3D:C_0805_2012Metric" H 9800 3650 50  0001 C CNN
+F 3 "~" H 9800 3650 50  0001 C CNN
+	1    9800 3650
+	-1   0    0    1   
+$EndComp
+Text GLabel 9800 3500 1    50   Input ~ 0
+GND
+NoConn ~ 10400 3900
+Text GLabel 6700 5450 3    50   Input ~ 0
+AGND
+$Comp
+L MOMI-rescue:AudioJack4-Connector J11
+U 1 1 5E054C8A
+P 9150 4500
+F 0 "J11" H 8950 4800 50  0000 C CNN
+F 1 "AudioJack4" H 9000 4700 50  0000 C CNN
+F 2 "Conn_Aud_3D:Jack_3.5mm_PJ320D_Horizontal" H 9150 4500 50  0001 C CNN
+F 3 "~" H 9150 4500 50  0001 C CNN
+	1    9150 4500
+	-1   0    0    1   
+$EndComp
+Text GLabel 5800 4100 0    50   Input ~ 0
+3.3V
+Text GLabel 5800 4000 0    50   Input ~ 0
+SEL2&MISO0
+Text GLabel 5800 3900 0    50   Input ~ 0
+SEL1&MOSI0
+Text GLabel 5800 3800 0    50   Input ~ 0
+SEL0
+Text GLabel 5800 3100 0    50   Input ~ 0
+SCL
+Text GLabel 5800 3200 0    50   Input ~ 0
+SDA
+Text GLabel 5500 5000 1    50   Input ~ 0
+3.3V
+Wire Wire Line
+	5600 5000 5600 4800
+Wire Wire Line
+	3300 3300 5800 3300
+Wire Wire Line
+	3750 3400 5800 3400
+Wire Wire Line
+	4200 3500 5800 3500
+Wire Wire Line
+	4650 3600 5800 3600
+Wire Wire Line
+	5100 3700 5800 3700
+Wire Wire Line
+	2950 3000 5800 3000
+Wire Wire Line
+	2600 2900 5800 2900
+Wire Wire Line
+	1550 2800 5800 2800
+Connection ~ 1550 2800
+$Comp
+L MOMI-rescue:R-Device R19
+U 1 1 5E12951F
+P 8800 5400
+F 0 "R19" V 8700 5400 50  0000 C CNN
+F 1 "47k" V 8600 5400 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 8730 5400 50  0001 C CNN
+F 3 "~" H 8800 5400 50  0001 C CNN
+	1    8800 5400
+	-1   0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R17
+U 1 1 5E12B745
+P 8400 5400
+F 0 "R17" V 8300 5400 50  0000 C CNN
+F 1 "10k" V 8200 5400 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 8330 5400 50  0001 C CNN
+F 3 "~" H 8400 5400 50  0001 C CNN
+	1    8400 5400
+	-1   0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:CP1-Device C3
+U 1 1 5E12E8EA
+P 8800 4900
+F 0 "C3" H 8915 4946 50  0000 L CNN
+F 1 "10uF" H 8915 4855 50  0000 L CNN
+F 2 "C_SMD_3D:C_0805_2012Metric" H 8800 4900 50  0001 C CNN
+F 3 "~" H 8800 4900 50  0001 C CNN
+	1    8800 4900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8950 4600 8800 4600
+Wire Wire Line
+	8800 4600 8800 4750
+Wire Wire Line
+	8500 4600 8400 4600
+Text GLabel 8400 5550 3    50   Input ~ 0
+3.3V
+Wire Wire Line
+	8800 5550 8800 5850
+Connection ~ 8000 5050
+Wire Wire Line
+	8000 5850 8000 5050
+Wire Wire Line
+	8000 5050 8000 4600
+Wire Wire Line
+	8100 5050 8000 5050
+Wire Wire Line
+	8100 4600 8000 4600
+Text GLabel 8000 4600 0    50   Input ~ 0
+AGND
+$Comp
+L MOMI-rescue:CP1-Device C2
+U 1 1 5E12DA20
+P 8250 4600
+F 0 "C2" V 8500 4550 50  0000 L CNN
+F 1 "10uF" V 8400 4500 50  0000 L CNN
+F 2 "C_SMD_3D:C_0805_2012Metric" H 8250 4600 50  0001 C CNN
+F 3 "~" H 8250 4600 50  0001 C CNN
+	1    8250 4600
+	0    1    1    0   
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R16
+U 1 1 5E12A3B4
+P 8250 5050
+F 0 "R16" V 8150 5050 50  0000 C CNN
+F 1 "2.2k" V 8050 5050 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 8180 5050 50  0001 C CNN
+F 3 "~" H 8250 5050 50  0001 C CNN
+	1    8250 5050
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	8400 5250 8400 5050
+Connection ~ 8400 5050
+Wire Wire Line
+	8400 5050 8400 4600
+Connection ~ 8400 4600
+Wire Wire Line
+	8800 5850 8000 5850
+Connection ~ 8800 4600
+Wire Wire Line
+	8800 5250 8800 5150
+Connection ~ 8800 5150
+Wire Wire Line
+	8800 5150 8800 5050
+Wire Wire Line
+	3300 4300 3300 3900
+Wire Wire Line
+	3750 4000 3750 4300
+Connection ~ 3750 4300
+Wire Wire Line
+	3750 4300 3300 4300
+Wire Wire Line
+	4200 4100 4200 4300
+Connection ~ 4200 4300
+Wire Wire Line
+	4200 4300 3750 4300
+Wire Wire Line
+	4650 4200 4650 4300
+Connection ~ 4650 4300
+Wire Wire Line
+	4650 4300 4200 4300
+Wire Wire Line
+	5400 5600 5400 5700
+Text GLabel 2300 4150 1    50   Input ~ 0
+GND
+Text GLabel 1850 3300 2    50   Input ~ 0
+GND
+Wire Wire Line
+	1250 3300 1200 3300
+Connection ~ 1250 3300
+NoConn ~ 2600 4450
+NoConn ~ 2000 4450
+NoConn ~ 1850 4450
+NoConn ~ 1250 4450
+NoConn ~ 1550 4150
+Wire Wire Line
+	8950 4400 8750 4400
+Wire Wire Line
+	8750 4400 8750 4200
+$Comp
+L MOMI-rescue:R-Device R7
+U 1 1 5E1335BB
+P 3650 4900
+F 0 "R7" V 3550 4850 50  0000 C CNN
+F 1 "4.7k" V 3450 4850 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 3580 4900 50  0001 C CNN
+F 3 "~" H 3650 4900 50  0001 C CNN
+	1    3650 4900
+	-1   0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R6
+U 1 1 5E135FE7
+P 3550 4900
+F 0 "R6" V 3450 4900 50  0000 C CNN
+F 1 "4.7k" V 3350 4900 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 3480 4900 50  0001 C CNN
+F 3 "~" H 3550 4900 50  0001 C CNN
+	1    3550 4900
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	3750 5150 3650 5150
+Text GLabel 3750 5250 2    50   Input ~ 0
+SDA
+Text GLabel 3750 5150 2    50   Input ~ 0
+SCL
+Wire Wire Line
+	3550 5250 3550 5050
+Connection ~ 3550 5250
+Wire Wire Line
+	3550 5250 3500 5250
+Wire Wire Line
+	3750 5250 3550 5250
+Wire Wire Line
+	3650 5150 3650 5050
+Connection ~ 3650 5150
+Wire Wire Line
+	3650 5150 3500 5150
+Text GLabel 3750 4750 2    50   Input ~ 0
+3.3V
+Wire Wire Line
+	3550 4750 3650 4750
+Connection ~ 3650 4750
+Wire Wire Line
+	3650 4750 3750 4750
+Wire Wire Line
+	3500 5350 3750 5350
+Wire Wire Line
+	3500 5450 3750 5450
+$Comp
+L MOMI-rescue:Conn_01x18_Female-Connector J7
+U 1 1 5E135F27
+P 6000 3500
+F 0 "J7" V 6050 3450 50  0000 L CNN
+F 1 "Conn_01x18_Female" V 6150 3150 50  0000 L CNN
+F 2 "S_2.54_3D:PinSocket_1x18_P2.54mm_Vertical" H 6000 3500 50  0001 C CNN
+F 3 "~" H 6000 3500 50  0001 C CNN
+	1    6000 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:Conn_01x18_Female-Connector J8
+U 1 1 5E1371F3
+P 6500 3600
+F 0 "J8" V 6550 3500 50  0000 C CNN
+F 1 "Conn_01x18_Female" V 6650 3450 50  0000 C CNN
+F 2 "S_2.54_3D:PinSocket_1x18_P2.54mm_Vertical" H 6500 3600 50  0001 C CNN
+F 3 "~" H 6500 3600 50  0001 C CNN
+	1    6500 3600
+	-1   0    0    1   
+$EndComp
+Text GLabel 6700 2800 2    50   Input ~ 0
+AGND
+NoConn ~ 6700 4000
+Text GLabel 6700 4100 2    50   Input ~ 0
+GND
+$Comp
+L MOMI-rescue:AudioJack3_SwitchTR-Connector J13
+U 1 1 5E182576
+P 10600 3800
+F 0 "J13" H 10582 4125 50  0000 C CNN
+F 1 "Dual Footswitch" H 10582 4034 50  0000 C CNN
+F 2 "digikey-footprints:Headphone_Jack_6.35mm_RA49B14B" H 10600 3800 50  0001 C CNN
+F 3 "~" H 10600 3800 50  0001 C CNN
+	1    10600 3800
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	2950 3000 2950 6050
+Wire Wire Line
+	2950 6050 5600 6050
+Text GLabel 8950 4500 0    50   Input ~ 0
+AGND
+Wire Wire Line
+	4650 4300 5100 4300
+$Comp
+L MOMI-rescue:R-Device R12
+U 1 1 5E180558
+P 5400 4650
+F 0 "R12" V 5300 4650 50  0000 C CNN
+F 1 "10k" V 5200 4650 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 5330 4650 50  0001 C CNN
+F 3 "~" H 5400 4650 50  0001 C CNN
+	1    5400 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R13
+U 1 1 5E185B61
+P 5600 4650
+F 0 "R13" V 5500 4650 50  0000 C CNN
+F 1 "10k" V 5700 4650 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 5530 4650 50  0001 C CNN
+F 3 "~" H 5600 4650 50  0001 C CNN
+	1    5600 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R14
+U 1 1 5E196295
+P 5600 5900
+F 0 "R14" V 5700 5900 50  0000 C CNN
+F 1 "10k" V 5800 5900 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 5530 5900 50  0001 C CNN
+F 3 "~" H 5600 5900 50  0001 C CNN
+	1    5600 5900
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 4300 5100 5700
+Connection ~ 5100 4300
+Wire Wire Line
+	5400 4800 5400 5000
+$Comp
+L MOMI-rescue:R-Device R18
+U 1 1 5E1285A6
+P 8650 4600
+F 0 "R18" V 8550 4650 50  0000 C CNN
+F 1 "47k" V 8450 4700 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 8580 4600 50  0001 C CNN
+F 3 "~" H 8650 4600 50  0001 C CNN
+	1    8650 4600
+	0    -1   -1   0   
+$EndComp
+Text GLabel 7300 5050 0    50   Input ~ 0
+AGND
+Text GLabel 7300 5250 0    50   Input ~ 0
+AGND
+Text GLabel 1350 5200 2    50   Input ~ 0
+3.3V
+Text GLabel 2250 5200 2    50   Input ~ 0
+3.3V
+Wire Wire Line
+	5600 4300 5600 4500
+Wire Wire Line
+	5600 4300 5800 4300
+Text GLabel 5100 5700 3    50   Input ~ 0
+GND
+Wire Wire Line
+	5600 5750 5600 5600
+$Comp
+L MOMI-rescue:Rotary_Encoder_Switch-Device SW1
+U 1 1 5E04E759
+P 5500 5300
+F 0 "SW1" V 5850 5300 50  0000 C CNN
+F 1 "Encoder_Switch" H 5500 5050 50  0000 C CNN
+F 2 "digikey-footprints:Rotary_Encoder_Switched_PEC11R" H 5350 5460 50  0001 C CNN
+F 3 "~" H 5500 5560 50  0001 C CNN
+	1    5500 5300
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5100 5700 5400 5700
+Wire Wire Line
+	5800 4200 5400 4200
+Wire Wire Line
+	5400 4200 5400 4500
+Wire Wire Line
+	5800 4400 5800 6050
+Text GLabel 4650 5550 3    50   Input ~ 0
+GND
+Wire Wire Line
+	6700 5150 6700 4400
+Connection ~ 6700 5150
+Wire Wire Line
+	8950 4300 6700 4300
+Wire Wire Line
+	8750 4200 6700 4200
+Wire Wire Line
+	6700 3000 7350 3000
+Wire Wire Line
+	7350 3000 7350 3200
+Wire Wire Line
+	7350 3200 7550 3200
+Wire Wire Line
+	6700 3100 7250 3100
+Wire Wire Line
+	7250 3100 7250 3300
+Wire Wire Line
+	7250 3300 7550 3300
+Wire Wire Line
+	6700 3400 7550 3400
+Wire Wire Line
+	6700 3500 7550 3500
+Wire Wire Line
+	6700 3600 7550 3600
+$Comp
+L MOMI-rescue:Conn_01x05_Male-Connector J10
+U 1 1 5E1A1C29
+P 7750 3400
+F 0 "J10" H 7722 3332 50  0000 R CNN
+F 1 "Conn_01x05_Male" H 7722 3423 50  0000 R CNN
+F 2 "P_2.54_3D:PinHeader_1x05_P2.54mm_Vertical" H 7750 3400 50  0001 C CNN
+F 3 "~" H 7750 3400 50  0001 C CNN
+	1    7750 3400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	8800 5150 9600 5150
+Wire Wire Line
+	5800 6050 10300 6050
+Wire Wire Line
+	10300 4000 10300 6050
+Wire Wire Line
+	9800 3800 6700 3800
+Connection ~ 9800 3800
+Wire Wire Line
+	9600 3700 6700 3700
+Wire Wire Line
+	9600 3700 9600 5150
+$Comp
+L MOMI-rescue:Conn_01x04_Female-Connector J12
+U 1 1 5E1F8CB5
+P 5550 6700
+F 0 "J12" H 5578 6676 50  0000 L CNN
+F 1 "Conn_01x04_Female" H 5578 6585 50  0000 L CNN
+F 2 "S_2.54_3D:PinSocket_1x04_P2.54mm_Vertical" H 5550 6700 50  0001 C CNN
+F 3 "~" H 5550 6700 50  0001 C CNN
+	1    5550 6700
+	1    0    0    1   
+$EndComp
+Text GLabel 5350 6600 0    50   Input ~ 0
+SCL
+Text GLabel 5350 6500 0    50   Input ~ 0
+SDA
+Text GLabel 5350 6800 0    50   Input ~ 0
+GND
+Text GLabel 5350 6700 0    50   Input ~ 0
+3.3V
+$Comp
+L MOMI-rescue:R-Device R23
+U 1 1 5E1C3ECF
+P 7850 2150
+F 0 "R23" V 8057 2150 50  0000 C CNN
+F 1 "100k" V 7966 2150 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 7780 2150 50  0001 C CNN
+F 3 "~" H 7850 2150 50  0001 C CNN
+	1    7850 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:CP1-Device C6
+U 1 1 5E1CAE1E
+P 8350 2850
+F 0 "C6" H 8465 2896 50  0000 L CNN
+F 1 "1uF" H 8465 2805 50  0000 L CNN
+F 2 "C_SMD_3D:C_0805_2012Metric" H 8350 2850 50  0001 C CNN
+F 3 "~" H 8350 2850 50  0001 C CNN
+	1    8350 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L MOMI-rescue:CP1-Device C5
+U 1 1 5E1CD1D7
+P 6850 1850
+F 0 "C5" H 6965 1896 50  0000 L CNN
+F 1 "1uF" H 6965 1805 50  0000 L CNN
+F 2 "C_SMD_3D:C_0805_2012Metric" H 6850 1850 50  0001 C CNN
+F 3 "~" H 6850 1850 50  0001 C CNN
+	1    6850 1850
+	-1   0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:LED-Device D8
+U 1 1 5E1D5CF1
+P 7300 2000
+F 0 "D8" H 7293 2216 50  0000 C CNN
+F 1 "LED" H 7293 2125 50  0000 C CNN
+F 2 "LED_SMD_3D:LED_0805_2012Metric" H 7300 2000 50  0001 C CNN
+F 3 "~" H 7300 2000 50  0001 C CNN
+	1    7300 2000
+	1    0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R22
+U 1 1 5E1D5CF7
+P 7600 2000
+F 0 "R22" H 7670 2046 50  0000 L CNN
+F 1 "330" H 7670 1955 50  0000 L CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 7530 2000 50  0001 C CNN
+F 3 "~" H 7600 2000 50  0001 C CNN
+	1    7600 2000
+	0    -1   1    0   
+$EndComp
+Text GLabel 7450 2700 0    50   Input ~ 0
+GND
+NoConn ~ 8250 2600
+Wire Wire Line
+	7850 2000 7750 2000
+Wire Wire Line
+	7750 2000 7750 2300
+Connection ~ 7750 2000
+Wire Wire Line
+	7150 2000 7050 2000
+Wire Wire Line
+	7050 2000 7050 1850
+Wire Wire Line
+	7050 1850 8150 1850
+Wire Wire Line
+	8150 1850 8150 2300
+Connection ~ 7050 2000
+$Comp
+L Switch:SW_SPDT SW2
+U 1 1 5E26CD62
+P 5400 1900
+F 0 "SW2" H 5600 2200 50  0000 C CNN
+F 1 "SW_SPDT" H 5550 2100 50  0000 C CNN
+F 2 "Sw_THT_3D:SW_CuK_OS102011MA1QN1_SPDT_Angled" H 5400 1900 50  0001 C CNN
+F 3 "~" H 5400 1900 50  0001 C CNN
+	1    5400 1900
+	1    0    0    1   
+$EndComp
+$Comp
+L MOMI-rescue:R-Device R21
+U 1 1 5E1D5CFD
+P 4850 1900
+F 0 "R21" H 4920 1946 50  0000 L CNN
+F 1 "330" H 4920 1855 50  0000 L CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 4780 1900 50  0001 C CNN
+F 3 "~" H 4850 1900 50  0001 C CNN
+	1    4850 1900
+	0    -1   1    0   
+$EndComp
+$Comp
+L MOMI-rescue:LED-Device D7
+U 1 1 5E1D5CEB
+P 4550 1900
+F 0 "D7" H 4543 2116 50  0000 C CNN
+F 1 "LED" H 4543 2025 50  0000 C CNN
+F 2 "LED_SMD_3D:LED_0805_2012Metric" H 4550 1900 50  0001 C CNN
+F 3 "~" H 4550 1900 50  0001 C CNN
+	1    4550 1900
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	4400 1900 4300 1900
+Wire Wire Line
+	4300 1900 4300 1700
+Wire Wire Line
+	8350 2700 8250 2700
+Wire Wire Line
+	5200 1900 5200 2350
+Wire Wire Line
+	6850 2000 7050 2000
+Wire Wire Line
+	4300 1700 5600 1700
+Wire Wire Line
+	5000 1900 5200 1900
+Connection ~ 5200 1900
+Wire Wire Line
+	6700 2350 6700 2700
+$Comp
+L dk_PMIC-Battery-Chargers:MAX1555EZK_T U2
+U 1 1 5E1DF4C7
+P 7850 2600
+F 0 "U2" V 7400 2650 60  0000 R CNN
+F 1 "MAX1555EZK_T" V 7500 2900 60  0000 R CNN
+F 2 "digikey-footprints:SOT-753" H 8050 2800 60  0001 L CNN
+F 3 "https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf" H 8050 2900 60  0001 L CNN
+F 4 "MAX1555EZK+TCT-ND" H 8050 3000 60  0001 L CNN "Digi-Key_PN"
+F 5 "MAX1555EZK+T" H 8050 3100 60  0001 L CNN "MPN"
+F 6 "Integrated Circuits (ICs)" H 8050 3200 60  0001 L CNN "Category"
+F 7 "PMIC - Battery Chargers" H 8050 3300 60  0001 L CNN "Family"
+F 8 "https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf" H 8050 3400 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/maxim-integrated/MAX1555EZK-T/MAX1555EZK-TCT-ND/2699449" H 8050 3500 60  0001 L CNN "DK_Detail_Page"
+F 10 "IC BATT CHRGR LI+ 1CELL SOT23-5" H 8050 3600 60  0001 L CNN "Description"
+F 11 "Maxim Integrated" H 8050 3700 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 8050 3800 60  0001 L CNN "Status"
+	1    7850 2600
+	0    1    -1   0   
+$EndComp
+Wire Wire Line
+	8150 2300 7850 2300
+Connection ~ 7850 2300
+Wire Wire Line
+	8350 3000 8350 3100
+Wire Wire Line
+	8350 3100 7450 3100
+Wire Wire Line
+	7450 3100 7450 2700
+Text GLabel 8350 2700 2    50   Input ~ 0
+VUSB
+Wire Wire Line
+	6850 1700 8700 1700
+Wire Wire Line
+	8700 1700 8700 3100
+Wire Wire Line
+	8700 3100 8350 3100
+Connection ~ 8350 3100
+Wire Wire Line
+	5600 2000 5900 2000
+Wire Wire Line
+	5600 1800 5600 1700
+Connection ~ 5600 1700
+Wire Wire Line
+	5600 1700 5900 1700
+$Comp
+L Device:Battery_Cell BT1
+U 1 1 5E356351
+P 5900 1800
+F 0 "BT1" H 6018 1896 50  0000 L CNN
+F 1 "Battery_Cell" H 6018 1805 50  0000 L CNN
+F 2 "Conn_JST_3D:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical" V 5900 1860 50  0001 C CNN
+F 3 "~" V 5900 1860 50  0001 C CNN
+	1    5900 1800
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	6850 1700 5900 1700
+Connection ~ 6850 1700
+Connection ~ 5900 1700
+Wire Wire Line
+	6850 2000 5900 2000
+Connection ~ 6850 2000
+Connection ~ 5900 2000
+Wire Wire Line
+	5200 2350 6700 2350
+$EndSCHEMATC

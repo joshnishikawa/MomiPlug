@@ -1,4 +1,4 @@
-#include "MOMIPLUG.h"
+#include "MomiPlug.h"
 
 MIDI_CREATE_DEFAULT_INSTANCE();
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI1);
@@ -12,6 +12,8 @@ MIDIDevice USBMIDI(teensyUSBHost);
 // PIN ASSIGNMENTS ##################################################
 //MIDI in  is pin 0 by default
 //MIDI out is pin 1 by default
+const int editPin = 2; //edit button (push switch on encoder)
+
 const int FSenablePin = 2; //enable footswitches
 const int EXPenablePin = 3;//enable expression pedal
 const int sel_a = 4;    //selectors for analog and digital mux inputs
@@ -22,7 +24,6 @@ const int led3 = 8;     //LED on center right
 const int fs1led = 9;   //LED for FS1
 const int led2 = 10;    //LED on upper right
 const int fs0led = 11;  //LED for FS0
-const int editPin = 12; //edit button (push switch on encoder)
 const int led0 = 13;    //the onboard (orange) LED
 const int expPin = 14;  //analog input for expression pedal
 const int ringPin = 15; //footswitch 0
@@ -154,7 +155,7 @@ void setup(){ // INITIALIZATION #########################################
   USBMIDI.setHandlePitchChange(onUSBPitchBend);
 
   // UNCOMMENT THESE TO RESTORE DEFAULTS
-  EEPROM.put(255, 3); EEPROM.put(1, true);  // MIDIchannel, readMIDIthru
+  EEPROM.put(255, 3); EEPROM.put(1, true);    // MIDIchannel, readMIDIthru
   EEPROM.put(2, false); EEPROM.put(3, false); // readAnalogMUX, readDigitalMux
   EEPROM.put(4, 0); EEPROM.put(8, 1);         // FS0 mode, FS1 mode
   EEPROM.put(12, 0);                          // EXP killSwitch #

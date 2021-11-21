@@ -12,47 +12,41 @@
 
 /*TEENSY 3.6 PIN ASSIGNMENTS
                  ______
-            ____|      |____
-      GND -|-GND|      | 5V |
-  MIDI in  |-0  |______AGND-|-
- MIDI out  |-1 (_)     3.3v-|
-Enable FS  |-2 (_)    (_)23 |- Digital MUX return
-Enable EXP |-3 (_)    (_)22 |- Touch Expression
- Select A  |-4 (_)    (_)21 |- Audio Volume
- Select B  |-5 (_)       20 |- Analog MUX return
- Select C  |-6           19 |- Touch Button 2
- Select D  |-7           18 |- Touch Button 1
-    LED 3 -| 8           17 |- Touch Button 0
-  LED FS1 -| 9           16 |- FS 1 (tip)
-    LED 2 -| 10          15 |- FS 0 (ring)
-  LED FS0 -| 11          14 |- EXP return (ring)
-     EDIT -| 12          13 |  LED 0 
-          -| 3.3v       GND-|-
-    Enc A -| 24         A22-|  Phones L
-    Enc B -| 25         A21-|  Phones R
-    LED 1 -| 26          39 |- Analog Header return
-Segment G  |-27          38-|  Cathode 4
-Segment D  |-28          37-|  Segment DP
-Segment F  |-29          36-|  Cathode 3
-Cathode 2  |-30          35-|  Segment C
-Segment B  |-31          34-|  Segment E
-Segment A  |-32          33-|  Cathode 1
-           |________________|
-dashes indicate which direction wires run
-                           _
-            ______________| |______________
-MUX PINOUT /     o (_)    |_|     o  (_)  /|
-          /////           o o    o  (_)  / |
-         /______________________________/  |
-        |   __     __                   | _|_
-        |  /  \   /  \   _______________||___)
-        |  \__/   \__/  |. . . . . . . .| /<-----Analog Mux
-        |_______________|. . . . . . . .|/ <-----Digital Mux (Cap Touch)
-                         G D 3 3 S S S S
-                         N A V V E E E E
-                         D T     L L L L 
-                           A     | | | |
-                                 A B C D 
+             ___|      |___
+            |GND|      | 5V|
+    MIDI in |0  |______AGND|
+   MIDI out |1 (_)     3.3v|
+       Edit |2 (_)    (_)23| Touch Button 5
+SCL2/CAN0TX |3 (_)    (_)22| Touch Button 4 
+SDA2/CAN0RX |4 (_)    (_)21| MUX1 return
+    FS1 LED |5 (_)       20| MUX0 return
+      LED 3 |6           19| Touch Button 3
+      LED 2 |7           18| Touch Button 2
+      LED 1 |8           17| Touch Button 1
+    FS0 LED |9           16| MIC
+       SEL0 |10          15| FS 2 (ring)
+ SEL1/MOSI0 |11          14| SEL3/SCK0 ( use SPI.setSCK(14) )
+ SEL2/MISO0 |12          13| LED_BUILTIN 
+            |3.3v       GND|
+      Enc B |24         A22| Phones R (ring)
+      Enc A |25         A21| Phones L (tip)
+ FS 1 (tip) |26          39| EXP return (ring)
+  Segment G |27          38| Cathode 4
+  Segment D |28          37| Segment DP
+  Segment F |29          36| Cathode 3
+  Cathode 2 |30          35| Segment C
+  Segment B |31          34| Segment E
+  Segment A |32          33| Cathode 1
+            |______________|
+
+HEADER PIN ASSIGNMENTS
+ __________________________________________________
+|                         |                        |
+|  SIG0  3.3V  GND    EN  | SIG1  3.3V  GND    EN  |
+|                         |                        |
+|  SEL3  SEL2  SEL1  SEL0 | SEL3  SEL2  SEL1  SEL0 |
+|_________________________|________________________|
+
                              _________________________   
                             |      _____________                                 
          ______________     |     /_____________\   
@@ -83,13 +77,6 @@ _         |=0       ===0 |  |  || (_)         (_) ||
                            -|3___4|~~~~~~~~~~~~~~~'~~~ to Teensy Pin 0
                              PC900                        (MIDI in)
                           Opto-Coupler              
-
-5-PIN MIDI OUT DIN PIN ASSIGNMENTS
-  Pin 1 - Not Connected
-  Pin 2 - to Ground
-  Pin 3 - Not Connected
-  Pin 4 - Connected to 5.5v through a 220 Ohm resistor
-  Pin 5 - Connected to Teensy Pin 1 (MIDI out) through a 220 Ohm resistor
 
 
 USB HOST PORT PIN ASSIGNMENTS

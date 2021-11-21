@@ -357,6 +357,47 @@ X ~ 5 300 100 100 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
+# MOMI-rescue_H11L1M-dk_Optoisolators-Logic-Output
+#
+DEF MOMI-rescue_H11L1M-dk_Optoisolators-Logic-Output U 0 0 Y Y 1 F N
+F0 "U" -200 250 60 H V C CNN
+F1 "MOMI-rescue_H11L1M-dk_Optoisolators-Logic-Output" 125 -250 60 H V L CNN
+F2 "digikey-footprints:DIP-6_W7.62mm" 200 200 60 H I L CNN
+F3 "http://www.onsemi.com/pub/Collateral/H11L3M-D.pdf" 200 300 60 H I L CNN
+F4 "H11L1-MQT-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "H11L1M" 200 500 60 H I L CNN "MPN"
+F6 "Isolators" 200 600 60 H I L CNN "Category"
+F7 "Optoisolators - Logic Output" 200 700 60 H I L CNN "Family"
+F8 "http://www.onsemi.com/pub/Collateral/H11L3M-D.pdf" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/on-semiconductor/H11L1M/H11L1-MQT-ND/284866" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "OPTOISO 4.17KV OPN COLL 6DIP" 200 1000 60 H I L CNN "Description"
+F11 "ON Semiconductor" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+A 50 0 50 -899 899 0 1 0 N 50 -50 50 50
+C 100 0 0 0 1 0 N
+C 110 0 11 0 1 0 N
+S -200 150 200 -150 1 1 0 f
+P 2 0 1 0 -175 -25 -125 -25 N
+P 2 0 1 0 -25 50 50 50 N
+P 2 0 1 0 0 -200 0 -50 N
+P 2 0 1 0 0 200 0 50 N
+P 2 0 1 0 125 0 200 0 N
+P 3 0 1 0 -200 100 -150 100 -150 0 N
+P 3 0 1 0 -150 -25 -150 -100 -200 -100 N
+P 3 0 1 0 -25 50 -25 -50 50 -50 N
+P 4 0 1 0 -150 -25 -175 25 -125 25 -150 -25 F
+P 5 0 1 0 -100 -25 -65 -60 -65 -40 -65 -60 -85 -60 N
+P 5 0 1 0 -100 25 -65 -10 -65 5 -65 -10 -85 -10 N
+X ~ 1 -300 100 100 R 50 50 1 1 P
+X ~ 2 -300 -100 100 R 50 50 1 1 P
+X NC 3 200 -100 100 L 50 50 1 1 N N
+X VO 4 300 0 100 L 50 50 1 1 O
+X GND 5 0 -300 150 U 50 50 1 1 W
+X VCC 6 0 300 150 D 50 50 1 1 W
+ENDDRAW
+ENDDEF
+#
 # MOMI-rescue_LED-Device
 #
 DEF MOMI-rescue_LED-Device D 0 40 N N 1 F N
@@ -377,6 +418,32 @@ P 5 0 1 0 -120 -30 -180 -90 -150 -90 -180 -90 -180 -60 N
 P 5 0 1 0 -70 -30 -130 -90 -100 -90 -130 -90 -130 -60 N
 X K 1 -150 0 100 R 50 50 1 1 P
 X A 2 150 0 100 L 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# MOMI-rescue_MAX1555EZK_T-dk_PMIC-Battery-Chargers
+#
+DEF MOMI-rescue_MAX1555EZK_T-dk_PMIC-Battery-Chargers U 0 40 Y Y 1 F N
+F0 "U" -200 340 60 H V R CNN
+F1 "MOMI-rescue_MAX1555EZK_T-dk_PMIC-Battery-Chargers" -90 -350 60 H V L CNN
+F2 "digikey-footprints:SOT-753" 200 200 60 H I L CNN
+F3 "https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf" 200 300 60 H I L CNN
+F4 "MAX1555EZK+TCT-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "MAX1555EZK+T" 200 500 60 H I L CNN "MPN"
+F6 "Integrated Circuits (ICs)" 200 600 60 H I L CNN "Category"
+F7 "PMIC - Battery Chargers" 200 700 60 H I L CNN "Family"
+F8 "https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/maxim-integrated/MAX1555EZK-T/MAX1555EZK-TCT-ND/2699449" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "IC BATT CHRGR LI+ 1CELL SOT23-5" 200 1000 60 H I L CNN "Description"
+F11 "Maxim Integrated" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+S 200 300 -300 -300 0 1 0 f
+X USB 1 -100 400 100 D 50 50 1 1 W
+X GND 2 -100 -400 100 U 50 50 1 1 W
+X ~POK(CHG) 3 300 0 100 L 50 50 1 1 O
+X DC 4 0 400 100 D 50 50 1 1 W
+X BAT 5 300 -100 100 L 50 50 1 1 w
 ENDDRAW
 ENDDEF
 #
@@ -483,73 +550,6 @@ P 2 0 1 0 -60 10 65 90 N
 X A 1 200 100 100 L 50 50 1 1 P
 X B 2 -200 0 100 R 50 50 1 1 P
 X C 3 200 -100 100 L 50 50 1 1 P
-ENDDRAW
-ENDDEF
-#
-# dk_Optoisolators-Logic-Output_H11L1M
-#
-DEF dk_Optoisolators-Logic-Output_H11L1M U 0 0 Y Y 1 F N
-F0 "U" -200 250 60 H V C CNN
-F1 "dk_Optoisolators-Logic-Output_H11L1M" 125 -250 60 H V L CNN
-F2 "digikey-footprints:DIP-6_W7.62mm" 200 200 60 H I L CNN
-F3 "http://www.onsemi.com/pub/Collateral/H11L3M-D.pdf" 200 300 60 H I L CNN
-F4 "H11L1-MQT-ND" 200 400 60 H I L CNN "Digi-Key_PN"
-F5 "H11L1M" 200 500 60 H I L CNN "MPN"
-F6 "Isolators" 200 600 60 H I L CNN "Category"
-F7 "Optoisolators - Logic Output" 200 700 60 H I L CNN "Family"
-F8 "http://www.onsemi.com/pub/Collateral/H11L3M-D.pdf" 200 800 60 H I L CNN "DK_Datasheet_Link"
-F9 "/product-detail/en/on-semiconductor/H11L1M/H11L1-MQT-ND/284866" 200 900 60 H I L CNN "DK_Detail_Page"
-F10 "OPTOISO 4.17KV OPN COLL 6DIP" 200 1000 60 H I L CNN "Description"
-F11 "ON Semiconductor" 200 1100 60 H I L CNN "Manufacturer"
-F12 "Active" 200 1200 60 H I L CNN "Status"
-DRAW
-A 50 0 50 -899 899 0 1 0 N 50 -50 50 50
-C 100 0 0 0 1 0 N
-C 110 0 11 0 1 0 N
-S -200 150 200 -150 1 1 0 f
-P 2 0 1 0 -175 -25 -125 -25 N
-P 2 0 1 0 -25 50 50 50 N
-P 2 0 1 0 0 -200 0 -50 N
-P 2 0 1 0 0 200 0 50 N
-P 2 0 1 0 125 0 200 0 N
-P 3 0 1 0 -200 100 -150 100 -150 0 N
-P 3 0 1 0 -150 -25 -150 -100 -200 -100 N
-P 3 0 1 0 -25 50 -25 -50 50 -50 N
-P 4 0 1 0 -150 -25 -175 25 -125 25 -150 -25 F
-P 5 0 1 0 -100 -25 -65 -60 -65 -40 -65 -60 -85 -60 N
-P 5 0 1 0 -100 25 -65 -10 -65 5 -65 -10 -85 -10 N
-X ~ 1 -300 100 100 R 50 50 1 1 P
-X ~ 2 -300 -100 100 R 50 50 1 1 P
-X NC 3 200 -100 100 L 50 50 1 1 N N
-X VO 4 300 0 100 L 50 50 1 1 O
-X GND 5 0 -300 150 U 50 50 1 1 W
-X VCC 6 0 300 150 D 50 50 1 1 W
-ENDDRAW
-ENDDEF
-#
-# dk_PMIC-Battery-Chargers_MAX1555EZK_T
-#
-DEF dk_PMIC-Battery-Chargers_MAX1555EZK_T U 0 40 Y Y 1 F N
-F0 "U" -200 340 60 H V R CNN
-F1 "dk_PMIC-Battery-Chargers_MAX1555EZK_T" -90 -350 60 H V L CNN
-F2 "digikey-footprints:SOT-753" 200 200 60 H I L CNN
-F3 "https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf" 200 300 60 H I L CNN
-F4 "MAX1555EZK+TCT-ND" 200 400 60 H I L CNN "Digi-Key_PN"
-F5 "MAX1555EZK+T" 200 500 60 H I L CNN "MPN"
-F6 "Integrated Circuits (ICs)" 200 600 60 H I L CNN "Category"
-F7 "PMIC - Battery Chargers" 200 700 60 H I L CNN "Family"
-F8 "https://datasheets.maximintegrated.com/en/ds/MAX1551-MAX1555.pdf" 200 800 60 H I L CNN "DK_Datasheet_Link"
-F9 "/product-detail/en/maxim-integrated/MAX1555EZK-T/MAX1555EZK-TCT-ND/2699449" 200 900 60 H I L CNN "DK_Detail_Page"
-F10 "IC BATT CHRGR LI+ 1CELL SOT23-5" 200 1000 60 H I L CNN "Description"
-F11 "Maxim Integrated" 200 1100 60 H I L CNN "Manufacturer"
-F12 "Active" 200 1200 60 H I L CNN "Status"
-DRAW
-S 200 300 -300 -300 0 1 0 f
-X USB 1 -100 400 100 D 50 50 1 1 W
-X GND 2 -100 -400 100 U 50 50 1 1 W
-X ~POK(CHG) 3 300 0 100 L 50 50 1 1 O
-X DC 4 0 400 100 D 50 50 1 1 W
-X BAT 5 300 -100 100 L 50 50 1 1 w
 ENDDRAW
 ENDDEF
 #

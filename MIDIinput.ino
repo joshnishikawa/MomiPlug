@@ -12,9 +12,9 @@ byte USBchord[12] = {
   false,false,false,false,false,false,false,false,false,false,false,false
 };
 
-byte chaos(byte pin, uint16_t newValue, uint16_t inLo, uint16_t inHi){
-  newValue = map(newValue, inLo, inHi, 0, 127);
-  newValue = constrain(newValue, 0, 127);
+byte chaos(byte pin, uint16_t newValue, uint16_t inLo, uint16_t inHi, uint16_t outLo, uint16_t outHi){
+  newValue = map(newValue, inLo, inHi, outLo, outHi);
+  newValue = constrain(newValue, outLo, outHi);
 
   if (waiting){ // Wait briefly to make notes audible.
     if (timer > waitTime){

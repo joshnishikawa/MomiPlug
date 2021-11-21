@@ -308,32 +308,6 @@ Text GLabel 6700 3300 2    50   Input ~ 0
 SIG0&CSO
 Text GLabel 6700 3900 2    50   Input ~ 0
 SEL3&SCK0
-Wire Wire Line
-	6700 5150 6800 5150
-Wire Wire Line
-	7300 5150 7100 5150
-$Comp
-L MOMI-rescue:CP1-Device C1
-U 1 1 5E1743DC
-P 6700 5300
-F 0 "C1" H 6815 5346 50  0000 L CNN
-F 1 "10uF" H 6815 5255 50  0000 L CNN
-F 2 "C_SMD_3D:C_0805_2012Metric" H 6700 5300 50  0001 C CNN
-F 3 "~" H 6700 5300 50  0001 C CNN
-	1    6700 5300
-	-1   0    0    -1  
-$EndComp
-$Comp
-L MOMI-rescue:R-Device R16
-U 1 1 5E1743D6
-P 6950 5150
-F 0 "R16" V 7157 5150 50  0000 C CNN
-F 1 "47k" V 7066 5150 50  0000 C CNN
-F 2 "R_SMD_3D:R_0805_2012Metric" V 6880 5150 50  0001 C CNN
-F 3 "~" H 6950 5150 50  0001 C CNN
-	1    6950 5150
-	0    -1   -1   0   
-$EndComp
 NoConn ~ 7300 5450
 Text GLabel 7300 5350 0    50   Input ~ 0
 3.3V
@@ -348,42 +322,12 @@ F 3 "~" H 7500 5150 50  0001 C CNN
 	1    7500 5150
 	-1   0    0    -1  
 $EndComp
-Wire Wire Line
-	9800 3800 9900 3800
-Wire Wire Line
-	10400 3800 10200 3800
-$Comp
-L MOMI-rescue:R-Device R23
-U 1 1 5E18257F
-P 10050 3800
-F 0 "R23" V 10257 3800 50  0000 C CNN
-F 1 "47k" V 10166 3800 50  0000 C CNN
-F 2 "R_SMD_3D:R_0805_2012Metric" V 9980 3800 50  0001 C CNN
-F 3 "~" H 10050 3800 50  0001 C CNN
-	1    10050 3800
-	0    -1   1    0   
-$EndComp
 Text GLabel 10400 3700 0    50   Input ~ 0
 GND
 NoConn ~ 10400 4100
 Wire Wire Line
 	10400 4000 10300 4000
-$Comp
-L MOMI-rescue:CP1-Device C6
-U 1 1 5E182585
-P 9800 3650
-F 0 "C6" H 9915 3696 50  0000 L CNN
-F 1 "10uF" H 9915 3605 50  0000 L CNN
-F 2 "C_SMD_3D:C_0805_2012Metric" H 9800 3650 50  0001 C CNN
-F 3 "~" H 9800 3650 50  0001 C CNN
-	1    9800 3650
-	-1   0    0    1   
-$EndComp
-Text GLabel 9800 3500 1    50   Input ~ 0
-GND
 NoConn ~ 10400 3900
-Text GLabel 6700 5450 3    50   Input ~ 0
-AGND
 $Comp
 L MOMI-rescue:AudioJack4-Connector J12
 U 1 1 5E054C8A
@@ -656,10 +600,6 @@ F 3 "~" H 8650 4600 50  0001 C CNN
 	1    8650 4600
 	0    -1   -1   0   
 $EndComp
-Text GLabel 7300 5050 0    50   Input ~ 0
-AGND
-Text GLabel 7300 5250 0    50   Input ~ 0
-AGND
 Text GLabel 1350 5300 2    50   Input ~ 0
 3.3V
 Text GLabel 2250 5300 2    50   Input ~ 0
@@ -683,9 +623,6 @@ Wire Wire Line
 	5800 4400 5800 6050
 Text GLabel 4650 5550 3    50   Input ~ 0
 GND
-Wire Wire Line
-	6700 5150 6700 4400
-Connection ~ 6700 5150
 Wire Wire Line
 	8950 4300 6700 4300
 Wire Wire Line
@@ -725,9 +662,6 @@ Wire Wire Line
 	5800 6050 10300 6050
 Wire Wire Line
 	10300 4000 10300 6050
-Wire Wire Line
-	9800 3800 6700 3800
-Connection ~ 9800 3800
 Wire Wire Line
 	9600 3700 6700 3700
 Wire Wire Line
@@ -874,7 +808,7 @@ Connection ~ 5200 1900
 Wire Wire Line
 	6700 2350 6700 2700
 $Comp
-L dk_PMIC-Battery-Chargers:MAX1555EZK_T U2
+L MOMI-rescue:MAX1555EZK_T-dk_PMIC-Battery-Chargers U2
 U 1 1 5E1DF4C7
 P 7850 2600
 F 0 "U2" V 7400 2650 60  0000 R CNN
@@ -967,7 +901,7 @@ Wire Wire Line
 Wire Wire Line
 	2600 2900 2600 4100
 $Comp
-L dk_Optoisolators-Logic-Output:H11L1M U1
+L MOMI-rescue:H11L1M-dk_Optoisolators-Logic-Output U1
 U 1 1 5E2BCD0A
 P 1550 3400
 F 0 "U1" V 1603 3056 60  0000 R CNN
@@ -1018,4 +952,27 @@ Wire Wire Line
 	5600 5000 5600 4200
 Wire Wire Line
 	5600 4200 5800 4200
+Wire Wire Line
+	6700 4400 6700 5150
+Wire Wire Line
+	6700 5150 7300 5150
+$Comp
+L MOMI-rescue:R-Device R16
+U 1 1 5E1743D6
+P 6700 5300
+F 0 "R16" V 6907 5300 50  0000 C CNN
+F 1 "10k" V 6816 5300 50  0000 C CNN
+F 2 "R_SMD_3D:R_0805_2012Metric" V 6630 5300 50  0001 C CNN
+F 3 "~" H 6700 5300 50  0001 C CNN
+	1    6700 5300
+	-1   0    0    1   
+$EndComp
+Text GLabel 6700 5450 3    50   Input ~ 0
+AGND
+Connection ~ 6700 5150
+Text GLabel 7300 5050 0    50   Input ~ 0
+AGND
+NoConn ~ 7300 5250
+Wire Wire Line
+	6700 3800 10400 3800
 $EndSCHEMATC

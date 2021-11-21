@@ -4,6 +4,7 @@
 Track::Track() : TouchSwitch(0, 0){};
 
 Track::Track(int p, byte n) : TouchSwitch(p){
+  TouchSwitch::setThreshold();
   number = n;
   level = 0;
   state = false;

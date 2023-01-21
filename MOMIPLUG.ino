@@ -12,48 +12,48 @@ MIDIDevice USBMIDI(teensyUSBHost);
 // PIN ASSIGNMENTS ##################################################
 //MIDI in  is pin 0 by default
 //MIDI out is pin 1 by default
-const int editPin = 2;  //edit button (push switch on encoder)
-const int scl2 = 3;     // Serial Clock 2
-const int sda2 = 4;     // Serial Data 2
-const int fs1led = 55;  // LED on center right - 55 because pin 5 got fried. Oops!
-const int led3 = 6;     // LED on upper right
-const int led2 = 7;     // LED for FS1
-const int led1 = 8;     // LED for FS0
-const int fs0led = 9;   // LED on upper left
-const int sel_a = 10;   // selectors for analog and digital mux inputs
-const int sel_b = 11;   //
-const int sel_c = 12;   //
-const int led0 = 13;    // the onboard (orange) LED
-const int sel_d = 14;   // also SCK0 - use SPI.setSCK(14)
-const int ringPin = 15; // footswitch 0
-const int mic = 16;     // microphone UNTESTED
+const int editPin = 2;        //edit button (push switch on encoder)
+const int scl2 = 3;           // Serial Clock 2
+const int sda2 = 4;           // Serial Data 2
+const int fs1LED = 55;        // LED for Footswitch 1 - 55 cuz pin 5 got fried.
+const int topRightLED = 6;    // LED on upper right
+const int centerLED = 7;      // LED in center
+const int topLeftLED = 8;     // LED on upper left
+const int fs0LED = 9;         // LED for Footswitch 0
+const int sel_a = 10;         // selectors for analog and digital mux inputs
+const int sel_b = 11;
+const int sel_c = 12;
+const int LED0 = 13;          // the onboard (orange) LED
+const int sel_d = 14;         // also SCK0 - use SPI.setSCK(14)
+const int fs1Pin = 15;        // footswitch 1 (ring)
+const int mic = 16;           // microphone UNTESTED
 const int topLeftButton = 19; // onboard buttons
-const int centerButton = 22; //
-const int topRightButton = 23; //
-const int muxPin0 = 20; // muxed analog input
-const int muxPin1 = 21; // muxed analog input
-const int bottomRightButton = 17; //
-const int bottomLeftButton = 18; //
-const int encPinB = 24; // pin A of encoder
-const int encPinA = 25; // pin B of encoder
-const int tipPin = 26;  // footswitch 1
+const int centerButton = 22;
+const int topRightButton = 23;
+const int muxPin0 = 20;       // muxed analog input
+const int muxPin1 = 21;       // muxed analog input
+const int bottomRightButton = 17;
+const int bottomLeftButton = 18;
+const int encPinB = 24;       // pin A of encoder
+const int encPinA = 25;       // pin B of encoder
+const int fs0Pin = 26;        // footswitch 0 (tip)
 
-const int segG = 27;    // Pin 7
-const int segD = 28;    // Pin 8
-const int segF = 29;    // Pin 9
-const int digit2 = 30;  // Pin 10
-const int segB = 31;    // Pin 11
-const int segA = 32;    // Pin 12
-const int digit1 = 33;  // Pin 1
-const int segE = 34;    // Pin 2
-const int segC = 35;    // Pin 3
-const int digit3 = 36;  // Pin 4
-const int segDP= 37;    // Pin 5
-const int digit4 = 38;  // Pin 6
+const int segG = 27;          // Pin 7
+const int segD = 28;          // Pin 8
+const int segF = 29;          // Pin 9
+const int digit2 = 30;        // Pin 10
+const int segB = 31;          // Pin 11
+const int segA = 32;          // Pin 12
+const int digit1 = 33;        // Pin 1
+const int segE = 34;          // Pin 2
+const int segC = 35;          // Pin 3
+const int digit3 = 36;        // Pin 4
+const int segDP= 37;          // Pin 5
+const int digit4 = 38;        // Pin 6
 
-const int expPin = 39;  // analog input for expression pedal
-const int phonesL = A21;// headphones L (tip) UNTESTED
-const int phonesR = A22;// headphones R (tip) UNTESTED
+const int expPin = 39;        // analog input for expression pedal
+const int phonesL = A21;      // headphones L (tip) UNTESTED
+const int phonesR = A22;      // headphones R (tip) UNTESTED
 
 
 // DECLARATOINS #########################################################
@@ -100,15 +100,15 @@ void setup(){ // INITIALIZATION #########################################
   Bs[4] = new MIDIbutton(bottomLeftButton, 106, LATCH, TOUCH);
   Bs[4]->setThreshold(1400);
 
-  Bs[5] = new MIDIbutton(ringPin, 80, MOMENTARY);
+  Bs[5] = new MIDIbutton(fs1Pin, 80, MOMENTARY);
   EEPROM.get(4, Bs[5]->mode);
-  Bs[6] = new MIDIbutton(tipPin, 81, LATCH);
+  Bs[6] = new MIDIbutton(fs0Pin, 81, LATCH);
   EEPROM.get(8, Bs[6]->mode);
   for(int i=7; i<23; i++){Bs[i] = new MIDIbutton(muxPin0,9+i, 1);} // CC 16~31
 
   Ps[0] = new MIDIpot(expPin, 85);
   EEPROM.get(12, Ps[0]->mode);
-  Ps[0]->inputRange(10, 950); // just cuz my expression pedal ain't great 
+  Ps[0]->inputRange(10, 950);
   for(int i=1; i<17; i++){Ps[i] = new MIDIpot(muxPin0,47+i);} // CC 48~63
 
   inLo = touchRead(bottomLeftButton) * 1.02;
@@ -120,12 +120,12 @@ void setup(){ // INITIALIZATION #########################################
   pinMode(sel_b, OUTPUT); //analog and digital mux selector 2
   pinMode(sel_c, OUTPUT); //analog and digital mux selector 3
   pinMode(sel_d, OUTPUT); //analog and digital mux selector 4
-  pinMode(fs0led, OUTPUT);
-  pinMode(fs1led, OUTPUT);
-  pinMode(led0, OUTPUT);
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  pinMode(led3, OUTPUT);
+  pinMode(fs0LED, OUTPUT);
+  pinMode(fs1LED, OUTPUT);
+  pinMode(LED0, OUTPUT);
+  pinMode(topLeftLED, OUTPUT);
+  pinMode(fs0LED, OUTPUT);
+  pinMode(topRightLED, OUTPUT);
 
   MIDI1.begin(MIDI_CHANNEL_OMNI); //MIDI1 MIDI2 and MIDI3 only need to send
   MIDI2.begin(MIDI_CHANNEL_OMNI); //no need to read each one
@@ -173,14 +173,7 @@ void loop(){ // PROGRAM #################################################
       EEPROM.put(4, Bs[5]->mode);
       EEPROM.put(8, Bs[6]->mode);
       EEPROM.put(12, Ps[0]->killSwitch);
-      if (editor.editAnalogInputRange){
-        Ps[1]->inLo = editor.newInLo;
-        Ps[1]->inHi = editor.newInHi;
-        EEPROM.put(16, Ps[1]->inLo);
-        EEPROM.put(20, Ps[1]->inHi);
-      }
       editor.editing = false;
-      editor.editAnalogInputRange = false;
     }
     else{trackMode = !trackMode;
     }
@@ -193,7 +186,7 @@ void loop(){ // PROGRAM #################################################
     }
     else{
       if(readMUX0){ // bulk send analog values
-        for(int i=2; i<10; i++){ // Use i<10 for MUX8, i<18 for MUX16
+        for(int i=1; i<9; i++){ // Use i<9 for MUX8, i<17 for MUX16
           usbMIDI.sendControlChange(Ps[i]->number, Ps[i]->value, MIDIchannel);          
         }
       }
@@ -202,9 +195,7 @@ void loop(){ // PROGRAM #################################################
   }
 
   // On Button Press ####################################################
-  else if (editor.bounce->fallingEdge()){ //calibrate the analog header
-    editor.newInLo = analogRead(muxPin0);
-    editor.newInHi = editor.newInLo;
+  else if (editor.bounce->fallingEdge()){
     sprintf(DSPstring, "%4d", MIDIchannel);
   }
 
@@ -228,21 +219,19 @@ void loop(){ // PROGRAM #################################################
       readMUX1 = !readMUX1;
       editor.editing = true;
     }
-//    if (Bs[3]->read() == 127){
-//      // do something with this button
-//      editor.editing = true;
-//    }
+    if (Bs[3]->read() == 127){
+      // do something with this button
+      editor.editing = true;
+    }
     if (Bs[4]->read() == 127){
       if(readMUX1){
-        for(int i=0; i < 18; i++){ // USE i<8 FOR MUX8, i<16 FOR MUX16
+        for(int i=1; i < 9; i++){ // USE i<9 FOR MUX8, i<17 FOR MUX16
 //        digitalWrite(sel_d, (i&15)>>3); // COMMENT FOR MUX8, UN- FOR MUX16
           digitalWrite(sel_d, (i&7)>>2);
           digitalWrite(sel_c, (i&3)>>1);
           digitalWrite(sel_b, (i&1));
   
           Ps[i+1]->send(FORCE);
-          Bs[5]->send(FORCE);
-          Bs[6]->send(FORCE);
         }
       }
     }
@@ -267,15 +256,9 @@ void loop(){ // PROGRAM #################################################
       else{strcpy(DSPstring, "-cut");}
     }
     
-    if (readMUX0 && editor.setAnalog(muxPin0)){
-      editor.editAnalogInputRange = !editor.editAnalogInputRange;
-      editor.editing = true;
-      strcpy(DSPstring, "setH");
-    }
-
-    digitalWrite(led1, readMIDIthru);
-    digitalWrite(led2, readMUX0);
-    digitalWrite(led3, readMUX1);
+    digitalWrite(topLeftLED, readMIDIthru);
+    digitalWrite(centerLED, readMUX0);
+    digitalWrite(topRightLED, readMUX1);
   }
   
   else{
@@ -341,11 +324,11 @@ void loop(){ // PROGRAM #################################################
       if (incdec){editor.encoder->write(0);}
       byte recState = record(Bs[5]->read() == 127, Bs[6]->read() == 127);
       DP = 15;
-      digitalWrite(fs0led, recState);
-      digitalWrite(fs1led, !digitalRead(tipPin));
-      digitalWrite(led1, Ts[0]->state);
-      digitalWrite(led2, Ts[1]->state);
-      digitalWrite(led3, Ts[2]->state);
+      digitalWrite(fs0LED, recState);
+      digitalWrite(fs1LED, !digitalRead(fs0Pin));
+      digitalWrite(topLeftLED, Ts[0]->state);
+      digitalWrite(centerLED, Ts[1]->state);
+      digitalWrite(topRightLED, Ts[2]->state);
     }
 
     // In Control Mode ####################################################
@@ -372,11 +355,11 @@ void loop(){ // PROGRAM #################################################
       }
       
       DP = 0;
-      digitalWrite(led1, Bs[0]->state);
-      digitalWrite(led2, Bs[1]->state);
-      digitalWrite(led3, Bs[2]->state);
-      digitalWrite(fs0led, Bs[5]->state);
-      digitalWrite(fs1led, Bs[6]->state);
+      dfsitalWrite(topLeftLED, Bs[0]->state);
+      digitalWrite(centerLED, Bs[1]->state);
+      digitalWrite(topRightLED, Bs[2]->state);
+      digitalWrite(fs0LED, Bs[5]->state);
+      digitalWrite(fs1LED, Bs[6]->state);
     }
   }
   DSP.DisplayString(DSPstring, DP); // Display most recently stored information

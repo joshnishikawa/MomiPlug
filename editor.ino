@@ -9,7 +9,6 @@ Editor::Editor(int a, int b, int p){
   encoder = new Encoder(a, b);
   number = 3;
   level = 0;
-  editing = false;
   newInLo = 0;
   newInHi = 0;
   DP = 0;

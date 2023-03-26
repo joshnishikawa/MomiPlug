@@ -19,7 +19,6 @@ class Editor{
     Encoder* encoder;
     int number;
     int level;
-    byte editing;
     byte editAnalogInputRange;
     int newInLo, newInHi;
     byte editChannel();

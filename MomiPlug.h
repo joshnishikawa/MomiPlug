@@ -17,14 +17,14 @@ struct MomiConfig {
   uint32_t magic;          // Magic number for EEPROM validity check
   uint8_t  midiChannel;    // Active MIDI Channel (1 - 16)
   bool     readMIDIthru;   // Pass-through incoming MIDI
-  bool     readMUX0;       // Enable Multiplexer 0
-  bool     readMUX1;       // Enable Multiplexer 1
+  uint8_t  mux0Mode;       // MUX0 mode: 0 (unread), 1 (single MIDIpot), 8 (muxed input)
+  uint8_t  mux1Mode;       // MUX1 mode: 0 (unread), 1 (single MIDIpot), 8 (muxed input)
   uint8_t  fs0Mode;        // Footswitch 0 mode (MOMENTARY / LATCH)
   uint8_t  fs1Mode;        // Footswitch 1 mode (MOMENTARY / LATCH)
   uint8_t  expKillSwitch;  // Expression pedal killswitch mode
 };
 
-#define MOMI_CONFIG_MAGIC 0x4D4F4D31 // 'MOM1'
+#define MOMI_CONFIG_MAGIC 0x4D4F4D33 // 'MOM3'
 
 void loadConfig();
 void saveConfig();

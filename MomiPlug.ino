@@ -96,6 +96,7 @@ void selectMode();
 void tracMode();
 void ctrlMode();
 void tracOrCtrlMode();
+void updateMuxDisplay();
 
 // CONFIG STORAGE ###################################################
 void loadConfig() {
@@ -104,13 +105,15 @@ void loadConfig() {
     config.magic = MOMI_CONFIG_MAGIC;
     config.midiChannel = 3;
     config.readMIDIthru = true;
-    config.readMUX0 = false;
-    config.readMUX1 = false;
+    config.mux0Mode = 0;
+    config.mux1Mode = 0;
     config.fs0Mode = 1; // LATCH
     config.fs1Mode = 0; // MOMENTARY
     config.expKillSwitch = 0;
     saveConfig();
   }
+  if (config.mux0Mode != 0 && config.mux0Mode != 1 && config.mux0Mode != 8) config.mux0Mode = 0;
+  if (config.mux1Mode != 0 && config.mux1Mode != 1 && config.mux1Mode != 8) config.mux1Mode = 0;
   MIDIchannel = config.midiChannel;
 }
 
@@ -157,8 +160,11 @@ void setup() {
   Ps[0] = new MIDIpot(expPin, 85);
   Ps[0]->killSwitch = config.expKillSwitch;
   Ps[0]->inputRange(10, 900);
-  for (int i = 1; i < 17; i++) {
-    Ps[i] = new MIDIpot(muxPin0, 47 + i); // CC 48~63
+  for (int i = 1; i <= 8; i++) {
+    Ps[i] = new MIDIpot(muxPin0, 47 + i); // CC 48~55 on MUX0 (Pin 20)
+  }
+  for (int i = 9; i <= 16; i++) {
+    Ps[i] = new MIDIpot(muxPin1, 47 + i); // CC 56~63 on MUX1 (Pin 21)
   }
 
   // Calibrate baseline for dedicated Chaos pad on Pin 18 (bottomLeftButton)
@@ -207,6 +213,13 @@ void setup() {
   attachUSBHandlers(midi4);
 }
 
+// MUX DISPLAY HELPER ###############################################
+void updateMuxDisplay() {
+  char c0 = (config.mux0Mode == 8 ? '8' : (config.mux0Mode == 1 ? '1' : '0'));
+  char c1 = (config.mux1Mode == 8 ? '8' : (config.mux1Mode == 1 ? '1' : '0'));
+  sprintf(DSPstring, "%c  %c", c0, c1);
+}
+
 // MAIN LOOP ########################################################
 void loop() {
   // Service USB Host hardware continuously
@@ -229,7 +242,7 @@ void loop() {
   editor.bounce->update();
 
   if (editor.bounce->fell()) {
-    sprintf(DSPstring, "%4d", MIDIchannel);
+    updateMuxDisplay();
   }
   else if (editor.bounce->rose()) {
     strcpy(DSPstring, "    ");
@@ -250,8 +263,17 @@ void loop() {
       strcpy(DSPstring, "trac");
     }
     else {
-      if (config.readMUX0) {
-        for (int i = 1; i < 9; i++) {
+      if (config.mux0Mode == 1) {
+        usbMIDI.sendControlChange(Ps[1]->number, Ps[1]->value, MIDIchannel);
+      } else if (config.mux0Mode == 8) {
+        for (int i = 1; i <= 8; i++) {
+          usbMIDI.sendControlChange(Ps[i]->number, Ps[i]->value, MIDIchannel);
+        }
+      }
+      if (config.mux1Mode == 1) {
+        usbMIDI.sendControlChange(Ps[9]->number, Ps[9]->value, MIDIchannel);
+      } else if (config.mux1Mode == 8) {
+        for (int i = 9; i <= 16; i++) {
           usbMIDI.sendControlChange(Ps[i]->number, Ps[i]->value, MIDIchannel);
         }
       }
@@ -301,18 +323,22 @@ void selectMode() {
   btn0Last = btn0Now;
 
   bool btn1Now = (Bs[1]->read() == 127);
-  if (btn1Now && !btn1Last) {
-    config.readMUX0 = !config.readMUX0;
+  if (btn1Now != btn1Last) {
+    if (config.mux0Mode == 0) config.mux0Mode = 1;
+    else if (config.mux0Mode == 1) config.mux0Mode = 8;
+    else config.mux0Mode = 0;
     editMode = true;
-    strcpy(DSPstring, config.readMUX0 ? "mx01" : "mx00");
+    updateMuxDisplay();
   }
   btn1Last = btn1Now;
 
   bool btn2Now = (Bs[2]->read() == 127);
-  if (btn2Now && !btn2Last) {
-    config.readMUX1 = !config.readMUX1;
+  if (btn2Now != btn2Last) {
+    if (config.mux1Mode == 0) config.mux1Mode = 1;
+    else if (config.mux1Mode == 1) config.mux1Mode = 8;
+    else config.mux1Mode = 0;
     editMode = true;
-    strcpy(DSPstring, config.readMUX1 ? "mx11" : "mx10");
+    updateMuxDisplay();
   }
   btn2Last = btn2Now;
 
@@ -348,8 +374,8 @@ void selectMode() {
 
   // Visual status indicators while in edit mode
   digitalWrite(topLeftLED, config.readMIDIthru);
-  digitalWrite(centerLED, config.readMUX0);
-  digitalWrite(topRightLED, config.readMUX1);
+  digitalWrite(centerLED, config.mux0Mode != 0);
+  digitalWrite(topRightLED, config.mux1Mode != 0);
 }
 
 // TRACK MODE #######################################################
@@ -444,7 +470,7 @@ void tracOrCtrlMode() {
     }
   }
 
-  if (config.readMUX0) {
+  if (config.mux0Mode == 1) {
     newVal = Ps[1]->send();
     if (newVal >= 0) {
       sprintf(DSPstring, "%4d", newVal);
@@ -452,16 +478,34 @@ void tracOrCtrlMode() {
     }
   }
 
-  if (config.readMUX1) {
+  if (config.mux1Mode == 1) {
+    newVal = Ps[9]->send();
+    if (newVal >= 0) {
+      sprintf(DSPstring, "%4d", newVal);
+      DSPstring[0] = 'H';
+    }
+  }
+
+  if (config.mux0Mode == 8 || config.mux1Mode == 8) {
     for (int i = 0; i < 8; i++) { // 8-channel MUX
       digitalWrite(sel_d, (i & 7) >> 2);
       digitalWrite(sel_c, (i & 3) >> 1);
       digitalWrite(sel_b, (i & 1));
 
-      newVal = Ps[i + 1]->send();
-      if (newVal >= 0) {
-        sprintf(DSPstring, "%4d", newVal);
-        DSPstring[0] = 'A';
+      if (config.mux0Mode == 8) {
+        newVal = Ps[i + 1]->send();
+        if (newVal >= 0) {
+          sprintf(DSPstring, "%4d", newVal);
+          DSPstring[0] = 'A';
+        }
+      }
+
+      if (config.mux1Mode == 8) {
+        newVal = Ps[i + 9]->send();
+        if (newVal >= 0) {
+          sprintf(DSPstring, "%4d", newVal);
+          DSPstring[0] = 'B';
+        }
       }
     }
   }

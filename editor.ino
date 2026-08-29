@@ -1,84 +1,73 @@
 #include "editor.h"
 
 // Editor constructors
-Editor::Editor(){};
+Editor::Editor() : bounce(nullptr), encoder(nullptr), number(3), level(0), editAnalogInputRange(0), DP(0), newInLo(0), newInHi(0) {}
 
-Editor::Editor(int a, int b, int p){
+Editor::Editor(int a, int b, int p) : bounce(nullptr), encoder(nullptr), number(3), level(0), editAnalogInputRange(0), DP(0), newInLo(0), newInHi(0) {
   pinMode(p, INPUT_PULLUP);
   bounce = new Bounce(p, 50);
   encoder = new Encoder(a, b);
-  number = 3;
-  level = 0;
-  newInLo = 0;
-  newInHi = 0;
-  DP = 0;
-};
+}
 
 // Editor destructor
-Editor::~Editor(){
-  delete bounce;
-  delete encoder;
-};
+Editor::~Editor() {
+  if (bounce) delete bounce;
+  if (encoder) delete encoder;
+}
 
-int Editor::send(){/////////////////////////////////////////////////////////////
+int Editor::send() {
   int incdec = encoder->read();
-  if(incdec >= 1 && level < 127){       // If turned up but not already maxed
+  if (incdec >= 4 && level < 127) {
     level += 1;
-		incdec = level;
-    usbMIDI.sendControlChange(number, level, MIDIchannel);
-  }
-  else if (incdec <= -1 && level > 0){  // If turned down but not bottomed out
-    level -= 1;
-		incdec = level;
-    usbMIDI.sendControlChange(number, level, MIDIchannel);
-  }
-  else{incdec = -1;}
-  encoder->write(0);
-  return incdec;
-};
-
-int Editor::quadOne(byte val, byte max){
-  int newValue = encoder->read();
-  if (newValue == 4){
-    if (val < max){
-      encoder->write(0);
-      newValue = val + 1;
-    }
-    else if (val == max){
-      encoder->write(0);
-      newValue = 0;
-    }
-  }
-  else if (newValue == -4){
-    if (val > 0){
-      encoder->write(0);
-      newValue = val - 1;
-    }
-    else if (val == 0){
-      encoder->write(0);
-      newValue = max;
-    }
-  }
-  else if (newValue > 4 || newValue < -4){
     encoder->write(0);
-    newValue = -1;
+    usbMIDI.sendControlChange(number, level, MIDIchannel);
+    return level;
   }
-  else{newValue = -1;}
-  return newValue;
-};
-
-byte Editor::editChannel(){
-  int newValue = quadOne(MIDIchannel, 15);
-  if (newValue >= 0){
-    return newValue;
+  else if (incdec <= -4 && level > 0) {
+    level -= 1;
+    encoder->write(0);
+    usbMIDI.sendControlChange(number, level, MIDIchannel);
+    return level;
   }
-  else{return MIDIchannel;}
-};
+  else if (incdec >= 4 || incdec <= -4) {
+    encoder->write(0);
+    return -1;
+  }
+  return -1;
+}
 
-byte Editor::setAnalog(int p){
+int Editor::quadOne(byte val, byte minVal, byte maxVal) {
+  int delta = encoder->read();
+  if (delta >= 4) {
+    encoder->write(0);
+    if (val < maxVal) {
+      return val + 1;
+    } else {
+      return minVal;
+    }
+  }
+  else if (delta <= -4) {
+    encoder->write(0);
+    if (val > minVal) {
+      return val - 1;
+    } else {
+      return maxVal;
+    }
+  }
+  return -1;
+}
+
+byte Editor::editChannel(byte currentChannel) {
+  int newValue = quadOne(currentChannel, 1, 16);
+  if (newValue >= 1 && newValue <= 16) {
+    return (byte)newValue;
+  }
+  return currentChannel;
+}
+
+byte Editor::setAnalog(int p) {
   int newValue = analogRead(p);
-  if (newValue > newInHi){newInHi = newValue;}
-  else if (newValue < newInLo){newInLo = newValue;}
-  if (newInHi - newInLo > 127){return true;}
-  else{return false;}
-};
+  if (newValue > newInHi) { newInHi = newValue; }
+  else if (newValue < newInLo) { newInLo = newValue; }
+  return (newInHi - newInLo > 127) ? 1 : 0;
+}

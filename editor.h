@@ -4,13 +4,13 @@
 #include "Arduino.h"
 #include "SevSeg.h"
 #include "MIDIcontroller.h"
+
 extern byte MIDIchannel;
 extern SevSeg DSP;
 
-class Editor{
-    int quadOne(byte val, byte max);
+class Editor {
+    int quadOne(byte val, byte minVal, byte maxVal);
     char DSPstring[5];
-    byte DP;
   public:
     Editor();
     Editor(int a, int b, int p);
@@ -20,9 +20,11 @@ class Editor{
     int number;
     int level;
     byte editAnalogInputRange;
+    byte DP;
     int newInLo, newInHi;
-    byte editChannel();
+    byte editChannel(byte currentChannel);
     byte setAnalog(int p);
-    int send(); //cuz interrupts won't let two objects use the same encoder pins
+    int send();
 };
+
 #endif

@@ -2,23 +2,21 @@
 #define track_h
 
 #include "Arduino.h"
-#include "Flicker.h"
 
 extern byte MIDIchannel;
 
-class Track: public TouchSwitch{
-  byte pin;
+class Track {
   public:
     Track();
-    Track(int p, byte n);
+    Track(byte n);
     ~Track();
-    int send();
+    int toggleArm();
     int vol(int incdec);
     byte number;
     byte level;
     byte state;
 };
 
-byte record(byte, byte);
+byte record(byte rec, byte stp);
 
 #endif

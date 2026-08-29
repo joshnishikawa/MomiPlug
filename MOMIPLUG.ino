@@ -27,13 +27,13 @@ const int LED0 = 13;          // the onboard (orange) LED
 const int sel_d = 14;         // also SCK0 - use SPI.setSCK(14)
 const int fs1Pin = 15;        // footswitch 1 (ring)
 const int mic = 16;           // microphone UNTESTED
-const int topLeftButton = 19; // onboard buttons
-const int centerButton = 22;
-const int topRightButton = 23;
-const int muxPin0 = 20;       // muxed analog input
-const int muxPin1 = 21;       // muxed analog input
 const int bottomRightButton = 17;
 const int bottomLeftButton = 18;
+const int topLeftButton = 19; // onboard buttons
+const int muxPin0 = 20;       // muxed analog input
+const int muxPin1 = 21;       // muxed analog input
+const int centerButton = 22;
+const int topRightButton = 23;
 const int encPinB = 24;       // pin A of encoder
 const int encPinA = 25;       // pin B of encoder
 const int fs0Pin = 26;        // footswitch 0 (tip)
@@ -48,7 +48,7 @@ const int phonesR = A22;      // headphones R (tip) UNTESTED
 
 // DECLARATOINS ################################################################
 bool editMode = false;
-bool trackMode = false;
+bool trackMode = false; //TODO: ISN'T TWO BOOLS REDUNDANT?
 
 byte MIDIchannel = 3;
 bool readMIDIthru = true;
@@ -60,11 +60,11 @@ char DSPstring[5] = "    ";
 Editor editor = Editor(encPinA, encPinB, editPin);
 
 Track* Ts[4];
-MIDIbutton* Bs[23];
+MIDIswitch* Bs[23];
 MIDIpot* Ps[18];
 
-uint16_t inLo = 0; // for the paperclip FX
-uint16_t inHi = 0; // for the paperclip FX
+uint16_t inLo = 0; // for the cap touch FX
+uint16_t inHi = 0; // for the cap touch FX
 
 
 void setup(){ // INITIALIZATION ########################################################################################
@@ -81,22 +81,22 @@ void setup(){ // INITIALIZATION ################################################
   Ts[1] = new Track(centerButton, 108);
   Ts[2] = new Track(topRightButton, 109);
 
-  Bs[0] = new MIDIbutton(topLeftButton, 102, LATCH, TOUCH);
-  Bs[0]->setThreshold();
-  Bs[1] = new MIDIbutton(centerButton, 103, LATCH, TOUCH);
-  Bs[1]->setThreshold();
-  Bs[2] = new MIDIbutton(topRightButton, 104, LATCH, TOUCH);
-  Bs[2]->setThreshold();
-  Bs[3] = new MIDIbutton(bottomRightButton, 105, LATCH, TOUCH);
-  Bs[3]->setThreshold();
-  Bs[4] = new MIDIbutton(bottomLeftButton, 106, LATCH, TOUCH);
-  Bs[4]->setThreshold();
+  Bs[0] = new MIDIswitch(topLeftButton, 102, LATCH, TOUCH);
+  Bs[0]->setThreshold(1250);
+  Bs[1] = new MIDIswitch(centerButton, 103, LATCH, TOUCH);
+  Bs[1]->setThreshold(1250);
+  Bs[2] = new MIDIswitch(topRightButton, 104, LATCH, TOUCH);
+  Bs[2]->setThreshold(1150);
+  Bs[3] = new MIDIswitch(bottomRightButton, 105, LATCH, TOUCH);
+  Bs[3]->setThreshold(1300);
+  Bs[4] = new MIDIswitch(bottomLeftButton, 106, LATCH, TOUCH);
+  Bs[4]->setThreshold(1300);
 
-  Bs[5] = new MIDIbutton(fs1Pin, 80, MOMENTARY);
+  Bs[5] = new MIDIswitch(fs1Pin, 80, MOMENTARY);
   EEPROM.get(4, Bs[5]->mode);
-  Bs[6] = new MIDIbutton(fs0Pin, 81, LATCH);
+  Bs[6] = new MIDIswitch(fs0Pin, 81, LATCH);
   EEPROM.get(8, Bs[6]->mode);
-  for(int i=7; i<23; i++){Bs[i] = new MIDIbutton(muxPin0,9+i, 1);} // CC 16~31
+  for(int i=7; i<23; i++){Bs[i] = new MIDIswitch(muxPin0,9+i, 1);} // CC 16~31
 
   Ps[0] = new MIDIpot(expPin, 85);
   EEPROM.get(12, Ps[0]->mode);

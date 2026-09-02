@@ -173,10 +173,15 @@ void setup() {
     Ps[i] = new MIDIpot(muxPin1, 47 + i); // CC 56~63 on MUX1 (Pin 21)
   }
 
-  delay(1000);
-  // Calibrate baseline for dedicated Chaos pad on Pin 18 (bottomLeftButton)
-  // inLo = touchRead(bottomLeftButton) * 1.02;
-  // inHi = inLo * 1.7;
+  // Auto-calibrate baseline for dedicated Chaos pad on Pin 18 (bottomLeftButton)
+  delay(100);
+  uint32_t baseline = 0;
+  for (int i = 0; i < 16; i++) {
+    baseline += touchRead(bottomLeftButton);
+    delay(5);
+  }
+  inLo = (baseline / 16) + 150; // Touch threshold above idle baseline
+  inHi = inLo + 500;            // Full touch range
 
   pinMode(sel_a, OUTPUT);
   pinMode(sel_b, OUTPUT);

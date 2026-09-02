@@ -1,6 +1,9 @@
 #include "MIDIinput.h"
 #include <MIDI.h>
 
+ChordAnalyzer analyzer;
+ChordDisplay chordDisplay(Wire2, 0x3C, 4, 3);
+
 int value = 0;
 elapsedMillis timer = 0;
 byte waiting = false;
@@ -14,8 +17,18 @@ byte USBchord[12] = {
   false, false, false, false, false, false, false, false, false, false, false, false
 };
 
-byte chaos(byte pin, uint16_t newValue, uint16_t inLo, uint16_t inHi, uint16_t outLo, uint16_t outHi) {
-  newValue = map(newValue, inLo, inHi, outLo, outHi);
+byte chaos(byte pin, uint16_t rawTouch, uint16_t inLo, uint16_t inHi, uint16_t outLo, uint16_t outHi) {
+  if (rawTouch < inLo) {
+    if (value > 0) {
+      usbMIDI.sendNoteOn(value, 0, MIDIchannel);
+      value = 0;
+    }
+    digitalWrite(pin, LOW);
+    waiting = false;
+    return 0;
+  }
+
+  uint16_t newValue = map(rawTouch, inLo, inHi, outLo, outHi);
   newValue = constrain(newValue, outLo, outHi);
 
   if (waiting) { // Wait briefly to make notes audible
@@ -25,20 +38,15 @@ byte chaos(byte pin, uint16_t newValue, uint16_t inLo, uint16_t inHi, uint16_t o
   }
   else if (newValue > 0) { // send MIDI
     if ((MIDIchord[newValue % 12] || USBchord[newValue % 12]) && newValue != value) {
-      usbMIDI.sendNoteOn(value, 0, MIDIchannel); // Silence previous note
+      if (value > 0) {
+        usbMIDI.sendNoteOn(value, 0, MIDIchannel); // Silence previous note
+      }
       usbMIDI.sendNoteOn(newValue, 96, MIDIchannel);
       waitTime = (newValue < 150) ? (150 - newValue) : 10; // Hold note longer for lower notes
       value = newValue;
       timer = 0;
       waiting = true;
       digitalWrite(pin, HIGH);
-    }
-    else if (newValue == 0) {
-      for (int i = 0; i < 12; i++) {
-        usbMIDI.sendNoteOn(MIDIchord[i], 0, MIDIchannel);
-        usbMIDI.sendNoteOn(USBchord[i], 0, MIDIchannel);
-      }
-      digitalWrite(pin, LOW);
     }
     else {
       digitalWrite(pin, LOW);
@@ -49,12 +57,16 @@ byte chaos(byte pin, uint16_t newValue, uint16_t inLo, uint16_t inHi, uint16_t o
 
 // MIDI EVENT HANDLERS (DIN MIDI IN) ///////////////////////////////////////////
 void onNoteOff(byte channel, byte note, byte velocity) {
+  analyzer.noteOff(note);
+
   usbMIDI.sendNoteOff(note, 0, channel);    // Default Port 1 (Cable 0)
   usbMIDI.sendNoteOff(note, 0, channel, 2); // Port 3 (Cable 2)
   MIDIchord[note % 12] = false;
 }
 
 void onNoteOn(byte channel, byte note, byte velocity) {
+  analyzer.noteOn(note, velocity);
+
   usbMIDI.sendNoteOn(note, velocity, channel);    // Default Port 1 (Cable 0)
   usbMIDI.sendNoteOn(note, velocity, channel, 2); // Port 3 (Cable 2)
   if (velocity == 0) {
@@ -70,6 +82,8 @@ void onPolyPressure(byte channel, byte note, byte pressure) {
 }
 
 void onControl(byte channel, byte control, byte value) {
+  if (control == 64) {analyzer.sustainControl(value);}
+
   usbMIDI.sendControlChange(control, value, channel);
   usbMIDI.sendControlChange(control, value, channel, 2);
 }

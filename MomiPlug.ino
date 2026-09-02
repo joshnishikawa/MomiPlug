@@ -126,11 +126,17 @@ void saveConfig() {
 // SETUP ############################################################
 void setup() {
   loadConfig();
+  Serial.begin(9600);
+
+  // Initialize I2C Wire2 at 1 MHz (Fast Mode+) for OLED chord display
+  Wire2.begin();
+  Wire2.setClock(1000000);
+  chordDisplay.begin();
 
   DSP.begin(COMMON_CATHODE, 4, (uint8_t*)digitPins, (uint8_t*)segmentPins, true);
   DSP.setBrightness(100);
 
-  // Background display timer interrupt at 1 kHz
+  // Background display timer interrupt at 1 kHz (1000 microseconds period) for 7-segment multiplexing
   displayTimer.begin(displayTimerISR, 1000);
 
   // Software track states (CC 107, 108, 109)
@@ -167,8 +173,8 @@ void setup() {
     Ps[i] = new MIDIpot(muxPin1, 47 + i); // CC 56~63 on MUX1 (Pin 21)
   }
 
+  delay(1000);
   // Calibrate baseline for dedicated Chaos pad on Pin 18 (bottomLeftButton)
-  delay(50);
   // inLo = touchRead(bottomLeftButton) * 1.02;
   // inHi = inLo * 1.7;
 
@@ -292,7 +298,12 @@ void loop() {
     }
   }
 
-  DSP.setChars(DSPstring);
+  // Only update 7-segment data buffer when display text changes
+  static char lastDSPstring[5] = "";
+  if (strcmp(lastDSPstring, DSPstring) != 0) {
+    DSP.setChars(DSPstring);
+    strcpy(lastDSPstring, DSPstring);
+  }
 }
 
 // CONFIGURATION & SELECTION MODE ###################################
@@ -315,7 +326,7 @@ void selectMode() {
   static bool expLast = false;
 
   bool btn0Now = (Bs[0]->read() == 127);
-  if (btn0Now && !btn0Last) {
+  if (btn0Now != btn0Last) {
     config.readMIDIthru = !config.readMIDIthru;
     editMode = true;
     strcpy(DSPstring, config.readMIDIthru ? "tru1" : "tru0");
@@ -461,6 +472,11 @@ void tracOrCtrlMode() {
   }
 
   if (config.readMIDIthru) {
+    if (analyzer.hasChanged()) {
+      const ChordAnalysisResult& result = analyzer.analyze();
+      chordDisplay.update(result);
+    }
+
     // Sample dedicated chaos pad on Pin 18 (bottomLeftButton) on a 20ms cadence
     static elapsedMillis chaosTimer = 0;
     if (chaosTimer >= 20) {

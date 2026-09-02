@@ -1,9 +1,15 @@
 #ifndef MIDIinput_h
 #define MIDIinput_h
+#include "ChordAnalyzer.h"
+#include "ChordDisplay.h"
 
+#include <Wire.h>
 #include "Arduino.h"
 
 extern byte MIDIchannel;
+
+extern ChordAnalyzer analyzer;
+extern ChordDisplay chordDisplay;
 
 byte chaos(byte pin, uint16_t newValue, uint16_t inLo, uint16_t inHi, uint16_t outLo, uint16_t outHi);
 

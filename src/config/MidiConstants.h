@@ -40,13 +40,16 @@ namespace UsbCable {
 }
 
 namespace TouchConfig {
-    // Capacitive touch activation thresholds
+    // Capacitive touch activation thresholds (Fixed values - no dynamic calibration)
     constexpr int THRESHOLD_TOP_LEFT      = 1150;
     constexpr int THRESHOLD_CENTER        = 1150;
     constexpr int THRESHOLD_TOP_RIGHT     = 1150;
-    constexpr int THRESHOLD_BOTTOM_RIGHT  = 1400;
+    constexpr int THRESHOLD_BOTTOM_RIGHT  = 1450; // Pin 17 baseline is higher; original was 1400
+    constexpr int THRESHOLD_BOTTOM_LEFT   = 1150;
 
     // Chaos Pad (Pin 18)
+    constexpr uint16_t CHAOS_IN_LO        = 500;
+    constexpr uint16_t CHAOS_IN_HI        = 1200;
     constexpr uint8_t CHAOS_NOTE_MIN      = 48; // C3
     constexpr uint8_t CHAOS_NOTE_MAX      = 84; // C6
     constexpr uint8_t CHAOS_VELOCITY      = 96;
@@ -57,4 +60,11 @@ namespace ExpressionConfig {
     constexpr int INPUT_MIN               = 10;
     constexpr int INPUT_MAX               = 900;
     constexpr int KILLSWITCH_THRESHOLD    = 850;
+}
+
+namespace EchoConfig {
+    constexpr uint8_t MIN_REPEATS         = 2;
+    constexpr uint8_t MAX_REPEATS         = 8;
+    constexpr uint16_t MIN_DELAY_MS       = 150;
+    constexpr uint16_t MAX_DELAY_MS       = 400;
 }

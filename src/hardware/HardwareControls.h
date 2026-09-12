@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <Bounce2.h>
 #include <Encoder.h>
+#include <SPI.h>
 #include "MIDIcontroller.h"
 #include "../config/PinMap.h"
 #include "../config/MidiConstants.h"
@@ -13,6 +14,7 @@ public:
 
     void begin();
     void updateModesFromConfig(const MomiConfig& cfg);
+    void initSpi();
 
     // Rotary Encoder CC Parameter (CC 3)
     int sendEncoderMidi(uint8_t channel);
@@ -27,6 +29,14 @@ public:
     void setLedFs0(bool state)        { digitalWrite(Pins::LED_FOOTSWITCH_0, state); }
     void setLedFs1(bool state)        { digitalWrite(Pins::LED_FOOTSWITCH_1, state); }
     void setLedOnboard(bool state)    { digitalWrite(Pins::LED_ONBOARD, state); }
+    void turnOffAllLeds() {
+        setLedTopLeft(false);
+        setLedCenter(false);
+        setLedTopRight(false);
+        setLedFs0(false);
+        setLedFs1(false);
+        setLedOnboard(false);
+    }
 
     // Physical Input Devices
     Bounce encoderButton;
@@ -46,6 +56,8 @@ public:
 
     MIDIpot mux0Pots[8]; // CC 48..55 on Pin 20
     MIDIpot mux1Pots[8]; // CC 56..63 on Pin 21
+
+    bool haltMuxReads;
 };
 
 extern HardwareControls hw;

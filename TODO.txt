@@ -1,0 +1,45 @@
+MOMI should start in CONTROL mode.
+
+If any of the touch, footswitch or MIDIpot inputs is triggered while the EDIT button is being held, 
+the EDIT button may be released and we remain in CONFIG mode to allow the encoder to set values for the last item triggered.
+When the EDIT button is pressed and released again, these values are set and we return to the previously
+selected mode (TRACK or CONTROL).
+
+If the Bottom Right touch input is selected (pin 17), all reads on pins 20 and 21 are halted.
+THIS IS TOP PRIORITY! WE MUST BE ABLE TO STOP MUXES FROM BEING READ!
+The current read state of the MUX pins is displayed on the 7-segment display. The EDIT button
+may be released and the encoder may be used to scroll through these options.
+  '----' Both MUX pins will be ignored.
+  'A---' Pin 20 will read a single MIDIpot.
+  'A--A' Pins 20 and 21 will each read a single MIDIpot.
+  '8---' Pin 20 will read MUX8.
+  '8--A' Pin 20 will read MUX8 and pin 21 swill read a single MIDIpot.
+  '8--8' Pins 20 and 21 will each read a MUX8.
+  'SPI-' Use SPI only - MOSI on pin 11, MISO on pin 12, CS on pin 20 and SCK on pin 14 ( use SPI.setSCK(14) )
+  'SPIA' Use SPI on pin 20 and a single MIDIpot on pin 21.
+
+If the Top Right input is selected (pin 23), the current octave setting is display on the 7-segment display.
+The EDIT button may be released and the encoder may be used to scroll through these options. 
+  'ocL-' Each note will be accompanied by a second note an octave lower.
+  'oc-H' Each note will be accompanied by a second note an octave higher.
+  'ocLH' Each note will be accompanied by two additional notes, one an octave higher and one an octave lower.
+  'oc--' Only the note played will be sent.
+
+If the Top Left input is selected (pin 19), the current transpose setting is displayed on the 7-segment display.
+The EDIT button may be released and the encoder may be used to scroll down to -12 or up to 12 for note transposition.
+
+If the Bottom Left input is elected (pin 18), the current expression state is displayed on the 7-segment display.
+The EDIT button may be released and the encoder may be used to scroll through these options.
+  'CAOS' Currently incorrectly implemented (check the 'MOMI3 init' commit).
+  'ECHO' A digital delay where, the higher the reading, the more repeats and longer decay time.
+  'both' Both CAOS and ECHO are used
+  '----' Neither are used.
+
+If the Center input is selected (pin 22), toggles whether MIDI FX apply to usb host too (wet, dry).
+
+If any MIDIpot input is triggered while the EDIT button is held down,
+the cut / -cut functionality should be the same but turning the encoder should change the CC number.
+When EDIT is released 'SEnS' should be displayed on the 7-segment and, if the analog read changes
+by more than 100, we need to keep track of inHi and inLo (displaying the analog value on th 7-segment). 
+When the EDIT button is pressed and released again, inHi should be set to the 
+highest reading -10 and inLo should be set to the lowest reading +10.

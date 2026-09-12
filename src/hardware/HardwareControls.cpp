@@ -32,7 +32,8 @@ HardwareControls::HardwareControls()
           MIDIpot(Pins::MUX_ANALOG_IN_1, MidiCC::MUX1_POT_BASE + 5),
           MIDIpot(Pins::MUX_ANALOG_IN_1, MidiCC::MUX1_POT_BASE + 6),
           MIDIpot(Pins::MUX_ANALOG_IN_1, MidiCC::MUX1_POT_BASE + 7)
-      }
+      },
+      haltMuxReads(true)
 {
     touchButtons[0] = &touchTopLeft;
     touchButtons[1] = &touchCenter;
@@ -43,12 +44,15 @@ HardwareControls::HardwareControls()
 void HardwareControls::begin() {
     pinMode(Pins::ENCODER_BUTTON, INPUT_PULLUP);
 
+    // Use fixed thresholds - no dynamic baseline calibration
     touchTopLeft.setThreshold(TouchConfig::THRESHOLD_TOP_LEFT);
     touchCenter.setThreshold(TouchConfig::THRESHOLD_CENTER);
     touchTopRight.setThreshold(TouchConfig::THRESHOLD_TOP_RIGHT);
     touchBottomRight.setThreshold(TouchConfig::THRESHOLD_BOTTOM_RIGHT);
 
     expressionPedal.inputRange(ExpressionConfig::INPUT_MIN, ExpressionConfig::INPUT_MAX);
+
+    haltMuxReads = (configMgr.getMuxMode() == MUX_NONE);
 
     initLeds();
 }
@@ -62,10 +66,27 @@ void HardwareControls::initLeds() {
     pinMode(Pins::LED_ONBOARD, OUTPUT);
 }
 
+void HardwareControls::initSpi() {
+    pinMode(Pins::MUX_ANALOG_IN_0, OUTPUT); // Pin 20 as CS
+    digitalWrite(Pins::MUX_ANALOG_IN_0, HIGH);
+    SPI.setMOSI(Pins::MUX_SEL_B); // Pin 11
+    SPI.setMISO(Pins::MUX_SEL_C); // Pin 12
+    SPI.setSCK(Pins::MUX_SEL_D);  // Pin 14
+    SPI.begin();
+}
+
 void HardwareControls::updateModesFromConfig(const MomiConfig& cfg) {
     footSwitch0.mode = cfg.fs0Mode;
     footSwitch1.mode = cfg.fs1Mode;
     expressionPedal.killSwitch = cfg.expKillSwitch;
+    expressionPedal.number = cfg.expCcNumber;
+    expressionPedal.inputRange(cfg.expInLo, cfg.expInHi);
+
+    haltMuxReads = (cfg.muxMode == MUX_NONE);
+
+    if (cfg.muxMode == MUX_SPI || cfg.muxMode == MUX_SPI_A) {
+        initSpi();
+    }
 }
 
 int HardwareControls::sendEncoderMidi(uint8_t channel) {

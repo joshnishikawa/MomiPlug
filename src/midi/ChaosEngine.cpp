@@ -3,8 +3,8 @@
 ChaosEngine chaosEngine;
 
 ChaosEngine::ChaosEngine()
-    : inLo(1000),
-      inHi(1150),
+    : inLo(TouchConfig::CHAOS_IN_LO),
+      inHi(TouchConfig::CHAOS_IN_HI),
       activeNote(0),
       waiting(false),
       waitTimeMs(0),
@@ -12,14 +12,9 @@ ChaosEngine::ChaosEngine()
       pollTimer(0) {}
 
 void ChaosEngine::calibrateBaseline() {
-    delay(100);
-    uint32_t baseline = 0;
-    for (int i = 0; i < 16; i++) {
-        baseline += touchRead(Pins::TOUCH_CHAOS_PAD);
-        delay(5);
-    }
-    inLo = static_cast<uint16_t>((baseline / 16) + 150); // Touch threshold above idle baseline
-    inHi = inLo + 500;                                   // Full touch range
+    // No dynamic calibration loop on boot - use fixed, stable thresholds
+    inLo = TouchConfig::CHAOS_IN_LO;
+    inHi = TouchConfig::CHAOS_IN_HI;
 }
 
 void ChaosEngine::silence(uint8_t midiChannel) {

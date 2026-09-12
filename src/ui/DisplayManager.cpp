@@ -41,7 +41,7 @@ void DisplayManager::showControlValue(char prefix, int value) {
 }
 
 void DisplayManager::showNumber(int value) {
-    snprintf(currentString, sizeof(currentString), "%4d", constrain(value, 0, 9999));
+    snprintf(currentString, sizeof(currentString), "%4d", constrain(value, -999, 9999));
     updateBuffer();
 }
 

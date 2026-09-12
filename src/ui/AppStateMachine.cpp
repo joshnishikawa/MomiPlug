@@ -12,6 +12,7 @@ AppStateMachine::AppStateMachine()
       configModified(false),
       bootTimer(0),
       editHoldTimer(0),
+      touchPollTimer(0),
       initialExpReading(0),
       expCalibrating(false),
       minExpReading(1023),
@@ -467,13 +468,16 @@ void AppStateMachine::processTrackMode() {
     }
 
     // Touch buttons 0..2 arm/disarm tracks
-    bool isPressed = (hw.touchButtons[trackTouchIdx]->read() == 127);
-    if (isPressed && !trackBtnArmedLast[trackTouchIdx]) {
-        int newLevel = trackMgr.toggleTrackArm(trackTouchIdx, ch);
-        display.showNumber(newLevel);
+    if (touchPollTimer >= 15) {
+        touchPollTimer = 0;
+        bool isPressed = (hw.touchButtons[trackTouchIdx]->read() == 127);
+        if (isPressed && !trackBtnArmedLast[trackTouchIdx]) {
+            int newLevel = trackMgr.toggleTrackArm(trackTouchIdx, ch);
+            display.showNumber(newLevel);
+        }
+        trackBtnArmedLast[trackTouchIdx] = isPressed;
+        trackTouchIdx = (trackTouchIdx + 1) % 3;
     }
-    trackBtnArmedLast[trackTouchIdx] = isPressed;
-    trackTouchIdx = (trackTouchIdx + 1) % 3;
 
     // Footswitches trigger looper scene record & stop
     bool fs1Pressed = (hw.footSwitch1.read() == 127);
@@ -498,11 +502,14 @@ void AppStateMachine::processControlMode() {
     }
 
     // 2. Round-robin polling across active onboard touch buttons (0..3)
-    newVal = hw.touchButtons[ctrlTouchIdx]->send();
-    if (newVal >= 0) {
-        display.showControlValue('b', newVal);
+    if (touchPollTimer >= 15) {
+        touchPollTimer = 0;
+        newVal = hw.touchButtons[ctrlTouchIdx]->send();
+        if (newVal >= 0) {
+            display.showControlValue('b', newVal);
+        }
+        ctrlTouchIdx = (ctrlTouchIdx + 1) % 4;
     }
-    ctrlTouchIdx = (ctrlTouchIdx + 1) % 4;
 
     // 3. Poll foot switches (FS1 CC 80, FS0 CC 81)
     newVal = hw.footSwitch1.send();

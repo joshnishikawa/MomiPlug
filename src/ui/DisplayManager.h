@@ -30,6 +30,7 @@ private:
     ChordDisplay chordDisplay;
     char currentString[5];
     char lastString[5];
+    elapsedMillis chordUpdateTimer;
 };
 
 extern DisplayManager display;

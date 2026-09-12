@@ -19,7 +19,7 @@ public:
     MidiEcho();
 
     void update();
-    void onNoteOn(uint8_t channel, uint8_t note, uint8_t velocity, uint8_t port);
+    void onNoteOn(uint8_t channel, uint8_t note, uint8_t velocity, uint8_t port, int rawTouch = -1);
     void onNoteOff(uint8_t channel, uint8_t note, uint8_t port);
     void silenceAll();
 

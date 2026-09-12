@@ -54,6 +54,7 @@ private:
     bool          configModified;
     elapsedMillis bootTimer;
     elapsedMillis editHoldTimer;
+    elapsedMillis touchPollTimer;
 
     // Expression / MIDIpot calibration
     int  initialExpReading;

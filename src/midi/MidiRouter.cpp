@@ -61,9 +61,11 @@ void MidiRouter::process() {
 
     // Process DIN MIDI if Thru is enabled, otherwise flush Serial1
     if (configMgr.isMidiThruEnabled()) {
-        while (MIDI.read()) {}
+        while (Serial1.available() > 0) {
+            MIDI.read();
+        }
     } else {
-        while (Serial1.available()) {
+        while (Serial1.available() > 0) {
             Serial1.read();
         }
     }

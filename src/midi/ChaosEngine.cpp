@@ -5,6 +5,7 @@ ChaosEngine chaosEngine;
 ChaosEngine::ChaosEngine()
     : inLo(TouchConfig::CHAOS_IN_LO),
       inHi(TouchConfig::CHAOS_IN_HI),
+      lastRawTouch(0),
       activeNote(0),
       waiting(false),
       waitTimeMs(0),
@@ -15,6 +16,7 @@ void ChaosEngine::calibrateBaseline() {
     // No dynamic calibration loop on boot - use fixed, stable thresholds
     inLo = TouchConfig::CHAOS_IN_LO;
     inHi = TouchConfig::CHAOS_IN_HI;
+    lastRawTouch = 0;
 }
 
 void ChaosEngine::silence(uint8_t midiChannel) {
@@ -33,6 +35,7 @@ void ChaosEngine::update(uint8_t midiChannel, const bool dinChords[12], const bo
     pollTimer = 0;
 
     int rawTouch = touchRead(Pins::TOUCH_CHAOS_PAD);
+    lastRawTouch = rawTouch;
 
     // Below touch threshold: silence note and turn off LED
     if (rawTouch < inLo) {

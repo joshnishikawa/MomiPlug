@@ -11,8 +11,8 @@ DisplayManager::DisplayManager()
 void DisplayManager::begin() {
     // Initialize I2C Wire2 at 1 MHz (Fast Mode+) for OLED chord display
     Wire2.begin();
-    Wire2.setClock(1000000);
     chordDisplay.begin();
+    Wire2.setClock(1000000); // Re-assert 1 MHz after Adafruit_SSD1306::begin resets it to 400kHz
 
     // 4-Digit Common Cathode 7-Segment display
     sevSeg.begin(
@@ -74,7 +74,8 @@ void DisplayManager::updateChordDisplay(const ChordAnalysisResult& chord) {
 }
 
 void DisplayManager::updateChordDisplayIfChanged(ChordAnalyzer& analyzer) {
-    if (analyzer.hasChanged()) {
+    if (analyzer.hasChanged() && chordUpdateTimer >= 33) {
+        chordUpdateTimer = 0;
         const ChordAnalysisResult& result = analyzer.analyze();
         chordDisplay.update(result);
     }

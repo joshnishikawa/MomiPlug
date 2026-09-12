@@ -13,10 +13,12 @@ public:
 
     uint16_t getInLow() const  { return inLo; }
     uint16_t getInHigh() const { return inHi; }
+    int      getLastTouch() const { return lastRawTouch; }
 
 private:
     uint16_t inLo;
     uint16_t inHi;
+    int      lastRawTouch;
     uint8_t  activeNote;
     bool     waiting;
     uint16_t waitTimeMs;

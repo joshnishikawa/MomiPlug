@@ -1,4 +1,5 @@
 #include "MidiEcho.h"
+#include "ChaosEngine.h"
 
 MidiEcho midiEcho;
 
@@ -24,13 +25,15 @@ void MidiEcho::scheduleEvent(uint8_t channel, uint8_t note, uint8_t velocity, ui
     }
 }
 
-void MidiEcho::onNoteOn(uint8_t channel, uint8_t note, uint8_t velocity, uint8_t port) {
+void MidiEcho::onNoteOn(uint8_t channel, uint8_t note, uint8_t velocity, uint8_t port, int rawTouch) {
     uint8_t expMode = configMgr.getExpMode();
     if (expMode != EXP_ECHO && expMode != EXP_BOTH) {
         return;
     }
 
-    int rawTouch = touchRead(Pins::TOUCH_CHAOS_PAD);
+    if (rawTouch < 0) {
+        rawTouch = chaosEngine.getLastTouch();
+    }
     if (rawTouch < TouchConfig::CHAOS_IN_LO) {
         return;
     }

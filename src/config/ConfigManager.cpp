@@ -5,7 +5,7 @@ ConfigManager configMgr;
 void ConfigManager::resetDefaults() {
     config.magic = MOMI_CONFIG_MAGIC;
     config.midiChannel = 3;
-    config.readMIDIthru = true;
+    config.usbFxWet = true;
     config.muxMode = MUX_NONE; // '----' Halts all MUX pin reads by default
     config.octaveMode = OCTAVE_OFF; // 'oc--'
     config.transpose = 0;

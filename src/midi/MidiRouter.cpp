@@ -67,15 +67,9 @@ void MidiRouter::process() {
     while (midi3.read()) {}
     while (midi4.read()) {}
 
-    // Process DIN MIDI if Thru is enabled, otherwise flush Serial1
-    if (configMgr.isMidiThruEnabled()) {
-        while (Serial1.available() > 0) {
-            MIDI.read();
-        }
-    } else {
-        while (Serial1.available() > 0) {
-            Serial1.read();
-        }
+    // Process DIN MIDI unconditionally
+    while (Serial1.available() > 0) {
+        MIDI.read();
     }
 
     // Drain USB client MIDI packets from PC host so endpoint buffers don't stall

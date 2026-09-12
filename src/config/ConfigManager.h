@@ -35,7 +35,7 @@ enum ExpMode : uint8_t {
 struct MomiConfig {
     uint32_t magic;          // Magic number for EEPROM validity check
     uint8_t  midiChannel;    // Active MIDI Channel (1 - 16)
-    bool     readMIDIthru;   // Pass-through incoming MIDI
+    bool     usbFxWet;       // USB Host FX wet/dry mode (true = wet, false = dry)
     uint8_t  muxMode;        // MuxMode (0..7)
     uint8_t  octaveMode;     // OctaveMode (0..3)
     int8_t   transpose;      // Transpose (-12..+12)
@@ -60,12 +60,9 @@ public:
     uint8_t getMidiChannel() const { return config.midiChannel; }
     void setMidiChannel(uint8_t ch) { config.midiChannel = constrain(ch, 1, 16); }
 
-    bool isMidiThruEnabled() const { return config.readMIDIthru; }
-    void toggleMidiThru() { config.readMIDIthru = !config.readMIDIthru; }
-
-    bool isUsbFxWet() const { return config.readMIDIthru; }
-    void toggleUsbFxWet() { config.readMIDIthru = !config.readMIDIthru; }
-    void setUsbFxWet(bool wet) { config.readMIDIthru = wet; }
+    bool isUsbFxWet() const { return config.usbFxWet; }
+    void toggleUsbFxWet() { config.usbFxWet = !config.usbFxWet; }
+    void setUsbFxWet(bool wet) { config.usbFxWet = wet; }
 
     uint8_t getMuxMode() const { return config.muxMode; }
     void setMuxMode(uint8_t mode) { config.muxMode = mode % 8; }

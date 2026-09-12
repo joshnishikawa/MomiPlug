@@ -44,8 +44,8 @@ namespace TouchConfig {
     constexpr int THRESHOLD_TOP_LEFT      = 1150;
     constexpr int THRESHOLD_CENTER        = 1150;
     constexpr int THRESHOLD_TOP_RIGHT     = 1150;
-    constexpr int THRESHOLD_BOTTOM_RIGHT  = 1450; // Pin 17 baseline is higher; original was 1400
-    constexpr int THRESHOLD_BOTTOM_LEFT   = 1150;
+    constexpr int THRESHOLD_BOTTOM_RIGHT  = 1350; // Pin 17 baseline is higher; original was 1400/1450
+    constexpr int THRESHOLD_BOTTOM_LEFT   = 1080; // Pin 18 (Chaos pad resting ~1000-1025, active 1080+)
 
     // Chaos Pad (Pin 18)
     constexpr uint16_t CHAOS_IN_LO        = 1010;
@@ -53,7 +53,7 @@ namespace TouchConfig {
     constexpr uint8_t CHAOS_NOTE_MIN      = 48; // C3
     constexpr uint8_t CHAOS_NOTE_MAX      = 84; // C6
     constexpr uint8_t CHAOS_VELOCITY      = 96;
-    constexpr uint8_t CHAOS_POLL_MS       = 20; // 20ms cadence
+    constexpr uint8_t CHAOS_POLL_MS       = 10; // 20ms cadence
 }
 
 namespace ExpressionConfig {
@@ -63,8 +63,11 @@ namespace ExpressionConfig {
 }
 
 namespace EchoConfig {
-    constexpr uint8_t MIN_REPEATS         = 2;
-    constexpr uint8_t MAX_REPEATS         = 8;
-    constexpr uint16_t MIN_DELAY_MS       = 150;
-    constexpr uint16_t MAX_DELAY_MS       = 400;
+    // Touch range for Echo expression pad (Pin 18)
+    constexpr uint16_t TOUCH_THRESHOLD    = 1020; // Pin 18 touch threshold (Chaos pad active 1010+)
+    constexpr uint16_t TOUCH_FIRM         = 1150; // Firm touch level (maximum repeats & decay)
+    constexpr uint8_t  MIN_REPEATS        = 1;    // Light touch gives 1 subtle repeat
+    constexpr uint8_t  MAX_REPEATS        = 8;    // Firm touch gives 8 repeats ("several times")
+    constexpr uint16_t MIN_DELAY_MS       = 130;  // Quick delay for light touch
+    constexpr uint16_t MAX_DELAY_MS       = 380;  // Long delay for firm touch (over 3s decay)
 }

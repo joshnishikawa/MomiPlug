@@ -24,7 +24,7 @@ public:
     void silenceAll();
 
 private:
-    static constexpr uint8_t MAX_EVENTS = 32;
+    static constexpr uint8_t MAX_EVENTS = 64;
     ScheduledEcho events[MAX_EVENTS];
 
     void scheduleEvent(uint8_t channel, uint8_t note, uint8_t velocity, uint8_t port, uint32_t delayMs, bool isOff);

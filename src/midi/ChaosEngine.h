@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include "../config/PinMap.h"
 #include "../config/MidiConstants.h"
+#include "../config/ConfigManager.h"
 
 class ChaosEngine {
 public:

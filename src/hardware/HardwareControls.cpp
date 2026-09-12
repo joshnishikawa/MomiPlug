@@ -53,6 +53,10 @@ void HardwareControls::begin() {
     expressionPedal.inputRange(ExpressionConfig::INPUT_MIN, ExpressionConfig::INPUT_MAX);
 
     haltMuxReads = (configMgr.getMuxMode() == MUX_NONE);
+    if (haltMuxReads) {
+        pinMode(Pins::MUX_ANALOG_IN_0, INPUT_PULLDOWN);
+        pinMode(Pins::MUX_ANALOG_IN_1, INPUT_PULLDOWN);
+    }
 
     initLeds();
 }
@@ -84,8 +88,14 @@ void HardwareControls::updateModesFromConfig(const MomiConfig& cfg) {
 
     haltMuxReads = (cfg.muxMode == MUX_NONE);
 
-    if (cfg.muxMode == MUX_SPI || cfg.muxMode == MUX_SPI_A) {
+    if (cfg.muxMode == MUX_NONE) {
+        pinMode(Pins::MUX_ANALOG_IN_0, INPUT_PULLDOWN);
+        pinMode(Pins::MUX_ANALOG_IN_1, INPUT_PULLDOWN);
+    } else if (cfg.muxMode == MUX_SPI || cfg.muxMode == MUX_SPI_A) {
         initSpi();
+    } else {
+        pinMode(Pins::MUX_ANALOG_IN_0, INPUT);
+        pinMode(Pins::MUX_ANALOG_IN_1, INPUT);
     }
 }
 

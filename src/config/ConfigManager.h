@@ -63,6 +63,10 @@ public:
     bool isMidiThruEnabled() const { return config.readMIDIthru; }
     void toggleMidiThru() { config.readMIDIthru = !config.readMIDIthru; }
 
+    bool isUsbFxWet() const { return config.readMIDIthru; }
+    void toggleUsbFxWet() { config.readMIDIthru = !config.readMIDIthru; }
+    void setUsbFxWet(bool wet) { config.readMIDIthru = wet; }
+
     uint8_t getMuxMode() const { return config.muxMode; }
     void setMuxMode(uint8_t mode) { config.muxMode = mode % 8; }
     uint8_t stepMuxMode(int delta);

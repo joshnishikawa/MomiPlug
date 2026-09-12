@@ -222,6 +222,9 @@ void MidiRouter::handleUSBNoteOn(byte channel, byte note, byte velocity) {
     MIDI.sendNoteOn(note, velocity, channel); // Forward to DIN Out
 
     midiRouter.usbChords[note % 12] = true;
+    if (configMgr.isUsbFxWet()) {
+        midiEcho.onNoteOn(channel, note, velocity, UsbCable::DEFAULT_PORT);
+    }
     usbMIDI.send_now();
 }
 

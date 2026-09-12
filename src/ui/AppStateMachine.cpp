@@ -13,6 +13,7 @@ AppStateMachine::AppStateMachine()
       bootTimer(0),
       editHoldTimer(0),
       touchPollTimer(0),
+      configTouchTimer(0),
       initialExpReading(0),
       expCalibrating(false),
       minExpReading(1023),
@@ -21,10 +22,11 @@ AppStateMachine::AppStateMachine()
       ctrlTouchIdx(0),
       trackTouchIdx(0),
       trackBtnArmedLast{false, false, false},
-      configTouchBrLast(false),
-      configTouchTrLast(false),
-      configTouchTlLast(false),
-      configTouchBlLast(false),
+      touchBr(Pins::TOUCH_BOTTOM_RIGHT, TouchConfig::THRESHOLD_BOTTOM_RIGHT, 15),
+      touchTr(Pins::TOUCH_TOP_RIGHT, TouchConfig::THRESHOLD_TOP_RIGHT, 30),
+      touchTl(Pins::TOUCH_TOP_LEFT, TouchConfig::THRESHOLD_TOP_LEFT, 30),
+      touchCenter(Pins::TOUCH_CENTER, TouchConfig::THRESHOLD_CENTER, 30),
+      touchBl(Pins::TOUCH_CHAOS_PAD, TouchConfig::THRESHOLD_BOTTOM_LEFT, 20),
       configFs0Last(false),
       configFs1Last(false),
       configExpLast(false) {}
@@ -36,6 +38,13 @@ void AppStateMachine::begin() {
     muxMgr.begin();
     display.begin();
     chaosEngine.calibrateBaseline();
+
+    touchBr = TouchDebounce(Pins::TOUCH_BOTTOM_RIGHT, TouchConfig::THRESHOLD_BOTTOM_RIGHT, 15);
+    touchBr.calibrate(TouchConfig::THRESHOLD_BOTTOM_RIGHT);
+    touchTr = TouchDebounce(Pins::TOUCH_TOP_RIGHT, TouchConfig::THRESHOLD_TOP_RIGHT, 30);
+    touchTl = TouchDebounce(Pins::TOUCH_TOP_LEFT, TouchConfig::THRESHOLD_TOP_LEFT, 30);
+    touchCenter = TouchDebounce(Pins::TOUCH_CENTER, TouchConfig::THRESHOLD_CENTER, 30);
+    touchBl = TouchDebounce(Pins::TOUCH_CHAOS_PAD, TouchConfig::THRESHOLD_BOTTOM_LEFT, 20);
 
     currentMode = OperatingMode::CONTROL;
     previousMode = OperatingMode::CONTROL;
@@ -93,64 +102,55 @@ void AppStateMachine::handleEncoderButton() {
     }
 
     // 2. In normal mode (CONTROL or TRACK): EDIT button just pressed down
+    // "EDIT falling edge - stop all MUX reads display MIDI channel"
     if (hw.encoderButton.fell()) {
-        editHoldTimer = 0;
+        hw.haltMuxReads = true;
+        // Immediately halt MUX reads and ground analog lines so they cannot interfere with touch sensing
+        pinMode(Pins::MUX_ANALOG_IN_0, INPUT_PULLDOWN);
+        pinMode(Pins::MUX_ANALOG_IN_1, INPUT_PULLDOWN);
+        digitalWrite(Pins::MUX_SEL_A, LOW);
+        digitalWrite(Pins::MUX_SEL_B, LOW);
+        digitalWrite(Pins::MUX_SEL_C, LOW);
+        digitalWrite(Pins::MUX_SEL_D, LOW);
+
+        display.showChannel(configMgr.getMidiChannel());
+
         triggerFiredWhileEditHeld = false;
         channelChangedWhileEditHeld = false;
-        channelDisplayShown = false;
         activeTarget = ConfigTarget::NONE;
-        // Sample current states at moment of press so resting baseline doesn't trigger false edges
-        configTouchBrLast = (touchRead(Pins::TOUCH_BOTTOM_RIGHT) >= TouchConfig::THRESHOLD_BOTTOM_RIGHT);
-        configTouchTrLast = (touchRead(Pins::TOUCH_TOP_RIGHT) >= TouchConfig::THRESHOLD_TOP_RIGHT);
-        configTouchTlLast = (touchRead(Pins::TOUCH_TOP_LEFT) >= TouchConfig::THRESHOLD_TOP_LEFT);
-        configTouchBlLast = (touchRead(Pins::TOUCH_CHAOS_PAD) >= TouchConfig::THRESHOLD_BOTTOM_LEFT);
+        hw.resetEncoder();
+
+        // Calibrate touchBr to ensure it works reliably in the current environment
+        touchBr.calibrate(TouchConfig::THRESHOLD_BOTTOM_RIGHT);
+        touchBr.reset();
+        touchTr.reset();
+        touchTl.reset();
+        touchCenter.reset();
+        touchBl.reset();
         configFs0Last = (digitalRead(Pins::FOOTSWITCH_0) == LOW);
         configFs1Last = (digitalRead(Pins::FOOTSWITCH_1) == LOW);
         configExpLast = (analogRead(Pins::EXPRESSION_PEDAL) >= ExpressionConfig::KILLSWITCH_THRESHOLD);
-        hw.resetEncoder();
+        configTouchTimer = 0;
+
+        Serial.printf("[EDIT] Pin 17 baseline: %d, thresh: %d (cfg: %d)\n",
+                      touchBr.baseline, touchBr.onThreshold, TouchConfig::THRESHOLD_BOTTOM_RIGHT);
+        return;
     }
 
     // 3. Normal mode (CONTROL or TRACK) with EDIT button held down
+    // "EDIT low - detect input from footswitches, expression pedal, encoder, pins 17, 18, 19, 22 and 23
+    //  and display appropriate info on 7-segment display."
     if (hw.encoderButton.read() == LOW) {
         checkConfigTriggersWhileEditHeld();
         return;
     }
 
     // 4. EDIT button released
+    // "EDIT rising edge - if none of those inputs were triggered, toggle TRACK/CONTROL modes.
+    //  If any of those inputs were triggered, we enter the config mode that that input corresponds to."
     if (hw.encoderButton.rose()) {
-        configTouchBrLast = false;
-        configTouchTrLast = false;
-        configTouchTlLast = false;
-        configTouchBlLast = false;
-        configFs0Last = false;
-        configFs1Last = false;
-        configExpLast = false;
-        if (triggerFiredWhileEditHeld) {
-            // Latch into CONFIG mode (touch pad, footswitch, or pedal was triggered)
-            previousMode = currentMode;
-            currentMode = OperatingMode::CONFIG;
-            hw.turnOffAllLeds();
-
-            if (activeTarget == ConfigTarget::ANALOG_EXP) {
-                display.showText("SEnS");
-                initialExpReading = analogRead(Pins::EXPRESSION_PEDAL);
-                expCalibrating = false;
-                minExpReading = 1023;
-                maxExpReading = 0;
-            }
-            return;
-        } else if (channelChangedWhileEditHeld) {
-            // Channel was changed while holding EDIT - save and return to operating mode
-            configMgr.save();
-            if (currentMode == OperatingMode::TRACK) {
-                display.showText("trac");
-            } else {
-                display.showText("ctrl");
-                resendMuxPots();
-            }
-            return;
-        } else if (editHoldTimer < 300) {
-            // Short press toggle between CONTROL and TRACK modes
+        if (!triggerFiredWhileEditHeld) {
+            // No inputs were triggered: toggle TRACK/CONTROL modes
             if (currentMode == OperatingMode::CONTROL) {
                 currentMode = OperatingMode::TRACK;
                 trackMgr.sendAllTrackLevels(configMgr.getMidiChannel());
@@ -160,15 +160,37 @@ void AppStateMachine::handleEncoderButton() {
                 display.showText("ctrl");
                 resendMuxPots();
             }
+
+            // Restore MUX reads according to config
+            hw.haltMuxReads = configMgr.isMuxHalted();
             return;
         } else {
-            // Held EDIT to view channel and released without changing anything
-            if (currentMode == OperatingMode::TRACK) {
-                display.showText("trac");
-            } else {
-                display.showText("ctrl");
-                resendMuxPots();
+            // An input was triggered: enter the config mode corresponding to that input
+            previousMode = currentMode;
+            currentMode = OperatingMode::CONFIG;
+            hw.turnOffAllLeds();
+            hw.haltMuxReads = true;
+            pinMode(Pins::MUX_ANALOG_IN_0, INPUT_PULLDOWN);
+            pinMode(Pins::MUX_ANALOG_IN_1, INPUT_PULLDOWN);
+
+            if (activeTarget == ConfigTarget::ANALOG_EXP) {
+                display.showText("SEnS");
+                initialExpReading = analogRead(Pins::EXPRESSION_PEDAL);
+                expCalibrating = false;
+                minExpReading = 1023;
+                maxExpReading = 0;
             }
+
+            // Reset touch states for config mode
+            touchBr.reset();
+            touchTr.reset();
+            touchTl.reset();
+            touchCenter.reset();
+            touchBl.reset();
+            configFs0Last = (digitalRead(Pins::FOOTSWITCH_0) == LOW);
+            configFs1Last = (digitalRead(Pins::FOOTSWITCH_1) == LOW);
+            configExpLast = (analogRead(Pins::EXPRESSION_PEDAL) >= ExpressionConfig::KILLSWITCH_THRESHOLD);
+            configTouchTimer = 0;
             return;
         }
     }
@@ -184,82 +206,10 @@ void AppStateMachine::handleEncoderButton() {
 }
 
 void AppStateMachine::checkConfigTriggersWhileEditHeld() {
-    // 1. Bottom Right touch (Pin 17) -> Halt MUX reads immediately & select MUX mode
-    int raw17 = touchRead(Pins::TOUCH_BOTTOM_RIGHT);
-    bool brNow = (raw17 >= TouchConfig::THRESHOLD_BOTTOM_RIGHT);
-    if (brNow && !configTouchBrLast) {
-        hw.haltMuxReads = true;
-        configMgr.setMuxMode(MUX_NONE);
-        configMgr.save();
-        activeTarget = ConfigTarget::MUX_MODE;
-        triggerFiredWhileEditHeld = true;
-        display.showText(configMgr.getMuxModeString());
-    }
-    configTouchBrLast = brNow;
-
-    // 2. Top Right touch (Pin 23) -> Octave mode
-    int raw23 = touchRead(Pins::TOUCH_TOP_RIGHT);
-    bool trNow = (raw23 >= TouchConfig::THRESHOLD_TOP_RIGHT);
-    if (trNow && !configTouchTrLast) {
-        activeTarget = ConfigTarget::OCTAVE;
-        triggerFiredWhileEditHeld = true;
-        display.showText(configMgr.getOctaveModeString());
-    }
-    configTouchTrLast = trNow;
-
-    // 3. Top Left touch (Pin 19) -> Transpose
-    int raw19 = touchRead(Pins::TOUCH_TOP_LEFT);
-    bool tlNow = (raw19 >= TouchConfig::THRESHOLD_TOP_LEFT);
-    if (tlNow && !configTouchTlLast) {
-        activeTarget = ConfigTarget::TRANSPOSE;
-        triggerFiredWhileEditHeld = true;
-        display.showNumber(configMgr.getTranspose());
-    }
-    configTouchTlLast = tlNow;
-
-    // 4. Bottom Left touch (Pin 18) -> Expression mode
-    int raw18 = touchRead(Pins::TOUCH_CHAOS_PAD);
-    bool blNow = (raw18 >= TouchConfig::THRESHOLD_BOTTOM_LEFT);
-    if (blNow && !configTouchBlLast) {
-        activeTarget = ConfigTarget::EXPRESSION;
-        triggerFiredWhileEditHeld = true;
-        display.showText(configMgr.getExpModeString());
-    }
-    configTouchBlLast = blNow;
-
-    // 6. Footswitch 0 -> Footswitch 0 mode
-    bool fs0Now = (digitalRead(Pins::FOOTSWITCH_0) == LOW);
-    if (fs0Now && !configFs0Last) {
-        activeTarget = ConfigTarget::FS0_MODE;
-        triggerFiredWhileEditHeld = true;
-        display.showText(configMgr.getFs0Mode() ? "0-lc" : "0-mo");
-    }
-    configFs0Last = fs0Now;
-
-    // 7. Footswitch 1 -> Footswitch 1 mode
-    bool fs1Now = (digitalRead(Pins::FOOTSWITCH_1) == LOW);
-    if (fs1Now && !configFs1Last) {
-        activeTarget = ConfigTarget::FS1_MODE;
-        triggerFiredWhileEditHeld = true;
-        display.showText(configMgr.getFs1Mode() ? "1-lc" : "1-mo");
-    }
-    configFs1Last = fs1Now;
-
-    // 8. Expression pedal / MIDIpot analog reading
-    int rawExp = analogRead(Pins::EXPRESSION_PEDAL);
-    bool expNow = (rawExp >= ExpressionConfig::KILLSWITCH_THRESHOLD);
-    if (expNow && !configExpLast) {
-        activeTarget = ConfigTarget::ANALOG_EXP;
-        triggerFiredWhileEditHeld = true;
-        configMgr.toggleExpKillSwitch();
-        hw.expressionPedal.killSwitch = configMgr.getExpKillSwitch();
-        display.showText(configMgr.getExpKillSwitch() ? " cut" : "-cut");
-    }
-    configExpLast = expNow;
-
-    // 9. Rotary Encoder while EDIT is held
+    // 1. Rotary Encoder while EDIT is held
     int encStep = hw.readEncoderStep();
     if (encStep != 0) {
+        triggerFiredWhileEditHeld = true;
         switch (activeTarget) {
             case ConfigTarget::MUX_MODE:
                 hw.haltMuxReads = true;
@@ -278,6 +228,10 @@ void AppStateMachine::checkConfigTriggersWhileEditHeld() {
                 configMgr.stepExpMode(encStep);
                 display.showText(configMgr.getExpModeString());
                 break;
+            case ConfigTarget::USB_FX:
+                configMgr.toggleUsbFxWet();
+                display.showText(configMgr.isUsbFxWet() ? " wet" : " dry");
+                break;
             case ConfigTarget::FS0_MODE:
                 configMgr.toggleFs0Mode();
                 hw.footSwitch0.mode = configMgr.getFs0Mode();
@@ -287,10 +241,6 @@ void AppStateMachine::checkConfigTriggersWhileEditHeld() {
                 configMgr.toggleFs1Mode();
                 hw.footSwitch1.mode = configMgr.getFs1Mode();
                 display.showText(configMgr.getFs1Mode() ? "1-lc" : "1-mo");
-                break;
-            case ConfigTarget::ANALOG_EXP:
-                configMgr.stepExpCcNumber(encStep);
-                display.showControlValue('c', configMgr.getExpCcNumber());
                 break;
             case ConfigTarget::NONE:
             case ConfigTarget::MIDI_CHANNEL: {
@@ -306,77 +256,119 @@ void AppStateMachine::checkConfigTriggersWhileEditHeld() {
                 display.showChannel(ch);
                 break;
             }
+            case ConfigTarget::ANALOG_EXP:
+                configMgr.stepExpCcNumber(encStep);
+                display.showControlValue('c', configMgr.getExpCcNumber());
+                break;
         }
-    } else if (activeTarget == ConfigTarget::NONE) {
-        if (editHoldTimer >= 150 && !channelDisplayShown) {
-            channelDisplayShown = true;
-            display.showChannel(configMgr.getMidiChannel());
+    }
+
+    // 2. Capacitive touch checks (rate-limited to 15ms with 3-sample median and hysteresis)
+    if (configTouchTimer >= 15) {
+        configTouchTimer = 0;
+
+        // Bottom Right touch (Pin 17) -> MUX mode
+        if (touchBr.update()) {
+            hw.haltMuxReads = true;
+            activeTarget = ConfigTarget::MUX_MODE;
+            triggerFiredWhileEditHeld = true;
+            display.showText(configMgr.getMuxModeString());
+            hw.turnOffAllLeds();
+            Serial.printf("[TOUCH17 TRIGGERED] MUX Mode: %s\n", configMgr.getMuxModeString());
+            return;
+        }
+
+        // Top Right touch (Pin 23) -> Octave mode
+        if (touchTr.update()) {
+            activeTarget = ConfigTarget::OCTAVE;
+            triggerFiredWhileEditHeld = true;
+            display.showText(configMgr.getOctaveModeString());
+            hw.turnOffAllLeds();
+            return;
+        }
+
+        // Top Left touch (Pin 19) -> Transpose
+        if (touchTl.update()) {
+            activeTarget = ConfigTarget::TRANSPOSE;
+            triggerFiredWhileEditHeld = true;
+            display.showNumber(configMgr.getTranspose());
+            hw.turnOffAllLeds();
+            return;
+        }
+
+        // Center touch (Pin 22) -> USB FX (wet, dry)
+        if (touchCenter.update()) {
+            activeTarget = ConfigTarget::USB_FX;
+            triggerFiredWhileEditHeld = true;
+            configMgr.toggleUsbFxWet();
+            display.showText(configMgr.isUsbFxWet() ? " wet" : " dry");
+            hw.turnOffAllLeds();
+            return;
+        }
+
+        // Bottom Left touch (Pin 18) -> Expression / MIDI FX mode
+        if (touchBl.update()) {
+            activeTarget = ConfigTarget::EXPRESSION;
+            triggerFiredWhileEditHeld = true;
+            display.showText(configMgr.getExpModeString());
+            hw.turnOffAllLeds();
+            return;
         }
     }
 
-    // Status LEDs - none of the LEDs are lit in config mode
-    if (triggerFiredWhileEditHeld) {
-        hw.turnOffAllLeds();
-    }
-}
-
-void AppStateMachine::processConfigMode() {
-    // 1. Bottom Right touch (Pin 17) -> Halt MUX reads & MUX mode
-    int raw17 = touchRead(Pins::TOUCH_BOTTOM_RIGHT);
-    bool brNow = (raw17 >= TouchConfig::THRESHOLD_BOTTOM_RIGHT);
-    if (brNow && !configTouchBrLast) {
-        hw.haltMuxReads = true;
-        configMgr.setMuxMode(MUX_NONE);
-        configMgr.save();
-        activeTarget = ConfigTarget::MUX_MODE;
-        display.showText(configMgr.getMuxModeString());
-    }
-    configTouchBrLast = brNow;
-
-    // 2. Top Right touch (Pin 23) -> Octave mode
-    int raw23 = touchRead(Pins::TOUCH_TOP_RIGHT);
-    bool trNow = (raw23 >= TouchConfig::THRESHOLD_TOP_RIGHT);
-    if (trNow && !configTouchTrLast) {
-        activeTarget = ConfigTarget::OCTAVE;
-        display.showText(configMgr.getOctaveModeString());
-    }
-    configTouchTrLast = trNow;
-
-    // 3. Top Left touch (Pin 19) -> Transpose
-    int raw19 = touchRead(Pins::TOUCH_TOP_LEFT);
-    bool tlNow = (raw19 >= TouchConfig::THRESHOLD_TOP_LEFT);
-    if (tlNow && !configTouchTlLast) {
-        activeTarget = ConfigTarget::TRANSPOSE;
-        display.showNumber(configMgr.getTranspose());
-    }
-    configTouchTlLast = tlNow;
-
-    // 4. Bottom Left touch (Pin 18) -> Expression mode
-    int raw18 = touchRead(Pins::TOUCH_CHAOS_PAD);
-    bool blNow = (raw18 >= TouchConfig::THRESHOLD_BOTTOM_LEFT);
-    if (blNow && !configTouchBlLast) {
-        activeTarget = ConfigTarget::EXPRESSION;
-        display.showText(configMgr.getExpModeString());
-    }
-    configTouchBlLast = blNow;
-
-    // 6. Footswitch 0 -> Footswitch 0 mode
+    // 3. Footswitches
     bool fs0Now = (digitalRead(Pins::FOOTSWITCH_0) == LOW);
     if (fs0Now && !configFs0Last) {
         activeTarget = ConfigTarget::FS0_MODE;
+        triggerFiredWhileEditHeld = true;
+        configMgr.toggleFs0Mode();
+        hw.footSwitch0.mode = configMgr.getFs0Mode();
         display.showText(configMgr.getFs0Mode() ? "0-lc" : "0-mo");
     }
     configFs0Last = fs0Now;
 
-    // 7. Footswitch 1 -> Footswitch 1 mode
     bool fs1Now = (digitalRead(Pins::FOOTSWITCH_1) == LOW);
     if (fs1Now && !configFs1Last) {
         activeTarget = ConfigTarget::FS1_MODE;
+        triggerFiredWhileEditHeld = true;
+        configMgr.toggleFs1Mode();
+        hw.footSwitch1.mode = configMgr.getFs1Mode();
         display.showText(configMgr.getFs1Mode() ? "1-lc" : "1-mo");
     }
     configFs1Last = fs1Now;
 
-    // 8. Adjust active target via Rotary Encoder
+    // 4. Expression pedal / MIDIpot analog reading
+    int rawExp = analogRead(Pins::EXPRESSION_PEDAL);
+    bool expNow = (rawExp >= ExpressionConfig::KILLSWITCH_THRESHOLD);
+    if (expNow && !configExpLast) {
+        activeTarget = ConfigTarget::ANALOG_EXP;
+        triggerFiredWhileEditHeld = true;
+        configMgr.toggleExpKillSwitch();
+        hw.expressionPedal.killSwitch = configMgr.getExpKillSwitch();
+        display.showText(configMgr.getExpKillSwitch() ? " cut" : "-cut");
+    }
+    configExpLast = expNow;
+
+    // Status LEDs - none of the LEDs are lit in config mode
+    hw.turnOffAllLeds();
+
+    // Stream live touchPin 17 readings to Serial while EDIT is held
+    static elapsedMillis dbgTimer;
+    if (dbgTimer >= 150) {
+        dbgTimer = 0;
+        int raw17 = flickerTouchRead(Pins::TOUCH_BOTTOM_RIGHT);
+        Serial.printf("[TOUCH17] raw: %d | base: %d | thresh: %d | state: %d | target: %d\n",
+                      raw17, touchBr.baseline, touchBr.onThreshold, (int)touchBr.state, (int)activeTarget);
+    }
+}
+
+void AppStateMachine::processConfigMode() {
+    // Suspend trigger updates while encoder button is pressed down (user is clicking to save and exit)
+    if (hw.encoderButton.read() == LOW) {
+        return;
+    }
+
+    // 1. Adjust active target via Rotary Encoder
     int encStep = hw.readEncoderStep();
     if (encStep != 0) {
         switch (activeTarget) {
@@ -397,6 +389,10 @@ void AppStateMachine::processConfigMode() {
                 configMgr.stepExpMode(encStep);
                 display.showText(configMgr.getExpModeString());
                 break;
+            case ConfigTarget::USB_FX:
+                configMgr.toggleUsbFxWet();
+                display.showText(configMgr.isUsbFxWet() ? " wet" : " dry");
+                break;
             case ConfigTarget::FS0_MODE:
                 configMgr.toggleFs0Mode();
                 hw.footSwitch0.mode = configMgr.getFs0Mode();
@@ -407,17 +403,7 @@ void AppStateMachine::processConfigMode() {
                 hw.footSwitch1.mode = configMgr.getFs1Mode();
                 display.showText(configMgr.getFs1Mode() ? "1-lc" : "1-mo");
                 break;
-            case ConfigTarget::MIDI_CHANNEL: {
-                uint8_t ch = configMgr.getMidiChannel();
-                ch = (encStep > 0) ? ((ch >= 16) ? 1 : ch + 1) : ((ch <= 1) ? 16 : ch - 1);
-                configMgr.setMidiChannel(ch);
-                display.showChannel(ch);
-                break;
-            }
-            case ConfigTarget::ANALOG_EXP:
-                configMgr.stepExpCcNumber(encStep);
-                display.showControlValue('c', configMgr.getExpCcNumber());
-                break;
+            case ConfigTarget::MIDI_CHANNEL:
             case ConfigTarget::NONE:
                 activeTarget = ConfigTarget::MIDI_CHANNEL;
                 {
@@ -427,10 +413,83 @@ void AppStateMachine::processConfigMode() {
                     display.showChannel(ch);
                 }
                 break;
+            case ConfigTarget::ANALOG_EXP:
+                configMgr.stepExpCcNumber(encStep);
+                display.showControlValue('c', configMgr.getExpCcNumber());
+                break;
         }
     }
 
-    // 9. Expression / MIDIpot calibration in SEnS state
+    // 2. Detect touch and physical inputs while in config mode
+    // Rate-limit capacitive touch polling to 15ms
+    if (configTouchTimer >= 15) {
+        configTouchTimer = 0;
+
+        // Bottom Right touch (Pin 17) -> MUX mode
+        if (touchBr.update()) {
+            hw.haltMuxReads = true;
+            activeTarget = ConfigTarget::MUX_MODE;
+            display.showText(configMgr.getMuxModeString());
+            hw.turnOffAllLeds();
+            Serial.printf("[CONFIG TOUCH17 TRIGGERED] MUX Mode: %s\n", configMgr.getMuxModeString());
+            return;
+        }
+
+        // Top Right touch (Pin 23) -> Octave mode
+        if (touchTr.update()) {
+            activeTarget = ConfigTarget::OCTAVE;
+            display.showText(configMgr.getOctaveModeString());
+            hw.turnOffAllLeds();
+            return;
+        }
+
+        // Top Left touch (Pin 19) -> Transpose
+        if (touchTl.update()) {
+            activeTarget = ConfigTarget::TRANSPOSE;
+            display.showNumber(configMgr.getTranspose());
+            hw.turnOffAllLeds();
+            return;
+        }
+
+        // Center touch (Pin 22) -> USB FX (wet, dry)
+        if (touchCenter.update()) {
+            activeTarget = ConfigTarget::USB_FX;
+            configMgr.toggleUsbFxWet();
+            display.showText(configMgr.isUsbFxWet() ? " wet" : " dry");
+            hw.turnOffAllLeds();
+            return;
+        }
+
+        // Bottom Left touch (Pin 18) -> Expression mode
+        if (touchBl.update()) {
+            activeTarget = ConfigTarget::EXPRESSION;
+            display.showText(configMgr.getExpModeString());
+            hw.turnOffAllLeds();
+            return;
+        }
+    }
+
+    // Footswitch 0 -> Footswitch 0 mode
+    bool fs0Now = (digitalRead(Pins::FOOTSWITCH_0) == LOW);
+    if (fs0Now && !configFs0Last) {
+        activeTarget = ConfigTarget::FS0_MODE;
+        configMgr.toggleFs0Mode();
+        hw.footSwitch0.mode = configMgr.getFs0Mode();
+        display.showText(configMgr.getFs0Mode() ? "0-lc" : "0-mo");
+    }
+    configFs0Last = fs0Now;
+
+    // Footswitch 1 -> Footswitch 1 mode
+    bool fs1Now = (digitalRead(Pins::FOOTSWITCH_1) == LOW);
+    if (fs1Now && !configFs1Last) {
+        activeTarget = ConfigTarget::FS1_MODE;
+        configMgr.toggleFs1Mode();
+        hw.footSwitch1.mode = configMgr.getFs1Mode();
+        display.showText(configMgr.getFs1Mode() ? "1-lc" : "1-mo");
+    }
+    configFs1Last = fs1Now;
+
+    // 3. Expression / MIDIpot calibration in SEnS state
     if (activeTarget == ConfigTarget::ANALOG_EXP) {
         int raw = analogRead(Pins::EXPRESSION_PEDAL);
         if (!expCalibrating) {
@@ -539,11 +598,14 @@ void AppStateMachine::processSharedSensors() {
     }
 
     // 2. Chord Display & Chaos Synth (Pin 18)
-    if (configMgr.isMidiThruEnabled()) {
-        display.updateChordDisplayIfChanged(midiRouter.getAnalyzer());
-        uint8_t expMode = configMgr.getExpMode();
-        if (expMode == EXP_CAOS || expMode == EXP_BOTH) {
+    display.updateChordDisplayIfChanged(midiRouter.getAnalyzer());
+    uint8_t expMode = configMgr.getExpMode();
+    if (expMode == EXP_CAOS || expMode == EXP_BOTH || expMode == EXP_ECHO) {
+        if (configMgr.isUsbFxWet()) {
             chaosEngine.update(ch, midiRouter.getDinChords(), midiRouter.getUsbChords());
+        } else {
+            bool emptyChords[12] = {false};
+            chaosEngine.update(ch, midiRouter.getDinChords(), emptyChords);
         }
     }
 
@@ -551,6 +613,13 @@ void AppStateMachine::processSharedSensors() {
     if (hw.haltMuxReads || configMgr.isMuxHalted()) {
         return; // ABSOLUTELY NO READS ON PINS 20 OR 21!
     }
+
+    // Rate-limit active MUX reads to 20ms (50 Hz) to eliminate ADC noise and USB MIDI flooding
+    static elapsedMillis muxPollTimer;
+    if (muxPollTimer < 20) {
+        return;
+    }
+    muxPollTimer = 0;
 
     // 4. Pin 20 - Single Pot
     if (configMgr.isPin20Pot()) {

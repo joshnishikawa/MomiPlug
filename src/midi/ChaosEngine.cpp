@@ -36,6 +36,15 @@ void ChaosEngine::update(uint8_t midiChannel, const bool dinChords[12], const bo
     int rawTouch = touchRead(Pins::TOUCH_CHAOS_PAD);
     lastRawTouch = rawTouch;
 
+    // In ECHO mode (or NONE), do not play CAOS synth notes
+    uint8_t expMode = configMgr.getExpMode();
+    if (expMode != EXP_CAOS && expMode != EXP_BOTH) {
+        if (activeNote > 0) {
+            silence(midiChannel);
+        }
+        return;
+    }
+
     // Below touch threshold: silence note
     if (rawTouch < inLo) {
         silence(midiChannel);

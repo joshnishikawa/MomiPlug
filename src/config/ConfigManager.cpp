@@ -29,7 +29,6 @@ void ConfigManager::load() {
     if (config.transpose < -12 || config.transpose > 12) config.transpose = 0;
     if (config.expMode > 3) config.expMode = EXP_CAOS;
     if (config.expCcNumber > 127) config.expCcNumber = 85;
-    config.readMIDIthru = true;
 }
 
 void ConfigManager::save() {

@@ -1,5 +1,8 @@
 #include "MidiEcho.h"
 #include "ChaosEngine.h"
+#include <MIDI.h>
+
+extern midi::MidiInterface<midi::SerialMIDI<HardwareSerial>> MIDI;
 
 MidiEcho midiEcho;
 
@@ -34,15 +37,16 @@ void MidiEcho::onNoteOn(uint8_t channel, uint8_t note, uint8_t velocity, uint8_t
     if (rawTouch < 0) {
         rawTouch = chaosEngine.getLastTouch();
     }
-    if (rawTouch < TouchConfig::CHAOS_IN_LO) {
+    // If not being touched (below touch threshold), do not echo at all
+    if (rawTouch < EchoConfig::TOUCH_THRESHOLD) {
         return;
     }
 
     // Higher touch reading -> more repeats and longer decay time
     int repeats = map(
         rawTouch,
-        TouchConfig::CHAOS_IN_LO,
-        TouchConfig::CHAOS_IN_HI,
+        EchoConfig::TOUCH_THRESHOLD,
+        EchoConfig::TOUCH_FIRM,
         EchoConfig::MIN_REPEATS,
         EchoConfig::MAX_REPEATS
     );
@@ -50,8 +54,8 @@ void MidiEcho::onNoteOn(uint8_t channel, uint8_t note, uint8_t velocity, uint8_t
 
     int delayInterval = map(
         rawTouch,
-        TouchConfig::CHAOS_IN_LO,
-        TouchConfig::CHAOS_IN_HI,
+        EchoConfig::TOUCH_THRESHOLD,
+        EchoConfig::TOUCH_FIRM,
         EchoConfig::MIN_DELAY_MS,
         EchoConfig::MAX_DELAY_MS
     );
@@ -69,29 +73,41 @@ void MidiEcho::onNoteOn(uint8_t channel, uint8_t note, uint8_t velocity, uint8_t
 }
 
 void MidiEcho::onNoteOff(uint8_t channel, uint8_t note, uint8_t port) {
-    // When the primary note is released, do not immediately kill echoes, but allow them to decay naturally.
-    // If needed to silence prematurely, silenceAll() is available.
+    // When the primary note is released, allow scheduled echoes to decay naturally.
 }
 
 void MidiEcho::silenceAll() {
+    bool sentAny = false;
     for (uint8_t i = 0; i < MAX_EVENTS; i++) {
         if (events[i].active && !events[i].isNoteOff) {
             usbMIDI.sendNoteOff(events[i].note, 0, events[i].channel, events[i].port);
+            MIDI.sendNoteOff(events[i].note, 0, events[i].channel);
+            sentAny = true;
         }
         events[i].active = false;
+    }
+    if (sentAny) {
+        usbMIDI.send_now();
     }
 }
 
 void MidiEcho::update() {
     uint32_t now = millis();
+    bool sentAny = false;
     for (uint8_t i = 0; i < MAX_EVENTS; i++) {
         if (events[i].active && now >= events[i].executeAt) {
             events[i].active = false;
             if (events[i].isNoteOff) {
                 usbMIDI.sendNoteOff(events[i].note, 0, events[i].channel, events[i].port);
+                MIDI.sendNoteOff(events[i].note, 0, events[i].channel);
             } else {
                 usbMIDI.sendNoteOn(events[i].note, events[i].velocity, events[i].channel, events[i].port);
+                MIDI.sendNoteOn(events[i].note, events[i].velocity, events[i].channel);
             }
+            sentAny = true;
         }
+    }
+    if (sentAny) {
+        usbMIDI.send_now();
     }
 }

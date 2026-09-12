@@ -1,5 +1,6 @@
 #include "MidiRouter.h"
 #include "MidiEcho.h"
+#include "Metronome.h"
 
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
 
@@ -47,6 +48,13 @@ void MidiRouter::begin() {
     attachUSBHandlers(midi2);
     attachUSBHandlers(midi3);
     attachUSBHandlers(midi4);
+
+    // Initialize DAW Metronome engine & register USB client MIDI real-time callbacks
+    metronome.begin();
+    usbMIDI.setHandleClock(handleUSBClock);
+    usbMIDI.setHandleStart(handleUSBStart);
+    usbMIDI.setHandleContinue(handleUSBContinue);
+    usbMIDI.setHandleStop(handleUSBStop);
 }
 
 void MidiRouter::process() {
@@ -78,6 +86,9 @@ void MidiRouter::process() {
 
     // Service active MIDI echo delay repeats
     midiEcho.update();
+
+    // Service metronome LED pulse & timeout
+    metronome.update();
 }
 
 // ====================================================================
@@ -253,3 +264,24 @@ void MidiRouter::handleUSBPitchBend(byte channel, int bend) {
     MIDI.sendPitchBend(bend, channel);
     usbMIDI.send_now();
 }
+
+// ====================================================================
+// USB Client (DAW) Real-time Event Handlers
+// ====================================================================
+
+void MidiRouter::handleUSBClock() {
+    metronome.onClock();
+}
+
+void MidiRouter::handleUSBStart() {
+    metronome.onStart();
+}
+
+void MidiRouter::handleUSBContinue() {
+    metronome.onContinue();
+}
+
+void MidiRouter::handleUSBStop() {
+    metronome.onStop();
+}
+

@@ -35,7 +35,6 @@ public:
         setLedTopRight(false);
         setLedFs0(false);
         setLedFs1(false);
-        setLedOnboard(false);
     }
 
     // Physical Input Devices

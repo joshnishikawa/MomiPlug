@@ -35,6 +35,12 @@ public:
     static void handleUSBAfterTouch(byte channel, byte pressure);
     static void handleUSBPitchBend(byte channel, int bend);
 
+    // Static event handlers for USB Client (DAW) MIDI
+    static void handleUSBClock();
+    static void handleUSBStart();
+    static void handleUSBContinue();
+    static void handleUSBStop();
+
 private:
     USBHost teensyUSBHost;
     USBHub  hub1;

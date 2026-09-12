@@ -24,7 +24,6 @@ void ChaosEngine::silence(uint8_t midiChannel) {
         usbMIDI.sendNoteOn(activeNote, 0, midiChannel);
         activeNote = 0;
     }
-    digitalWrite(Pins::LED_ONBOARD, LOW);
     waiting = false;
 }
 
@@ -37,7 +36,7 @@ void ChaosEngine::update(uint8_t midiChannel, const bool dinChords[12], const bo
     int rawTouch = touchRead(Pins::TOUCH_CHAOS_PAD);
     lastRawTouch = rawTouch;
 
-    // Below touch threshold: silence note and turn off LED
+    // Below touch threshold: silence note
     if (rawTouch < inLo) {
         silence(midiChannel);
         return;
@@ -69,9 +68,6 @@ void ChaosEngine::update(uint8_t midiChannel, const bool dinChords[12], const bo
             activeNote = static_cast<uint8_t>(mappedNote);
             noteTimer = 0;
             waiting = true;
-            digitalWrite(Pins::LED_ONBOARD, HIGH);
-        } else {
-            digitalWrite(Pins::LED_ONBOARD, LOW);
         }
     }
 }

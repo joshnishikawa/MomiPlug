@@ -48,8 +48,8 @@ namespace TouchConfig {
     constexpr int THRESHOLD_BOTTOM_LEFT   = 1150;
 
     // Chaos Pad (Pin 18)
-    constexpr uint16_t CHAOS_IN_LO        = 1150;
-    constexpr uint16_t CHAOS_IN_HI        = 1800;
+    constexpr uint16_t CHAOS_IN_LO        = 1010;
+    constexpr uint16_t CHAOS_IN_HI        = 1150;
     constexpr uint8_t CHAOS_NOTE_MIN      = 48; // C3
     constexpr uint8_t CHAOS_NOTE_MAX      = 84; // C6
     constexpr uint8_t CHAOS_VELOCITY      = 96;
